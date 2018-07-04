@@ -3,7 +3,7 @@ import axios from 'axios'
 import { LoginRequestPayload, LoginRequestResponse } from '../../../server/src/modules/Login'
 import { User } from '../../../server/src/modules/User'
 
-class Login {
+class LoginService {
   private authorized: boolean = false
 
   public authorize = (): void => {
@@ -49,6 +49,4 @@ class Login {
   }
 }
 
-const LoginService = new Login()
-
-export default LoginService
+export default new LoginService()

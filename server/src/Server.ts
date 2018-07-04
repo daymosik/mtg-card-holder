@@ -5,8 +5,9 @@ import * as passport from 'passport'
 import * as LocalStrategy from 'passport-local'
 import * as path from 'path'
 import * as R from 'ramda'
-
 import * as Login from './modules/Login'
+
+import MtgApi from './modules/mtgApi'
 import * as Registration from './modules/Registration'
 import * as User from './modules/User'
 
@@ -19,11 +20,15 @@ const isAuthenticated = (req, res, next) => {
 
 const staticsPath = path.join(__dirname, '..', '..', 'front', 'build')
 
-class Server {
+export default class Server {
   public app
+  public db
+  public mtgApi: MtgApi
 
-  constructor() {
+  constructor(db) {
+    this.db = db
     this.app = express()
+    this.mtgApi = new MtgApi(this.db)
 
     this.mountRoutes()
   }
@@ -131,5 +136,3 @@ class Server {
     })
   }
 }
-
-export default new Server().app

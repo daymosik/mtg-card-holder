@@ -2,7 +2,7 @@ import axios from 'axios'
 
 import { RegisterRequestPayload, RegisterRequestResponse } from '../../../server/src/modules/Registration'
 
-class Registration {
+class RegistrationService {
   public register = async (payload: RegisterRequestPayload) => {
     try {
       const response = await axios.post('/register', payload)
@@ -15,6 +15,4 @@ class Registration {
   }
 }
 
-const RegistrationService = new Registration()
-
-export default RegistrationService
+export default new RegistrationService()
