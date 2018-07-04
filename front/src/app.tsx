@@ -5,7 +5,11 @@ import { Link, location, Route } from 'hyperapp-hash-router'
 import './config/axios'
 
 import CardCollectionView from './modules/card-collection'
-import CardDatabaseView from './modules/card-database'
+import CardDatabaseView, {
+  cardDatabaseActions,
+  CardDatabaseActions, CardDatabaseState,
+  initialCardDatabaseState,
+} from './modules/card-database'
 import LoginView, { initialLoginState, LoginActions, loginActions, LoginState } from './modules/login'
 import SignupView, { initialSignupState, signupActions, SignupActions, SignupState } from './modules/signup'
 import NavigationView, { NavigationPath } from './navigation'
@@ -30,6 +34,7 @@ export interface AppState {
   authorized: boolean
   login: LoginState
   signup: SignupState
+  cardDatabase: CardDatabaseState
 }
 
 const initialState: AppState = {
@@ -37,6 +42,7 @@ const initialState: AppState = {
   authorized: false,
   login: initialLoginState,
   signup: initialSignupState,
+  cardDatabase: initialCardDatabaseState,
 }
 
 export interface AppActions {
@@ -44,6 +50,7 @@ export interface AppActions {
   auth: AuthActions,
   login: LoginActions,
   signup: SignupActions
+  cardDatabase: CardDatabaseActions,
 }
 
 const appActions: ActionsType<AppState, AppActions> = {
@@ -51,6 +58,7 @@ const appActions: ActionsType<AppState, AppActions> = {
   auth: authActions,
   login: loginActions,
   signup: signupActions,
+  cardDatabase: cardDatabaseActions,
 }
 
 const Home = () => <div></div>
@@ -61,8 +69,8 @@ const view: View<AppState, AppActions> = (state, actions) => (
     <Route path={NavigationPath.Home} render={Home}/>
     <Route path={NavigationPath.Login} render={LoginView(state, actions)}/>
     <Route path={NavigationPath.Signup} render={SignupView(state, actions)}/>
-    <Route path={NavigationPath.CardDatabase} render={CardDatabaseView}/>
-    <Route path={NavigationPath.CardCollection} render={CardCollectionView}/>
+    <Route path={NavigationPath.CardDatabase} render={CardDatabaseView(state, actions)}/>
+    <Route path={NavigationPath.CardCollection} render={CardCollectionView(state, actions)}/>
   </div>
 )
 

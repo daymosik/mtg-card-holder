@@ -5,6 +5,7 @@ import * as passport from 'passport'
 import * as LocalStrategy from 'passport-local'
 import * as path from 'path'
 import * as R from 'ramda'
+import CardDatabase from './modules/CardDatabase'
 import * as Login from './modules/Login'
 
 import MtgApi from './modules/mtgApi'
@@ -24,11 +25,13 @@ export default class Server {
   public app
   public db
   public mtgApi: MtgApi
+  public cardDatabase: CardDatabase
 
   constructor(db) {
     this.db = db
     this.app = express()
     this.mtgApi = new MtgApi(this.db)
+    this.cardDatabase = new CardDatabase(this.db)
 
     this.mountRoutes()
   }
@@ -133,6 +136,13 @@ export default class Server {
       const userId = req.session.passport.user.user_id
       const user = User.getUserById(userId)
       res.send(user)
+    })
+
+    // Card database
+    this.app.get('/api/card-database/get-cards', async (req, res) => {
+      const cards = await this.cardDatabase.getCards()
+      // console.log(cards)
+      res.send(cards)
     })
   }
 }
