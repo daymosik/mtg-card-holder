@@ -141,8 +141,12 @@ export default class Server {
     // Card database
     this.app.get('/api/card-database/get-cards', async (req, res) => {
       const cards = await this.cardDatabase.getCards()
-      // console.log(cards)
       res.send(cards)
+    })
+
+    this.app.get('/api/card-database/get-sets', async (req, res) => {
+      const sets = await this.cardDatabase.getSets()
+      res.send(sets)
     })
   }
 }

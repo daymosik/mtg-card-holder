@@ -7,9 +7,16 @@ import './config/axios'
 import CardCollectionView from './modules/card-collection'
 import CardDatabaseView, {
   cardDatabaseActions,
-  CardDatabaseActions, CardDatabaseState,
+  CardDatabaseActions,
+  CardDatabaseState,
   initialCardDatabaseState,
 } from './modules/card-database'
+import SetView, {
+  cardSetActions,
+  CardSetActions,
+  CardSetState,
+  initialCardSetState,
+} from './modules/card-database/set'
 import LoginView, { initialLoginState, LoginActions, loginActions, LoginState } from './modules/login'
 import SignupView, { initialSignupState, signupActions, SignupActions, SignupState } from './modules/signup'
 import NavigationView, { NavigationPath } from './navigation'
@@ -35,6 +42,7 @@ export interface AppState {
   login: LoginState
   signup: SignupState
   cardDatabase: CardDatabaseState
+  cardSet: CardSetState,
 }
 
 const initialState: AppState = {
@@ -43,6 +51,7 @@ const initialState: AppState = {
   login: initialLoginState,
   signup: initialSignupState,
   cardDatabase: initialCardDatabaseState,
+  cardSet: initialCardSetState,
 }
 
 export interface AppActions {
@@ -51,6 +60,7 @@ export interface AppActions {
   login: LoginActions,
   signup: SignupActions
   cardDatabase: CardDatabaseActions,
+  cardSet: CardSetActions,
 }
 
 const appActions: ActionsType<AppState, AppActions> = {
@@ -59,6 +69,7 @@ const appActions: ActionsType<AppState, AppActions> = {
   login: loginActions,
   signup: signupActions,
   cardDatabase: cardDatabaseActions,
+  cardSet: cardSetActions,
 }
 
 const Home = () => <div></div>
@@ -71,6 +82,8 @@ const view: View<AppState, AppActions> = (state, actions) => (
     <Route path={NavigationPath.Signup} render={SignupView(state, actions)}/>
     <Route path={NavigationPath.CardDatabase} render={CardDatabaseView(state, actions)}/>
     <Route path={NavigationPath.CardCollection} render={CardCollectionView(state, actions)}/>
+
+    <Route path={`/set/:code`} render={SetView(state, actions)}/>
   </div>
 )
 

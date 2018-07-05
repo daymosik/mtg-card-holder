@@ -1,6 +1,6 @@
-import { h, View } from 'hyperapp'
+import { h } from 'hyperapp'
 
-const CardCollectionView: View<any, any> = (state, actions) => (
+export const CardCollectionView = (state, actions) => () => (
   <div>
     <h1>Card Collection</h1>
   </div>
