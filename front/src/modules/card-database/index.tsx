@@ -1,6 +1,7 @@
 import { h } from 'hyperapp'
 import { Link } from 'hyperapp-hash-router'
 import { MagicSet } from '../../../../server/src/modules/CardDatabase'
+import { MagicSetType } from '../../../../types/magic'
 import { AppActions, AppState } from '../../app'
 import CardDatabaseService from '../../services/card-database'
 
@@ -13,8 +14,8 @@ export const initialCardDatabaseState = {
 }
 
 export interface CardDatabaseActions {
-  getSets: () => (state: CardDatabaseState) => Promise<CardDatabaseState>,
-  getSetsCommit: (cards: MagicSet[]) => (state: CardDatabaseState) => CardDatabaseState
+  getSets: typeof cardDatabaseActions.getSets
+  getSetsCommit: typeof cardDatabaseActions.getSetsCommit
 }
 
 export const cardDatabaseActions = {
@@ -27,16 +28,15 @@ export const cardDatabaseActions = {
       console.log(e)
     }
   },
-  getSetsCommit: (sets: MagicSet[]) => (state: CardDatabaseState) => ({ ...state, sets }),
+  getSetsCommit: (sets: MagicSet[]) => (state: CardDatabaseState): CardDatabaseState => ({ ...state, sets }),
 }
 
 interface SetListTableProps {
   sets: MagicSet[]
-  match: any
 }
 
-const SetListTable = ({ sets, match }: SetListTableProps) => (
-  <table class="table table-light">
+const SetListTable = ({ sets }: SetListTableProps) => (
+  <table class="table table-light table-sm">
     <thead>
       <tr>
         <th scope="col">#</th>
@@ -62,13 +62,60 @@ const SetListItem = ({ set }: SetListItemProps) => (
   </tr>
 )
 
-export const CardDatabaseView = (state: AppState, actions: AppActions) => () => (
-  <div>
-    <h1>Card Database</h1>
-    <div oncreate={() => actions.cardDatabase.getSets()}>
-      <SetListTable match sets={state.cardDatabase.sets}/>
+const setTypes: MagicSetType[] = [
+  MagicSetType.Core,
+  MagicSetType.Un,
+  MagicSetType.Promo,
+  MagicSetType.Starter,
+  MagicSetType.Planechase,
+  MagicSetType.Masters,
+  MagicSetType.Reprint,
+  MagicSetType.BoardGameDeck,
+  MagicSetType.FromTheVault,
+  MagicSetType.DuelDeck,
+  MagicSetType.Commander,
+  MagicSetType.Expansion,
+  MagicSetType.Box,
+  MagicSetType.PremiumDeck,
+  MagicSetType.Masterpiece,
+  MagicSetType.Conspiracy,
+  MagicSetType.Vanguard,
+  MagicSetType.TwoHeadedGiant,
+  MagicSetType.Archenemy,
+]
+
+export const CardDatabaseView = (state: AppState, actions: AppActions) => () => {
+  const main = [MagicSetType.Core, MagicSetType.DuelDeck, MagicSetType.Expansion]
+  const rest = setTypes.filter((t) => main.indexOf(t) < 0)
+
+  const getSetsByType = (type: MagicSetType): MagicSet[] => state.cardDatabase.sets
+    .filter((set) => set.type === type)
+    .sort((a, b) => a.releaseDate > b.releaseDate ? -1 : 1)
+
+  return (
+    <div class="container-fluid">
+      <h1>Card Database</h1>
+      <div oncreate={() => actions.cardDatabase.getSets()}>
+
+        <div class="row d-flex flex-row">
+          {main.map((type: MagicSetType) => (
+            <div class="col-md-6 col-lg-4">
+              <h4>{type}</h4>
+              <SetListTable sets={getSetsByType(type)}/>
+            </div>
+          ))}
+
+          {rest.map((type: MagicSetType) => (
+            <div class="col-md-6 col-lg-4">
+              <h4>{type}</h4>
+              <SetListTable sets={getSetsByType(type)}/>
+            </div>
+          ))}
+        </div>
+
+      </div>
     </div>
-  </div>
-)
+  )
+}
 
 export default CardDatabaseView

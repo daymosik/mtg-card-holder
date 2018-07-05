@@ -11,6 +11,7 @@ import CardDatabaseView, {
   CardDatabaseState,
   initialCardDatabaseState,
 } from './modules/card-database'
+import CardView, { cardActions, CardActions, CardState, initialCardState } from './modules/card-database/card'
 import SetView, {
   cardSetActions,
   CardSetActions,
@@ -43,6 +44,7 @@ export interface AppState {
   signup: SignupState
   cardDatabase: CardDatabaseState
   cardSet: CardSetState,
+  card: CardState,
 }
 
 const initialState: AppState = {
@@ -52,6 +54,7 @@ const initialState: AppState = {
   signup: initialSignupState,
   cardDatabase: initialCardDatabaseState,
   cardSet: initialCardSetState,
+  card: initialCardState,
 }
 
 export interface AppActions {
@@ -61,6 +64,7 @@ export interface AppActions {
   signup: SignupActions
   cardDatabase: CardDatabaseActions,
   cardSet: CardSetActions,
+  card: CardActions,
 }
 
 const appActions: ActionsType<AppState, AppActions> = {
@@ -70,6 +74,7 @@ const appActions: ActionsType<AppState, AppActions> = {
   signup: signupActions,
   cardDatabase: cardDatabaseActions,
   cardSet: cardSetActions,
+  card: cardActions,
 }
 
 const Home = () => <div></div>
@@ -82,8 +87,8 @@ const view: View<AppState, AppActions> = (state, actions) => (
     <Route path={NavigationPath.Signup} render={SignupView(state, actions)}/>
     <Route path={NavigationPath.CardDatabase} render={CardDatabaseView(state, actions)}/>
     <Route path={NavigationPath.CardCollection} render={CardCollectionView(state, actions)}/>
-
-    <Route path={`/set/:code`} render={SetView(state, actions)}/>
+    <Route path={`/set/:code`} render={SetView(state, actions)} />
+    <Route path={`/card/:id`} render={CardView(state, actions)} />
   </div>
 )
 

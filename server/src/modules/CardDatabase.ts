@@ -1,42 +1,7 @@
-import { Db } from 'mongodb'
-
-export enum MagicCardColors {
-  White = 'White',
-  Red = 'Red',
-  Blue = 'Blue',
-  Green = 'Green',
-  Black = 'Black',
-}
-
-export enum MagicCardRarity {
-  Common = 'Common',
-  Uncommon = 'Uncommon',
-}
-
-export enum MagicSetType {
-  Core = 'core',
-  Un = 'un',
-  Promo = 'promo',
-  Starter = 'starter',
-  Planechase = 'planechase',
-  Masters = 'masters',
-  Reprint = 'reprint',
-  BoardGameDeck = 'board game deck',
-  FromTheVault = 'from the vault',
-  DuelDeck = 'duel deck',
-  Commander = 'commander',
-  Expansion = 'expansion',
-  Box = 'box',
-  PremiumDeck = 'premium deck',
-  Masterpiece = 'masterpiece',
-  Conspiracy = 'conspiracy',
-  Vanguard = 'vanguard',
-  TwoHeadedGiant = 'Two-Headed Giant',
-  Archenemy = 'archenemy',
-}
+import { Db, ObjectId } from 'mongodb'
+import { MagicCardColors, MagicCardRarity, MagicSetType } from '../../../types/magic'
 
 export interface MagicSet {
-  // "_id" : ObjectId("5b3d3cbea28a0249e7a658ae"),
   _id: string
   code: string
   name: string
@@ -78,7 +43,7 @@ export interface MagicCard {
   originalText: string,
   originalType: string,
   legalities: [{ format: string, legality: string }],
-  id: string
+  _id: string
 }
 
 export default class CardDatabase {
@@ -88,10 +53,17 @@ export default class CardDatabase {
     this.db = db
   }
 
-  public async getCards() {
+  public async getCards(query) {
     try {
       const collection = this.db.collection('cards')
-      return await collection.find({}).limit(1000).toArray() as MagicCard[]
+      const collectionQuery = {}
+      if (query._id) {
+        Object.assign(collectionQuery, { _id: { $eq: new ObjectId(query._id) } })
+      }
+      if (query.set) {
+        Object.assign(collectionQuery, { set: { $eq: query.set } })
+      }
+      return await collection.find(collectionQuery).limit(1000).toArray() as MagicCard[]
     } catch (e) {
       return Promise.reject(e)
     }
@@ -101,6 +73,16 @@ export default class CardDatabase {
     try {
       const collection = this.db.collection('sets')
       return await collection.find({}).toArray() as MagicSet[]
+    } catch (e) {
+      return Promise.reject(e)
+    }
+  }
+
+  public async getTypes() {
+    try {
+      const collection = this.db.collection('types')
+      const types = await collection.find({}).toArray()
+      return types.map((t) => t.name) as MagicSetType[]
     } catch (e) {
       return Promise.reject(e)
     }

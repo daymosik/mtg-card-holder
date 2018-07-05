@@ -19,7 +19,7 @@ const isAuthenticated = (req, res, next) => {
   res.status(401).end()
 }
 
-const staticsPath = path.join(__dirname, '..', '..', 'front', 'build')
+const staticsPath = path.join(__dirname, '..', '..', '..', '..', 'front', 'build')
 
 export default class Server {
   public app
@@ -140,12 +140,17 @@ export default class Server {
 
     // Card database
     this.app.get('/api/card-database/get-cards', async (req, res) => {
-      const cards = await this.cardDatabase.getCards()
+      const cards = await this.cardDatabase.getCards(req.query)
       res.send(cards)
     })
 
     this.app.get('/api/card-database/get-sets', async (req, res) => {
       const sets = await this.cardDatabase.getSets()
+      res.send(sets)
+    })
+
+    this.app.get('/api/card-database/get-types', async (req, res) => {
+      const sets = await this.cardDatabase.getTypes()
       res.send(sets)
     })
   }

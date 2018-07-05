@@ -27,7 +27,7 @@ export const cardSetActions: CardSetActions = {
     //   console.log(e)
     // }
   },
-  getCardsCommit: (cards: MagicCard[]) => (state: CardSetState) => ({ ...state, cards }),
+  getCardsCommit: (cards: MagicCard[]) => (state: CardSetState): CardSetState => ({ ...state, cards }),
 }
 
 interface CardListTableProps {
@@ -56,7 +56,7 @@ interface CardListItemProps {
 const CardListItem = ({ card }: CardListItemProps) => (
   <tr>
     <th scope="row">1</th>
-    <td><Link to={`/set/card/${card.id}`}>{card.name}</Link></td>
+    <td><Link to={`/card/${card._id}`}>{card.name}</Link></td>
     <td>{card.type}</td>
   </tr>
 )
