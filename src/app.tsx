@@ -5,6 +5,7 @@ import { Link, location, Route } from 'hyperapp-hash-router'
 import { firebaseConfig } from '../firebase.config'
 
 import './assets/styles/app.scss'
+import ProtectedRoute from './components/protected-route'
 
 import CardCollectionView from './modules/card-collection'
 import CardDatabaseView, {
@@ -33,15 +34,8 @@ import NavigationView, {
 export const firebaseApp = firebase.initializeApp(firebaseConfig)
 export const firebaseDatabase = firebase.database()
 
-firebase.auth().onAuthStateChanged((user) => {
+firebase.auth().onAuthStateChanged((user: firebase.User) => {
   if (user) {
-    // var displayName = user.displayName
-    // var email = user.email
-    // var emailVerified = user.emailVerified
-    // var photoURL = user.photoURL
-    // var isAnonymous = user.isAnonymous
-    // var uid = user.uid
-    // var providerData = user.providerData
     mainActions.auth.authorize()
   } else {
     mainActions.auth.unauthorize()
@@ -111,21 +105,6 @@ const appActions: ActionsType<AppState, AppActions> = {
 }
 
 const Home = () => <div>Home</div>
-
-const Unauthorized = () => <div>Unauthorized</div>
-
-const publicRoutes: string[] = [NavigationPath.Home, NavigationPath.Login, NavigationPath.Signup]
-const isPublicRoute = () => publicRoutes.indexOf(window.location.hash.replace('#', '')) > 0
-const isCurrentRoute = (path) => window.location.hash.includes(path)
-
-const ProtectedRoute = ({ path, render }) => (state: AppState, actions: AppActions) => {
-  if (isCurrentRoute(path)) {
-    return (state.auth.authorized || isPublicRoute())
-      ? <Route path={path} render={render(state, actions)}/>
-      : <Unauthorized/>
-  }
-  return null
-}
 
 const view = (state: AppState, actions: AppActions) => (
   <div>
