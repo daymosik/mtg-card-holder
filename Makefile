@@ -2,12 +2,11 @@ SHELL=/bin/bash
 export PATH := node_modules/.bin:$(PATH)
 
 build: node_modules/INSTALLED $(shell find src -type f)
-	tslint -p . -t codeFrame
-	webpack
+	yarn run build
 	touch $@
 
 watch:
-	webpack --watch
+	yarn run watch
 
 clean:
 	rm -rf build

@@ -1,9 +1,10 @@
 const path = require('path')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const ExtractTextPlugin = require('extract-text-webpack-plugin')
+const UglifyJsPlugin = require('uglifyjs-webpack-plugin')
 
 module.exports = {
-  mode: 'development',
+  mode: process.env.NODE_ENV,
   entry: [
     'bootstrap-loader',
     './src/app.tsx',
@@ -44,4 +45,9 @@ module.exports = {
     }),
     new ExtractTextPlugin('styles.css'),
   ],
+  optimization: {
+    minimizer: [
+      new UglifyJsPlugin()
+    ],
+  },
 }
