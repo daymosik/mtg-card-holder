@@ -26,7 +26,7 @@ export const loginActions: LoginActions = {
   handleInputChange: (object) => (state: LoginState): LoginState => ({ ...state, ...object }),
   submitForm: () => async (state: LoginState, actions: LoginActions) => {
     try {
-      await LoginService.login(state)
+      await LoginService.login(state.email, state.password)
     } catch (e) {
       actions.handleSubmitError(e.message)
     }

@@ -1,5 +1,6 @@
 import { h } from 'hyperapp'
 import { Link } from 'hyperapp-hash-router'
+import { AppState } from './app'
 import LoginService from './services/login'
 
 export enum NavigationPath {
@@ -10,7 +11,7 @@ export enum NavigationPath {
   CardCollection = '/card-collection',
 }
 
-export const NavigationView = () => (
+export const NavigationView = () => (state: AppState) => (
   <nav class="navbar navbar-expand-lg navbar-light bg-light">
     <div class="container">
 
@@ -41,15 +42,15 @@ export const NavigationView = () => (
           <li class="nav-item">
             <Link class="nav-link" to={NavigationPath.CardCollection}>My Collection</Link>
           </li>
-          {!LoginService.isAuthorized() &&
+          {!state.auth.authorized &&
           <li class="nav-item">
             <Link class="nav-link" to={NavigationPath.Signup}>Signup</Link>
           </li>}
-          {!LoginService.isAuthorized() &&
+          {!state.auth.authorized &&
           <li class="nav-item">
             <Link class="nav-link" to={NavigationPath.Login}>Login</Link>
           </li>}
-          {LoginService.isAuthorized() &&
+          {state.auth.authorized &&
           <li class="nav-item">
             <a class="nav-link" onclick={LoginService.logout}>Logout</a>
           </li>}

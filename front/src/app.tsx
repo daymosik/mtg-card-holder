@@ -4,8 +4,6 @@ import { ActionsType, app, h, View } from 'hyperapp'
 import { Link, location, Route } from 'hyperapp-hash-router'
 import { firebaseConfig } from '../firebase.config'
 
-import './config/axios'
-
 import CardCollectionView from './modules/card-collection'
 import CardDatabaseView, {
   cardDatabaseActions,
@@ -24,28 +22,46 @@ import LoginView, { initialLoginState, LoginActions, loginActions, LoginState } 
 import SignupView, { initialSignupState, signupActions, SignupActions, SignupState } from './modules/signup'
 import NavigationView, { NavigationPath } from './navigation'
 
-// import LoginService from './services/login'
-
 export const firebaseApp = firebase.initializeApp(firebaseConfig)
 
 export const firebaseDatabase = firebase.database()
 
-// TODO: where should it be initialized ?
-// LoginService.checkLogin()
+firebase.auth().onAuthStateChanged((user) => {
+  if (user) {
+    // var displayName = user.displayName
+    // var email = user.email
+    // var emailVerified = user.emailVerified
+    // var photoURL = user.photoURL
+    // var isAnonymous = user.isAnonymous
+    // var uid = user.uid
+    // var providerData = user.providerData
+    mainActions.auth.authorize()
+  } else {
+    mainActions.auth.unauthorize()
+  }
+})
+
+interface AuthState {
+  authorized: boolean,
+}
+
+const initialAuthState: AuthState = {
+  authorized: false,
+}
 
 interface AuthActions {
-  authorize: () => (state: AppState) => AppState
-  unauthorize: () => (state: AppState) => AppState
+  authorize: () => (state: AuthState) => AuthState
+  unauthorize: () => (state: AuthState) => AuthState
 }
 
 const authActions: AuthActions = {
-  authorize: () => (state: AppState): AppState => ({ ...state, authorized: true }),
-  unauthorize: () => (state: AppState): AppState => ({ ...state, authorized: false }),
+  authorize: () => (state: AuthState): AuthState => ({ ...state, authorized: true }),
+  unauthorize: () => (state: AuthState): AuthState => ({ ...state, authorized: false }),
 }
 
 export interface AppState {
   location: location.state
-  authorized: boolean
+  auth: AuthState
   login: LoginState
   signup: SignupState
   cardDatabase: CardDatabaseState
@@ -55,7 +71,7 @@ export interface AppState {
 
 const initialState: AppState = {
   location: location.state,
-  authorized: false,
+  auth: initialAuthState,
   login: initialLoginState,
   signup: initialSignupState,
   cardDatabase: initialCardDatabaseState,

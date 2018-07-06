@@ -26,7 +26,7 @@ export const signupActions: SignupActions = {
   handleInputChange: (object) => (state: SignupState): SignupState => ({ ...state, ...object }),
   submitForm: () => async (state: SignupState, actions: SignupActions) => {
     try {
-      await RegistrationService.register(state)
+      await RegistrationService.register(state.email, state.password)
     } catch (e) {
       actions.handleSubmitError(e.message)
     }

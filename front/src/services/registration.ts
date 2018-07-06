@@ -1,16 +1,12 @@
-import axios from 'axios'
-
-import { RegisterRequestPayload, RegisterRequestResponse } from '../../../server/src/modules/Registration'
+import * as firebase from 'firebase'
 
 class RegistrationService {
-  public register = async (payload: RegisterRequestPayload) => {
+  public register = async (email: string, password: string) => {
     try {
-      const response = await axios.post('/register', payload)
-      const data: RegisterRequestResponse = response.data
+      const data = await firebase.auth().createUserWithEmailAndPassword(email, password)
       return data.user
     } catch (e) {
-      const data: RegisterRequestResponse = e.response.data
-      return Promise.reject(data)
+      return Promise.reject(e)
     }
   }
 }
