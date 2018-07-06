@@ -20,7 +20,7 @@ export interface CardSetActions {
 export const cardSetActions: CardSetActions = {
   getCards: (set) => async (state: CardSetState, actions: CardSetActions) => {
     // try {
-    const cards: MagicCard[] = await CardDatabaseService.getCards({ set })
+    const cards: MagicCard[] = await CardDatabaseService.getCardsBySet(set)
     actions.getCardsCommit(cards)
     return cards
     // } catch (e) {
@@ -44,7 +44,7 @@ const CardListTable = ({ cards }: CardListTableProps) => (
       </tr>
     </thead>
     <tbody>
-      {cards.length > 0 && cards.map((card) => <CardListItem card={card}/>)}
+      {cards && cards.map((card) => <CardListItem card={card}/>)}
     </tbody>
   </table>
 )

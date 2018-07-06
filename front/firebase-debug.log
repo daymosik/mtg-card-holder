@@ -1,0 +1,32 @@
+[debug] [2018-07-06T18:25:48.811Z] ----------------------------------------------------------------------
+[debug] [2018-07-06T18:25:48.813Z] Command:       /usr/local/Cellar/node/8.9.0/bin/node /usr/local/bin/firebase serve
+[debug] [2018-07-06T18:25:48.813Z] CLI Version:   3.19.3
+[debug] [2018-07-06T18:25:48.813Z] Platform:      darwin
+[debug] [2018-07-06T18:25:48.813Z] Node Version:  v8.9.0
+[debug] [2018-07-06T18:25:48.814Z] Time:          Fri Jul 06 2018 20:25:48 GMT+0200 (CEST)
+[debug] [2018-07-06T18:25:48.814Z] ----------------------------------------------------------------------
+[debug] 
+[debug] [2018-07-06T18:25:48.826Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2018-07-06T18:25:48.826Z] > authorizing via signed-in user
+[debug] [2018-07-06T18:25:48.828Z] >>> HTTP REQUEST GET https://admin.firebase.com/v1/projects/mtg-card-holder  
+  
+ Fri Jul 06 2018 20:25:48 GMT+0200 (CEST)
+[debug] [2018-07-06T18:25:49.548Z] <<< HTTP RESPONSE 200
+[debug] [2018-07-06T18:25:49.549Z] >>> HTTP REQUEST GET https://admin.firebase.com/v1/database/mtg-card-holder/tokens  
+  
+ Fri Jul 06 2018 20:25:49 GMT+0200 (CEST)
+[debug] [2018-07-06T18:25:50.192Z] <<< HTTP RESPONSE 200
+[debug] [2018-07-06T18:25:50.193Z] >>> HTTP REQUEST GET https://cloudresourcemanager.googleapis.com/v1/projects/mtg-card-holder  
+  
+ Fri Jul 06 2018 20:25:50 GMT+0200 (CEST)
+[debug] [2018-07-06T18:25:51.182Z] <<< HTTP RESPONSE 200
+[info] 
+[info] === Serving from '/Users/damian/Projects/mtg/front'...
+[info] 
+[debug] [2018-07-06T18:25:51.184Z] >>> HTTP REQUEST GET https://mobilesdk-pa.googleapis.com/v1/projects/394985709847/clients/_:getWebAppConfig  
+  
+ Fri Jul 06 2018 20:25:51 GMT+0200 (CEST)
+[debug] [2018-07-06T18:25:51.913Z] <<< HTTP RESPONSE 200
+[info] i  hosting: Serving hosting files from: build
+[info] ✔  hosting: Local server: http://localhost:5000
+

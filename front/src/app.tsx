@@ -1,6 +1,8 @@
 import 'bootstrap/scss/bootstrap.scss'
+import * as firebase from 'firebase'
 import { ActionsType, app, h, View } from 'hyperapp'
 import { Link, location, Route } from 'hyperapp-hash-router'
+import { firebaseConfig } from '../firebase.config'
 
 import './config/axios'
 
@@ -22,10 +24,14 @@ import LoginView, { initialLoginState, LoginActions, loginActions, LoginState } 
 import SignupView, { initialSignupState, signupActions, SignupActions, SignupState } from './modules/signup'
 import NavigationView, { NavigationPath } from './navigation'
 
-import LoginService from './services/login'
+// import LoginService from './services/login'
+
+export const firebaseApp = firebase.initializeApp(firebaseConfig)
+
+export const firebaseDatabase = firebase.database()
 
 // TODO: where should it be initialized ?
-LoginService.checkLogin()
+// LoginService.checkLogin()
 
 interface AuthActions {
   authorize: () => (state: AppState) => AppState
@@ -87,8 +93,8 @@ const view: View<AppState, AppActions> = (state, actions) => (
     <Route path={NavigationPath.Signup} render={SignupView(state, actions)}/>
     <Route path={NavigationPath.CardDatabase} render={CardDatabaseView(state, actions)}/>
     <Route path={NavigationPath.CardCollection} render={CardCollectionView(state, actions)}/>
-    <Route path={`/set/:code`} render={SetView(state, actions)} />
-    <Route path={`/card/:id`} render={CardView(state, actions)} />
+    <Route path={`/set/:code`} render={SetView(state, actions)}/>
+    <Route path={`/card/:id`} render={CardView(state, actions)}/>
   </div>
 )
 

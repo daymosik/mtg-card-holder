@@ -1,21 +1,31 @@
-import axios from 'axios'
 import { MagicCard, MagicSet } from '../../../server/src/modules/CardDatabase'
 import { MagicSetType } from '../../../types/magic'
-
-interface GetCardsFilter {
-  _id?: string,
-  set?: string,
-}
+import { firebaseDatabase } from '../app'
 
 class CardDatabaseService {
-  public async getCards(filter: GetCardsFilter): Promise<MagicCard[]> {
+  public async getCardById(id: string): Promise<MagicCard> {
     try {
-      const cardsResponse = await axios.get('/api/card-database/get-cards', {
-        params: {
-          ...filter,
-        },
-      })
-      return cardsResponse.data
+      const ref = await firebaseDatabase.ref('cards')
+        .orderByChild('_id')
+        .equalTo(id)
+        .limitToFirst(1)
+        .once('value')
+      const cards = ref.val()
+      return cards[Object.keys(cards)[0]]
+    } catch (e) {
+      return Promise.resolve(e)
+    }
+  }
+
+  public async getCardsBySet(set): Promise<MagicCard[]> {
+    try {
+      const ref = await firebaseDatabase.ref('cards')
+        .orderByChild('set')
+        .equalTo(set)
+        .limitToFirst(500)
+        .once('value')
+      const cards = ref.val()
+      return Object.keys(cards).map((key) => cards[key])
     } catch (e) {
       return Promise.resolve(e)
     }
@@ -23,8 +33,8 @@ class CardDatabaseService {
 
   public async getSets(): Promise<MagicSet[]> {
     try {
-      const cardsResponse = await axios.get('/api/card-database/get-sets')
-      return cardsResponse.data
+      const sets = await firebaseDatabase.ref('sets').once('value')
+      return sets.val()
     } catch (e) {
       return Promise.resolve(e)
     }
@@ -32,8 +42,8 @@ class CardDatabaseService {
 
   public async getTypes(): Promise<MagicSetType[]> {
     try {
-      const cardsResponse = await axios.get('/api/card-database/get-types')
-      return cardsResponse.data
+      const types = await firebaseDatabase.ref('types').once('value')
+      return types.val()
     } catch (e) {
       return Promise.resolve(e)
     }

@@ -20,8 +20,7 @@ export interface CardActions {
 export const cardActions = {
   getCard: ({ rootState, id }) => async (state: CardState, actions: CardActions) => {
     try {
-      const cards: MagicCard[] = await CardDatabaseService.getCards({ _id: id })
-      const card = cards[0]
+      const card: MagicCard = await CardDatabaseService.getCardById(id)
       actions.getCardsCommit(card)
       return card
     } catch (e) {

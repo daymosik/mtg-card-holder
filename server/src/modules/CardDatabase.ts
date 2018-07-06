@@ -87,4 +87,14 @@ export default class CardDatabase {
       return Promise.reject(e)
     }
   }
+
+  public async getSupertypes() {
+    try {
+      const collection = this.db.collection('supertypes')
+      const types = await collection.find({}).toArray()
+      return types.map((t) => t.name)
+    } catch (e) {
+      return Promise.reject(e)
+    }
+  }
 }

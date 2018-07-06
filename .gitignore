@@ -1,2 +1,3 @@
 node_modules/
 build/
+front/firebase.config.ts
