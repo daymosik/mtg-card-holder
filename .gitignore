@@ -1,3 +1,4 @@
 node_modules/
 build/
 firebase.config.ts
+firebase-debug.log

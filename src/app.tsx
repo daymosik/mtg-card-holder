@@ -1,6 +1,6 @@
 import 'bootstrap/scss/bootstrap.scss'
 import * as firebase from 'firebase'
-import { ActionsType, app, h, View } from 'hyperapp'
+import { ActionsType, app, h } from 'hyperapp'
 import { Link, location, Route } from 'hyperapp-hash-router'
 import { firebaseConfig } from '../firebase.config'
 
@@ -23,7 +23,6 @@ import SignupView, { initialSignupState, signupActions, SignupActions, SignupSta
 import NavigationView, { NavigationPath } from './navigation'
 
 export const firebaseApp = firebase.initializeApp(firebaseConfig)
-
 export const firebaseDatabase = firebase.database()
 
 firebase.auth().onAuthStateChanged((user) => {
@@ -99,16 +98,31 @@ const appActions: ActionsType<AppState, AppActions> = {
   card: cardActions,
 }
 
-const Home = () => <div></div>
+const Home = () => <div>Home</div>
 
-const view: View<AppState, AppActions> = (state, actions) => (
+const Unauthorized = () => <div>Unauthorized</div>
+
+const publicRoutes: string[] = [NavigationPath.Home, NavigationPath.Login, NavigationPath.Signup]
+const isPublicRoute = () => publicRoutes.indexOf(window.location.hash.replace('#', '')) > 0
+const isCurrentRoute = (path) => window.location.hash.includes(path)
+
+const ProtectedRoute = ({ path, render }) => (state: AppState, actions: AppActions) => {
+  if (isCurrentRoute(path)) {
+    return (state.auth.authorized || isPublicRoute())
+      ? <Route path={path} render={render(state, actions)}/>
+      : <Unauthorized/>
+  }
+  return null
+}
+
+const view = (state: AppState, actions: AppActions) => (
   <div>
     <NavigationView/>
     <Route path={NavigationPath.Home} render={Home}/>
     <Route path={NavigationPath.Login} render={LoginView(state, actions)}/>
     <Route path={NavigationPath.Signup} render={SignupView(state, actions)}/>
-    <Route path={NavigationPath.CardDatabase} render={CardDatabaseView(state, actions)}/>
-    <Route path={NavigationPath.CardCollection} render={CardCollectionView(state, actions)}/>
+    <ProtectedRoute path={NavigationPath.CardDatabase} render={CardDatabaseView}/>
+    <ProtectedRoute path={NavigationPath.CardCollection} render={CardCollectionView}/>
     <Route path={`/set/:code`} render={SetView(state, actions)}/>
     <Route path={`/card/:id`} render={CardView(state, actions)}/>
   </div>
