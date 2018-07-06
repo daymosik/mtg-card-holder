@@ -1,6 +1,6 @@
 import { h } from 'hyperapp'
 import { Link } from 'hyperapp-hash-router'
-import { AppState } from './app'
+import { AppActions, AppState } from './app'
 import LoginService from './services/login'
 
 export enum NavigationPath {
@@ -11,10 +11,27 @@ export enum NavigationPath {
   CardCollection = '/card-collection',
 }
 
-export const NavigationView = () => (state: AppState) => (
+export interface NavigationState {
+  mobileMenuOpen: boolean
+}
+
+export const initialNavigationState: NavigationState = {
+  mobileMenuOpen: false,
+}
+
+export interface NavigationActions {
+  toggleMobileMenu: () => (state: NavigationState) => NavigationState
+}
+
+export const navigationAgtions: NavigationActions = {
+  toggleMobileMenu: () => (state: NavigationState): NavigationState => (
+    { ...state, mobileMenuOpen: !state.mobileMenuOpen }
+  ),
+}
+
+export const NavigationView = () => (state: AppState, actions: AppActions) => (
   <nav class="navbar navbar-expand-lg navbar-light bg-light">
     <div class="container">
-
       <Link class="navbar-brand" to="/">
         MTG Card Holder
       </Link>
@@ -27,11 +44,15 @@ export const NavigationView = () => (state: AppState) => (
         aria-controls="navbarSupportedContent"
         aria-expanded="false"
         aria-label="Toggle navigation"
+        onclick={() => actions.nav.toggleMobileMenu()}
       >
         <span class="navbar-toggler-icon"/>
       </button>
 
-      <div class="collapse navbar-collapse pull-right" id="navbarSupportedContent">
+      <div
+        class={`collapse navbar-collapse pull-right ${state.nav.mobileMenuOpen ? 'show' : ''}`}
+        id="navbarSupportedContent"
+      >
         <ul class="navbar-nav mr-auto">
           <li class="nav-item">
             <Link class="nav-link" to={NavigationPath.Home}>Home</Link>
@@ -42,6 +63,8 @@ export const NavigationView = () => (state: AppState) => (
           <li class="nav-item">
             <Link class="nav-link" to={NavigationPath.CardCollection}>My Collection</Link>
           </li>
+        </ul>
+        <ul class="navbar-nav">
           {!state.auth.authorized &&
           <li class="nav-item">
             <Link class="nav-link" to={NavigationPath.Signup}>Signup</Link>
@@ -51,7 +74,7 @@ export const NavigationView = () => (state: AppState) => (
             <Link class="nav-link" to={NavigationPath.Login}>Login</Link>
           </li>}
           {state.auth.authorized &&
-          <li class="nav-item">
+          <li class="nav-item flex">
             <a class="nav-link" onclick={LoginService.logout}>Logout</a>
           </li>}
         </ul>

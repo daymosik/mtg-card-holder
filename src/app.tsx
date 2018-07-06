@@ -20,7 +20,9 @@ import SetView, {
 } from './modules/card-database/set'
 import LoginView, { initialLoginState, LoginActions, loginActions, LoginState } from './modules/login'
 import SignupView, { initialSignupState, signupActions, SignupActions, SignupState } from './modules/signup'
-import NavigationView, { NavigationPath } from './navigation'
+import NavigationView, {
+  initialNavigationState, NavigationActions, navigationAgtions, NavigationPath, NavigationState,
+} from './navigation'
 
 export const firebaseApp = firebase.initializeApp(firebaseConfig)
 export const firebaseDatabase = firebase.database()
@@ -61,6 +63,7 @@ const authActions: AuthActions = {
 export interface AppState {
   location: location.state
   auth: AuthState
+  nav: NavigationState
   login: LoginState
   signup: SignupState
   cardDatabase: CardDatabaseState
@@ -71,6 +74,7 @@ export interface AppState {
 const initialState: AppState = {
   location: location.state,
   auth: initialAuthState,
+  nav: initialNavigationState,
   login: initialLoginState,
   signup: initialSignupState,
   cardDatabase: initialCardDatabaseState,
@@ -81,6 +85,7 @@ const initialState: AppState = {
 export interface AppActions {
   location: location.actions
   auth: AuthActions,
+  nav: NavigationActions,
   login: LoginActions,
   signup: SignupActions
   cardDatabase: CardDatabaseActions,
@@ -91,6 +96,7 @@ export interface AppActions {
 const appActions: ActionsType<AppState, AppActions> = {
   location: location.actions,
   auth: authActions,
+  nav: navigationAgtions,
   login: loginActions,
   signup: signupActions,
   cardDatabase: cardDatabaseActions,

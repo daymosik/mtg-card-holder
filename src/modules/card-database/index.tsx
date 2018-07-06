@@ -4,6 +4,28 @@ import { MagicSet, MagicSetType } from '../../../types/magic'
 import { AppActions, AppState } from '../../app'
 import CardDatabaseService from '../../services/card-database'
 
+const setTypes: MagicSetType[] = [
+  MagicSetType.Core,
+  MagicSetType.Un,
+  MagicSetType.Promo,
+  MagicSetType.Starter,
+  MagicSetType.Planechase,
+  MagicSetType.Masters,
+  MagicSetType.Reprint,
+  MagicSetType.BoardGameDeck,
+  MagicSetType.FromTheVault,
+  MagicSetType.DuelDeck,
+  MagicSetType.Commander,
+  MagicSetType.Expansion,
+  MagicSetType.Box,
+  MagicSetType.PremiumDeck,
+  MagicSetType.Masterpiece,
+  MagicSetType.Conspiracy,
+  MagicSetType.Vanguard,
+  MagicSetType.TwoHeadedGiant,
+  MagicSetType.Archenemy,
+]
+
 export interface CardDatabaseState {
   sets: MagicSet[]
 }
@@ -57,31 +79,9 @@ const SetListItem = ({ set }: SetListItemProps) => (
   <tr>
     <th scope="row">1</th>
     <td><Link to={`/set/${set.code}`}>{set.name}</Link></td>
-    <td>{set.releaseDate}</td>
+    <td class="text-nowrap">{set.releaseDate}</td>
   </tr>
 )
-
-const setTypes: MagicSetType[] = [
-  MagicSetType.Core,
-  MagicSetType.Un,
-  MagicSetType.Promo,
-  MagicSetType.Starter,
-  MagicSetType.Planechase,
-  MagicSetType.Masters,
-  MagicSetType.Reprint,
-  MagicSetType.BoardGameDeck,
-  MagicSetType.FromTheVault,
-  MagicSetType.DuelDeck,
-  MagicSetType.Commander,
-  MagicSetType.Expansion,
-  MagicSetType.Box,
-  MagicSetType.PremiumDeck,
-  MagicSetType.Masterpiece,
-  MagicSetType.Conspiracy,
-  MagicSetType.Vanguard,
-  MagicSetType.TwoHeadedGiant,
-  MagicSetType.Archenemy,
-]
 
 export const CardDatabaseView = (state: AppState, actions: AppActions) => () => {
   const main = [MagicSetType.Core, MagicSetType.DuelDeck, MagicSetType.Expansion]
