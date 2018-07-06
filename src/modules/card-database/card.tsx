@@ -1,6 +1,7 @@
 import { h } from 'hyperapp'
 import { MagicCard } from '../../../types/magic'
 import { AppActions, AppState } from '../../app'
+import LoadingSpinner from '../../components/loading-spinner'
 import CardDatabaseService from '../../services/card-database'
 
 // TODO Maybe ?
@@ -43,6 +44,7 @@ const CardItem = ({ card }: CardItemProps) => (
 
 export const CardView = (state: AppState, actions: AppActions) => ({ match }) => (
   <div class="container" oncreate={() => actions.card.getCard({ rootState: state, id: match.params.id })}>
+    {!state.card.card && <LoadingSpinner/>}
     {state.card.card && <CardItem card={state.card.card}/>}
   </div>
 )

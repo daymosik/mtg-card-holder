@@ -21,11 +21,15 @@ export const initialNavigationState: NavigationState = {
 
 export interface NavigationActions {
   toggleMobileMenu: () => (state: NavigationState) => NavigationState
+  hideMobileMenu: () => (state: NavigationState) => NavigationState
 }
 
 export const navigationAgtions: NavigationActions = {
   toggleMobileMenu: () => (state: NavigationState): NavigationState => (
     { ...state, mobileMenuOpen: !state.mobileMenuOpen }
+  ),
+  hideMobileMenu: () => (state: NavigationState): NavigationState => (
+    { ...state, mobileMenuOpen: false }
   ),
 }
 
@@ -52,6 +56,7 @@ export const NavigationView = () => (state: AppState, actions: AppActions) => (
       <div
         class={`collapse navbar-collapse pull-right ${state.nav.mobileMenuOpen ? 'show' : ''}`}
         id="navbarSupportedContent"
+        onclick={() => actions.nav.hideMobileMenu()}
       >
         <ul class="navbar-nav mr-auto">
           <li class="nav-item">

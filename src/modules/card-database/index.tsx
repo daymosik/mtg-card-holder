@@ -2,6 +2,7 @@ import { h } from 'hyperapp'
 import { Link } from 'hyperapp-hash-router'
 import { MagicSet, MagicSetType } from '../../../types/magic'
 import { AppActions, AppState } from '../../app'
+import LoadingSpinner from '../../components/loading-spinner'
 import CardDatabaseService from '../../services/card-database'
 
 const setTypes: MagicSetType[] = [
@@ -93,9 +94,13 @@ export const CardDatabaseView = (state: AppState, actions: AppActions) => () => 
 
   return (
     <div class="container-fluid">
-      <h1>Card Database</h1>
+      <h3>Card Database</h3>
+
       <div oncreate={() => actions.cardDatabase.getSets()}>
 
+        {!state.cardDatabase.sets.length && <LoadingSpinner/>}
+
+        {state.cardDatabase.sets.length > 0 &&
         <div class="row d-flex flex-row">
           {main.map((type: MagicSetType) => (
             <div class="col-md-6 col-lg-4">
@@ -110,7 +115,7 @@ export const CardDatabaseView = (state: AppState, actions: AppActions) => () => 
               <SetListTable sets={getSetsByType(type)}/>
             </div>
           ))}
-        </div>
+        </div>}
 
       </div>
     </div>

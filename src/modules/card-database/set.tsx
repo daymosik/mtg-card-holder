@@ -2,6 +2,7 @@ import { h } from 'hyperapp'
 import { Link } from 'hyperapp-hash-router'
 import { MagicCard } from '../../../types/magic'
 import { AppActions, AppState } from '../../app'
+import LoadingSpinner from '../../components/loading-spinner'
 import CardDatabaseService from '../../services/card-database'
 
 export interface CardSetState {
@@ -63,7 +64,8 @@ const CardListItem = ({ card }: CardListItemProps) => (
 
 export const SetView = (state: AppState, actions: AppActions) => ({ match }) => (
   <div oncreate={() => actions.cardSet.getCards(match.params.code)}>
-    <CardListTable cards={state.cardSet.cards}/>
+    {!state.cardSet.cards.length && <LoadingSpinner/>}
+    {state.cardSet.cards.length > 0 && <CardListTable cards={state.cardSet.cards}/>}
   </div>
 )
 

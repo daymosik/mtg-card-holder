@@ -4,6 +4,8 @@ import { ActionsType, app, h } from 'hyperapp'
 import { Link, location, Route } from 'hyperapp-hash-router'
 import { firebaseConfig } from '../firebase.config'
 
+import './assets/styles/app.scss'
+
 import CardCollectionView from './modules/card-collection'
 import CardDatabaseView, {
   cardDatabaseActions,
@@ -21,7 +23,11 @@ import SetView, {
 import LoginView, { initialLoginState, LoginActions, loginActions, LoginState } from './modules/login'
 import SignupView, { initialSignupState, signupActions, SignupActions, SignupState } from './modules/signup'
 import NavigationView, {
-  initialNavigationState, NavigationActions, navigationAgtions, NavigationPath, NavigationState,
+  initialNavigationState,
+  NavigationActions,
+  navigationAgtions,
+  NavigationPath,
+  NavigationState,
 } from './navigation'
 
 export const firebaseApp = firebase.initializeApp(firebaseConfig)
