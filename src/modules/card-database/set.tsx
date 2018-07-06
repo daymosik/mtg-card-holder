@@ -1,6 +1,6 @@
 import { h } from 'hyperapp'
 import { Link } from 'hyperapp-hash-router'
-import { MagicCard } from '../../../../server/src/modules/CardDatabase'
+import { MagicCard } from '../../../types/magic'
 import { AppActions, AppState } from '../../app'
 import CardDatabaseService from '../../services/card-database'
 

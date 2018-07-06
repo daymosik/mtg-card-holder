@@ -1,5 +1,4 @@
-import { MagicCard, MagicSet } from '../../../server/src/modules/CardDatabase'
-import { MagicSetType } from '../../../types/magic'
+import { MagicCard, MagicSet, MagicSetType } from '../../types/magic'
 import { firebaseDatabase } from '../app'
 
 class CardDatabaseService {

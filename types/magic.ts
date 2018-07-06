@@ -32,3 +32,48 @@ export enum MagicSetType {
   TwoHeadedGiant = 'Two-Headed Giant',
   Archenemy = 'archenemy',
 }
+
+export interface MagicSet {
+  _id: string
+  code: string
+  name: string
+  type: MagicSetType
+  border: string
+  releaseDate: string
+  magicCardsInfoCode: string
+}
+
+export interface MagicCard {
+  name: string
+  manaCost: string,
+  cmc: number,
+  colors: MagicCardColors[],
+  colorIdentity: string[],
+  type: string,
+  supertypes?: string[],
+  types: string[],
+  subtypes: string[],
+  rarity: MagicCardRarity,
+  set: string,
+  setName: string,
+  text: string,
+  flavor?: string,
+  artist: string,
+  number: string,
+  power: string,
+  toughness: string,
+  loyalty?: string
+  layout: string,
+  multiverseid: number,
+  imageUrl: string,
+  watermark?: string,
+  rulings: [{
+    date: string,
+    text: string,
+  }],
+  printings: string[],
+  originalText: string,
+  originalType: string,
+  legalities: [{ format: string, legality: string }],
+  _id: string
+}

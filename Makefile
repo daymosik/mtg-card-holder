@@ -1,11 +1,25 @@
 SHELL=/bin/bash
 export PATH := node_modules/.bin:$(PATH)
 
-run: build
-	cd server && make deploy
+build: node_modules/INSTALLED $(shell find src -type f)
+	tslint -p . -t codeFrame
+	webpack
+	touch $@
 
-build:
-	cd server && make build
-	cd front && make build
+watch:
+	webpack --watch
 
-.PHONY: run build
+clean:
+	rm -rf build
+
+deploy:
+	firebase deploy
+
+run:
+	firebase serve
+
+node_modules/INSTALLED: package.json
+	yarn install
+	touch $@
+
+.PHONY: run deploy build watch clean

@@ -1,5 +1,5 @@
 import { h } from 'hyperapp'
-import { MagicCard } from '../../../../server/src/modules/CardDatabase'
+import { MagicCard } from '../../../types/magic'
 import { AppActions, AppState } from '../../app'
 import CardDatabaseService from '../../services/card-database'
 
