@@ -6,7 +6,6 @@ const UglifyJsPlugin = require('uglifyjs-webpack-plugin')
 module.exports = {
   mode: process.env.NODE_ENV,
   entry: [
-    'bootstrap-loader',
     './src/app.tsx',
   ],
   devtool: 'inline-source-map',

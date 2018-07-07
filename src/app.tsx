@@ -1,4 +1,3 @@
-import 'bootstrap/scss/bootstrap.scss'
 import * as firebase from 'firebase'
 import { ActionsType, app, h } from 'hyperapp'
 import { Link, location, Route } from 'hyperapp-hash-router'
