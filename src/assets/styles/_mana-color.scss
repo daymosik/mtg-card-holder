@@ -1,0 +1,83 @@
+.manaColor {
+  display: inline-block;
+  text-align: center;
+  background-color: lightgrey;
+  border-radius: 50%;
+  margin-right: 5px;
+
+  &.size-20 {
+    width: 20px;
+    height: 20px;
+    line-height: 20px;
+
+
+    &.black {
+      background-image: url("../images/colors/20/colors.png");
+      background-position: 60px
+    }
+    &.white {
+      background-image: url("../images/colors/20/colors.png");
+    }
+    &.blue {
+      background-image: url("../images/colors/20/colors.png");
+      background-position: 80px
+    }
+    &.red {
+      background-image: url("../images/colors/20/colors.png");
+      background-position: 40px
+    }
+    &.green {
+      background-image: url("../images/colors/20/colors.png");
+      background-position: 20px;
+    }
+  }
+
+  &.size-110 {
+    width: 20px;
+    height: 20px;
+    line-height: 20px;
+
+
+    &.black {
+      background-image: url("../images/colors/110/colors.png");
+      background-position: 330px
+    }
+    &.white {
+      background-image: url("../images/colors/110/colors.png");
+    }
+    &.blue {
+      background-image: url("../images/colors/110/colors.png");
+      background-position: 440px
+    }
+    &.red {
+      background-image: url("../images/colors/110/colors.png");
+      background-position: 220px
+    }
+    &.green {
+      background-image: url("../images/colors/110/colors.png");
+      background-position: 110px;
+    }
+  }
+
+  &.size-30 {
+    width: 30px;
+    height: 30px;
+    line-height: 30px;
+
+    &.black {
+      background-image: url("../images/colors/30/black.png");
+    }
+    &.white {
+      background-image: url("../images/colors/30/white.png");
+    }
+    &.blue {
+      background-image: url("../images/colors/30/blue.png");
+    }
+    &.red {
+      background-image: url("../images/colors/30/red.png");
+    }
+    &.green {
+      background-image: url("../images/colors/30/green.png");
+    }
+  }
+}

@@ -63,7 +63,7 @@ const SetListTable = ({ sets }: SetListTableProps) => (
       <tr>
         <th scope="col">#</th>
         <th scope="col">Name</th>
-        <th scope="col">Release date</th>
+        <th scope="col" class="text-right">Release date</th>
       </tr>
     </thead>
     <tbody>
@@ -80,7 +80,7 @@ const SetListItem = ({ set }: SetListItemProps) => (
   <tr>
     <th scope="row">1</th>
     <td><Link to={`/set/${set.code}`}>{set.name}</Link></td>
-    <td class="text-nowrap">{set.releaseDate}</td>
+    <td class="text-nowrap text-right">{set.releaseDate}</td>
   </tr>
 )
 

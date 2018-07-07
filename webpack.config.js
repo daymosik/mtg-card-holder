@@ -25,14 +25,14 @@ module.exports = {
           fallback: 'style-loader',
           use: 'css-loader',
         })
-      },
-      {
+      }, {
         test: /\.scss$/,
         use: ExtractTextPlugin.extract({
           fallback: 'style-loader',
           use: ['css-loader', 'sass-loader']
         })
       },
+      { test: /\.png$/, loader: 'file-loader'},
     ]
   },
   externals: [{

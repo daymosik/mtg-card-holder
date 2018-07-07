@@ -2,6 +2,7 @@ import { h } from 'hyperapp'
 import { Link } from 'hyperapp-hash-router'
 import { MagicCard } from '../../../types/magic'
 import { AppActions, AppState } from '../../app'
+import ManaCostView from '../../components/card/mana-cost'
 import LoadingSpinner from '../../components/loading-spinner'
 import CardDatabaseService from '../../services/card-database'
 
@@ -42,23 +43,26 @@ const CardListTable = ({ cards }: CardListTableProps) => (
         <th scope="col">#</th>
         <th scope="col">Name</th>
         <th scope="col">Type</th>
+        <th></th>
       </tr>
     </thead>
     <tbody>
-      {cards && cards.map((card) => <CardListItem card={card}/>)}
+      {cards && cards.map((card, key) => <CardListItem key={key} card={card}/>)}
     </tbody>
   </table>
 )
 
 interface CardListItemProps {
   card: MagicCard
+  key: number
 }
 
-const CardListItem = ({ card }: CardListItemProps) => (
+const CardListItem = ({ card, key }: CardListItemProps) => (
   <tr>
-    <th scope="row">1</th>
+    <th scope="row">{key}</th>
     <td><Link to={`/card/${card._id}`}>{card.name}</Link></td>
     <td>{card.type}</td>
+    <td class="text-right">{ManaCostView(card.manaCost)}</td>
   </tr>
 )
 
