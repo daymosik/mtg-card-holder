@@ -8,7 +8,7 @@ const colorsMap = {
   R: 'red',
 }
 
-const parseManaCost = (manaCost) => {
+const parseManaCost = (manaCost): string[] => {
   const colors = manaCost.split('}')
   colors.pop()
   return colors.map((color) => color.replace('{', ''))

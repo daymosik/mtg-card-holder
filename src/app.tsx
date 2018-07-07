@@ -6,7 +6,15 @@ import { firebaseConfig } from '../firebase.config'
 import './assets/styles/app.scss'
 import ProtectedRoute from './components/protected-route'
 
-import CardCollectionView from './modules/card-collection'
+import CardCollectionView, {
+  cardCollectionActions,
+  CardCollectionActions, CardCollectionState,
+  initialCardCollectionState
+} from './modules/card-collection'
+import {
+  addCardFormActions, AddCardFormActions, AddCardFormState,
+  initialAddCardFormState
+} from './modules/card-collection/add-card-form'
 import CardDatabaseView, {
   cardDatabaseActions,
   CardDatabaseActions,
@@ -68,6 +76,8 @@ export interface AppState {
   cardDatabase: CardDatabaseState
   cardSet: CardSetState,
   card: CardState,
+  cardForm: AddCardFormState,
+  cardCollection: CardCollectionState,
 }
 
 const initialState: AppState = {
@@ -79,6 +89,8 @@ const initialState: AppState = {
   cardDatabase: initialCardDatabaseState,
   cardSet: initialCardSetState,
   card: initialCardState,
+  cardForm: initialAddCardFormState,
+  cardCollection: initialCardCollectionState,
 }
 
 export interface AppActions {
@@ -90,6 +102,8 @@ export interface AppActions {
   cardDatabase: CardDatabaseActions,
   cardSet: CardSetActions,
   card: CardActions,
+  cardForm: AddCardFormActions,
+  cardCollection: CardCollectionActions,
 }
 
 const appActions: ActionsType<AppState, AppActions> = {
@@ -101,9 +115,11 @@ const appActions: ActionsType<AppState, AppActions> = {
   cardDatabase: cardDatabaseActions,
   cardSet: cardSetActions,
   card: cardActions,
+  cardForm: addCardFormActions,
+  cardCollection: cardCollectionActions,
 }
 
-const Home = () => <div>Home</div>
+const Home = () => <div class="container">Home</div>
 
 const view = (state: AppState, actions: AppActions) => (
   <div>
