@@ -76,7 +76,7 @@ interface CardListItemProps {
 const CardListItem = ({ card, key }: CardListItemProps) => (
   <tr>
     <th scope="row">{key}</th>
-    <td><Link to={`/card/${card.additionalInfo._id}`}>{card.additionalInfo.name}</Link></td>
+    <td><Link to={`/card/${card.additionalInfo.id}`}>{card.additionalInfo.name}</Link></td>
     <td>{card.additionalInfo.type}</td>
     <td class="text-right">{ManaCostView(card.additionalInfo.manaCost)}</td>
   </tr>

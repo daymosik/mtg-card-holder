@@ -1,5 +1,5 @@
 import { h } from 'hyperapp'
-import { MagicCard } from '../../../types/magic'
+import { MagicCard, MagicCardMoreInfo } from '../../../types/magic'
 import { AppActions, AppState } from '../../app'
 import LoadingSpinner from '../../components/loading-spinner'
 import CardDatabaseService from '../../services/card-database'
@@ -7,10 +7,12 @@ import CardDatabaseService from '../../services/card-database'
 // TODO Maybe ?
 export interface CardState {
   card: MagicCard | null
+  moreInfo: MagicCardMoreInfo | null
 }
 
 export const initialCardState = {
   card: null,
+  moreInfo: null,
 }
 
 export interface CardActions {
@@ -22,13 +24,14 @@ export const cardActions = {
   getCard: ({ rootState, id }) => async (state: CardState, actions: CardActions) => {
     try {
       const card: MagicCard = await CardDatabaseService.getCardById(id)
-      actions.getCardsCommit(card)
+      const moreInfo: MagicCardMoreInfo = await CardDatabaseService.getCardMoreInfo(id)
+      actions.getCardsCommit({card, moreInfo})
       return card
     } catch (e) {
       console.log(e)
     }
   },
-  getCardsCommit: (card: MagicCard) => (state: CardState): CardState => ({ ...state, card }),
+  getCardsCommit: ({card, moreInfo}) => (state: CardState): CardState => ({ ...state, card, moreInfo }),
 }
 
 interface CardItemProps {

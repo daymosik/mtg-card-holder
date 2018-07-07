@@ -1,17 +1,12 @@
-import { MagicCard, MagicSet, MagicSetType } from '../../types/magic'
+import { MagicCard, MagicCardMoreInfo, MagicSet, MagicSetType } from '../../types/magic'
 import { firebaseDatabase } from '../app'
 import { UserMagicCard } from '../modules/card-collection'
 
 class CardDatabaseService {
   public async getCardById(id: string): Promise<MagicCard> {
     try {
-      const ref = await firebaseDatabase.ref('cards')
-        .orderByChild('_id')
-        .equalTo(id)
-        .limitToFirst(1)
-        .once('value')
-      const cards = ref.val()
-      return cards[Object.keys(cards)[0]]
+      const ref = await firebaseDatabase.ref(`cards/${id}`).once('value')
+      return ref.val()
     } catch (e) {
       return Promise.resolve(e)
     }
@@ -31,26 +26,28 @@ class CardDatabaseService {
     }
   }
 
+  public async getCardMoreInfo(id: string): Promise<MagicCardMoreInfo> {
+    try {
+      const ref = await firebaseDatabase.ref(`cards-more-info/${id}`).once('value')
+      return ref.val()
+    } catch (e) {
+      return Promise.resolve(e)
+    }
+  }
+
   public async getUserCards(userId): Promise<UserMagicCard[]> {
     try {
-      const ref = await firebaseDatabase.ref(`user-cards/${userId}`)
-        .orderByKey()
-        .limitToFirst(50)
-        .once('value')
+      const ref = await firebaseDatabase.ref(`user-cards/${userId}`).once('value')
       const cards = ref.val()
-      const cleanCards = Object.keys(cards).map(async (key) => {
-        const card: UserMagicCard = cards[key]
-        const ref2 = await firebaseDatabase.ref('cards')
-          .orderByChild('name')
-          .equalTo(card.name)
-          .limitToFirst(1)
-          .once('value')
+      const clean = Object.keys(cards).map((key) => cards[key])
+
+      const userCardsPromise = await clean.map(async (card) => {
+        const ref2 = await firebaseDatabase.ref(`cards/${card.id}`).once('value')
         const additionalInfo = ref2.val()
-        const cleanAdditionalInfo = additionalInfo[Object.keys(additionalInfo)[0]]
-        return {...card, additionalInfo: cleanAdditionalInfo}
+        return { ...card, additionalInfo }
       })
-      const ret = await Promise.all(cleanCards)
-      return ret
+      const userCards = await Promise.all(userCardsPromise)
+      return userCards
     } catch (e) {
       return Promise.resolve(e)
     }

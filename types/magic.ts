@@ -44,28 +44,32 @@ export interface MagicSet {
 }
 
 export interface MagicCard {
+  id: string
   name: string
   manaCost: string,
-  cmc: number,
   colors: MagicCardColors[],
-  colorIdentity: string[],
+  imageUrl: string,
+  rarity: MagicCardRarity,
+  set: string,
+  number: string,
+  power: string,
+  toughness: string,
   type: string,
+}
+
+export interface MagicCardMoreInfo {
+  cmc: number,
+  colorIdentity: string[],
   supertypes?: string[],
   types: string[],
   subtypes: string[],
-  rarity: MagicCardRarity,
-  set: string,
   setName: string,
   text: string,
   flavor?: string,
   artist: string,
-  number: string,
-  power: string,
-  toughness: string,
   loyalty?: string
   layout: string,
   multiverseid: number,
-  imageUrl: string,
   watermark?: string,
   rulings: [{
     date: string,
@@ -75,5 +79,4 @@ export interface MagicCard {
   originalText: string,
   originalType: string,
   legalities: [{ format: string, legality: string }],
-  _id: string
 }
