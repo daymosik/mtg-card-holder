@@ -18,13 +18,14 @@ export const initialSignupState: SignupState = {
 
 export interface SignupActions {
   handleInputChange: (object) => (state: SignupState) => SignupState
-  submitForm: () => void
+  submitForm: (event: Event) => (state: SignupState, actions: SignupActions) => void
   handleSubmitError: (message: string) => (state: SignupState) => SignupState
 }
 
 export const signupActions: SignupActions = {
   handleInputChange: (object) => (state: SignupState): SignupState => ({ ...state, ...object }),
-  submitForm: () => async (state: SignupState, actions: SignupActions) => {
+  submitForm: (event: Event) => async (state: SignupState, actions: SignupActions) => {
+    event.preventDefault()
     try {
       await RegistrationService.register(state.email, state.password)
     } catch (e) {
@@ -37,7 +38,7 @@ export const signupActions: SignupActions = {
 export const SignupView = (state: AppState, actions: AppActions) => () => (
   <div class="container pt-5">
     <div class="jumbotron">
-      <form action="/">
+      <form action="/" onsubmit={actions.signup.submitForm}>
         <h2>Register</h2>
 
         {state.signup.errorMessage && <p className="error-message">{state.signup.errorMessage}</p>}
@@ -62,7 +63,7 @@ export const SignupView = (state: AppState, actions: AppActions) => () => (
           />
         </div>
 
-        <button class="btn btn-primary" type="button" onclick={actions.signup.submitForm}>
+        <button class="btn btn-primary" type="submit">
           Register
         </button>
 

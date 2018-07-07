@@ -18,13 +18,14 @@ export const initialLoginState: LoginState = {
 
 export interface LoginActions {
   handleInputChange: (object) => (state: LoginState) => LoginState
-  submitForm: () => void
+  submitForm: (event: Event) => (state: LoginState, actions: LoginActions) => void
   handleSubmitError: (message: string) => (state: LoginState) => LoginState
 }
 
 export const loginActions: LoginActions = {
   handleInputChange: (object) => (state: LoginState): LoginState => ({ ...state, ...object }),
-  submitForm: () => async (state: LoginState, actions: LoginActions) => {
+  submitForm: (event: Event) => async (state: LoginState, actions: LoginActions) => {
+    event.preventDefault()
     try {
       await LoginService.login(state.email, state.password)
     } catch (e) {
@@ -37,7 +38,7 @@ export const loginActions: LoginActions = {
 export const LoginView = (state: AppState, actions: AppActions) => () => (
   <div class="container pt-5">
     <div class="jumbotron">
-      <form action="/">
+      <form action="/" onsubmit={actions.login.submitForm}>
         <h2>Login</h2>
 
         {state.login.errorMessage && <p className="error-message">{state.login.errorMessage}</p>}
@@ -62,7 +63,7 @@ export const LoginView = (state: AppState, actions: AppActions) => () => (
           />
         </div>
 
-        <button class="btn btn-primary" type="button" onclick={actions.login.submitForm}>
+        <button class="btn btn-primary" type="submit">
           Log In
         </button>
 
