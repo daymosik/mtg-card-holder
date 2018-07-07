@@ -1,4 +1,48 @@
 @import "../../../node_modules/bootstrap/scss/bootstrap.scss";
-
 @import "loading-spinner";
 @import "mana-color";
+
+html {
+  min-height: 100%;
+  position: relative;
+}
+
+body {
+  background: url("../images/bg.jpg") repeat;
+  color: #FFF;
+  padding-top: 70px;
+  padding-bottom: 60px;
+}
+
+.navbar {
+  background-color: #000;
+  width: 100%;
+  position: fixed;
+  top: 0px;
+  z-index: 999;
+}
+
+.navbar-brand {
+  display: inline-block;
+  background: url("../images/magic-the-gathering-logo.png") top center no-repeat #000;
+  height: 40px;
+  width: 139px;
+}
+
+footer {
+  position: absolute;
+  bottom: 0px;
+  background: #191919;
+  width: 100%;
+  min-height: 50px;
+  z-index: 999;
+  box-shadow: inset 0px 2px 4px #000;
+}
+
+a {
+  color: #acacac;
+
+  &:hover {
+    color: #acacac;
+  }
+}

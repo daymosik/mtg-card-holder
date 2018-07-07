@@ -37,41 +37,39 @@ export const loginActions: LoginActions = {
 
 export const LoginView = (state: AppState, actions: AppActions) => () => (
   <div class="container pt-5">
-    <div class="jumbotron">
-      <form action="/" onsubmit={actions.login.submitForm}>
-        <h2>Login</h2>
+    <form action="/" onsubmit={actions.login.submitForm}>
+      <h2>Login</h2>
 
-        {state.login.errorMessage && <p className="error-message">{state.login.errorMessage}</p>}
+      {state.login.errorMessage && <p className="error-message">{state.login.errorMessage}</p>}
 
-        <div class="form-group">
-          <label for="exampleInputEmail1">Email address</label>
-          <input
-            type="text"
-            name="email"
-            class="form-control"
-            onkeyup={(event) => actions.login.handleInputChange({ email: event.target.value })}
-          />
-        </div>
+      <div class="form-group">
+        <label for="exampleInputEmail1">Email address</label>
+        <input
+          type="text"
+          name="email"
+          class="form-control"
+          onkeyup={(event) => actions.login.handleInputChange({ email: event.target.value })}
+        />
+      </div>
 
-        <div class="form-group">
-          <label for="exampleInputEmail1">Password</label>
-          <input
-            type="password"
-            name="password"
-            class="form-control"
-            onkeyup={(event) => actions.login.handleInputChange({ password: event.target.value })}
-          />
-        </div>
+      <div class="form-group">
+        <label for="exampleInputEmail1">Password</label>
+        <input
+          type="password"
+          name="password"
+          class="form-control"
+          onkeyup={(event) => actions.login.handleInputChange({ password: event.target.value })}
+        />
+      </div>
 
-        <button class="btn btn-primary" type="submit">
-          Log In
-        </button>
+      <button class="btn btn-primary" type="submit">
+        Log In
+      </button>
 
-        <div>
-          Don't have an account? <Link to={NavigationPath.Signup}>Create one</Link>.
-        </div>
-      </form>
-    </div>
+      <div>
+        Don't have an account? <Link to={NavigationPath.Signup}>Create one</Link>.
+      </div>
+    </form>
   </div>
 )
 

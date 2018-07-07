@@ -5,14 +5,18 @@ import { firebaseConfig } from '../firebase.config'
 
 import './assets/styles/app.scss'
 import ProtectedRoute from './components/protected-route'
+import FooterView from './footer'
 
 import CardCollectionView, {
   cardCollectionActions,
-  CardCollectionActions, CardCollectionState,
+  CardCollectionActions,
+  CardCollectionState,
   initialCardCollectionState
 } from './modules/card-collection'
 import {
-  addCardFormActions, AddCardFormActions, AddCardFormState,
+  addCardFormActions,
+  AddCardFormActions,
+  AddCardFormState,
   initialAddCardFormState
 } from './modules/card-collection/add-card-form'
 import CardDatabaseView, {
@@ -122,7 +126,7 @@ const appActions: ActionsType<AppState, AppActions> = {
 const Home = () => <div class="container">Home</div>
 
 const view = (state: AppState, actions: AppActions) => (
-  <div>
+  <div class="wrapper">
     <NavigationView/>
     <Route path={NavigationPath.Home} render={Home}/>
     <Route path={NavigationPath.Login} render={LoginView(state, actions)}/>
@@ -131,6 +135,7 @@ const view = (state: AppState, actions: AppActions) => (
     <ProtectedRoute path={NavigationPath.CardCollection} render={CardCollectionView}/>
     <Route path={`/set/:code`} render={SetView(state, actions)}/>
     <Route path={`/card/:id`} render={CardView(state, actions)}/>
+    <FooterView/>
   </div>
 )
 

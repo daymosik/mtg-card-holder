@@ -53,7 +53,7 @@ interface CardListTableProps {
 }
 
 const CardListTable = ({ cards }: CardListTableProps) => (
-  <table class="table table-light">
+  <table class="table table-dark bg-transparent">
     <thead>
       <tr>
         <th scope="col">#</th>
@@ -83,9 +83,8 @@ const CardListItem = ({ card, key }: CardListItemProps) => (
 )
 
 export const CardCollectionView = (state: AppState, actions: AppActions) => () => (
-  <div>
-    <h1>Card Collection</h1>
-    <AddCardForm/>
+  <div class="container">
+    {/*<AddCardForm/>*/}
     <div oncreate={() => actions.cardCollection.getCards()}>
       {!state.cardCollection.cards.length && <LoadingSpinner/>}
       {state.cardCollection.cards.length > 0 && <CardListTable cards={state.cardCollection.cards}/>}

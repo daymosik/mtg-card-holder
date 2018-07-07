@@ -37,7 +37,7 @@ interface CardListTableProps {
 }
 
 const CardListTable = ({ cards }: CardListTableProps) => (
-  <table class="table table-light">
+  <table class="table table-dark bg-transparent">
     <thead>
       <tr>
         <th scope="col">#</th>

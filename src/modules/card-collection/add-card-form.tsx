@@ -21,11 +21,9 @@ export const addCardFormActions = {
 
 export const AddCardForm = () => (state: AppState, actions: AppActions) => {
   return (
-    <div class="jumbotron" >
-      <form>
-        <input type="text" class="form-control"/>
-      </form>
-    </div>
+    <form>
+      <input type="text" class="form-control"/>
+    </form>
   )
 }
 

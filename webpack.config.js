@@ -32,7 +32,7 @@ module.exports = {
           use: ['css-loader', 'sass-loader']
         })
       },
-      { test: /\.png$/, loader: 'file-loader'},
+      { test: /\.(png|jpg)$/, loader: 'file-loader'},
     ]
   },
   externals: [{

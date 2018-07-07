@@ -2,7 +2,11 @@ import { h } from 'hyperapp'
 import { Route } from 'hyperapp-hash-router'
 import { AppActions, AppState } from '../app'
 
-const Unauthorized = () => <div>Unauthorized</div>
+const Unauthorized = () => (
+  <div class="container">
+    <h2 class="text-center">Unauthorized</h2>
+  </div>
+)
 
 const isCurrentRoute = (path) => window.location.hash.includes(path)
 

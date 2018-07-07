@@ -58,7 +58,7 @@ interface SetListTableProps {
 }
 
 const SetListTable = ({ sets }: SetListTableProps) => (
-  <table class="table table-light table-sm">
+  <table class="table table-dark bg-transparent table-sm">
     <thead>
       <tr>
         <th scope="col">#</th>
@@ -93,7 +93,7 @@ export const CardDatabaseView = (state: AppState, actions: AppActions) => () => 
     .sort((a, b) => a.releaseDate > b.releaseDate ? -1 : 1)
 
   return (
-    <div class="container-fluid">
+    <div class="container">
       <h3>Card Database</h3>
 
       <div oncreate={() => actions.cardDatabase.getSets()}>

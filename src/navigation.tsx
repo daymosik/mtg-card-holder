@@ -34,12 +34,8 @@ export const navigationAgtions: NavigationActions = {
 }
 
 export const NavigationView = () => (state: AppState, actions: AppActions) => (
-  <nav class="navbar navbar-expand-lg navbar-light bg-light">
+  <nav class="navbar navbar-expand-lg navbar-dark">
     <div class="container">
-      <Link class="navbar-brand" to="/">
-        MTG Card Holder
-      </Link>
-
       <button
         class="navbar-toggler"
         type="button"
@@ -52,6 +48,8 @@ export const NavigationView = () => (state: AppState, actions: AppActions) => (
       >
         <span class="navbar-toggler-icon"/>
       </button>
+
+      <Link class="navbar-brand" to="/" alt="MTG Card Holder"></Link>
 
       <div
         class={`collapse navbar-collapse pull-right ${state.nav.mobileMenuOpen ? 'show' : ''}`}
