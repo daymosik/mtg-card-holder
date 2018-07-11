@@ -14,6 +14,7 @@ class LoginService {
   public logout = async () => {
     try {
       firebase.auth().signOut()
+      window.location.reload()
       // tslint:disable-next-line:no-empty
     } catch (e) {
     }

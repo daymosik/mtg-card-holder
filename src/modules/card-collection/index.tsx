@@ -10,49 +10,56 @@ import LoadingSpinner from '../../components/loading-spinner'
 import CardDatabaseService from '../../services/card-database'
 import AddCardForm from './add-card-form'
 
-export interface UserMagicCard {
-  count: number,
-  name: string,
-  edition: string,
-  additionalInfo: MagicCard
+export interface UserMagicCard extends MagicCard {
+  count: number
+}
+
+export interface UserMagicCardCollection {
+  [id: string]: UserMagicCard,
 }
 
 export interface CardCollectionState {
-  cards: UserMagicCard[]
+  cards: UserMagicCardCollection
 }
 
 export const initialCardCollectionState: CardCollectionState = {
-  cards: [],
+  cards: {},
 }
 
 export interface CardCollectionActions {
-  getCards: () => (state: CardCollectionState, actions: CardCollectionActions) => Promise<UserMagicCard[]>
-  getCardsCommit: (cards: UserMagicCard[]) => (state: CardCollectionState) => CardCollectionState
+  getCards: () => (state: CardCollectionState, actions: CardCollectionActions) => void
+  updateCardsList: (card: UserMagicCard) => (state: CardCollectionState) => CardCollectionState
+  removeCardFromCollection: (card: UserMagicCard) => (state: CardCollectionState) => Promise<MagicCard>
 }
 
+let USER_CARD_SUBSCRIBER
+
 export const cardCollectionActions: CardCollectionActions = {
-  getCards: () => async (state: CardCollectionState, actions: CardCollectionActions): Promise<UserMagicCard[]> => {
+  getCards: () => (state: CardCollectionState, actions: CardCollectionActions): void => {
     const user = auth().currentUser
-    if (!user) {
-      return []
-    }
-    try {
-      const cards = await CardDatabaseService.getUserCards(user.uid)
-      actions.getCardsCommit(cards)
-      return cards
-    } catch (e) {
-      console.log(e)
-      return e
+    if (user) {
+      if (!USER_CARD_SUBSCRIBER) {
+        USER_CARD_SUBSCRIBER = CardDatabaseService.userCardsSubscriber(user.uid)
+          .subscribe((value) => actions.updateCardsList(value))
+      }
     }
   },
-  getCardsCommit: (cards) => (state) => ({ ...state, cards }),
+  updateCardsList: (card: UserMagicCard) => (state: CardCollectionState): CardCollectionState => ({
+    ...state,
+    cards: {
+      ...state.cards,
+      [card.id]: card,
+    },
+  }),
+  removeCardFromCollection: (card: MagicCard) => async () => CardDatabaseService.removeCardFromCollection(card),
 }
 
 interface CardListTableProps {
-  cards: UserMagicCard[]
+  cards: UserMagicCardCollection
+  removeCard: any
 }
 
-const CardListTable = ({ cards }: CardListTableProps) => (
+const CardListTable = ({ cards, removeCard }: CardListTableProps) => (
   <table class="table table-dark bg-transparent">
     <thead>
       <tr>
@@ -60,10 +67,15 @@ const CardListTable = ({ cards }: CardListTableProps) => (
         <th scope="col">Name</th>
         <th scope="col">Type</th>
         <th></th>
+        <th scope="col" class="text-center">Count</th>
+        <th></th>
       </tr>
     </thead>
     <tbody>
-      {cards && cards.map((card, key) => <CardListItem key={key} card={card}/>)}
+      {cards && Object.keys(cards).map((key, iterator) => {
+        const card = cards[key]
+        return card.count > 0 && <CardListItem key={iterator} card={card} removeCard={removeCard}/>
+      })}
     </tbody>
   </table>
 )
@@ -71,23 +83,32 @@ const CardListTable = ({ cards }: CardListTableProps) => (
 interface CardListItemProps {
   card: UserMagicCard
   key: number
+  removeCard: any
 }
 
-const CardListItem = ({ card, key }: CardListItemProps) => (
+const CardListItem = ({ card, key, removeCard }: CardListItemProps) => (
   <tr>
     <th scope="row">{key}</th>
-    <td><Link to={`/card/${card.additionalInfo.id}`}>{card.additionalInfo.name}</Link></td>
-    <td>{card.additionalInfo.type}</td>
-    <td class="text-right">{ManaCostView(card.additionalInfo.manaCost)}</td>
+    <td><Link to={`/card/${card.id}`}>{card.name}</Link></td>
+    <td>{card.type}</td>
+    <td class="text-right">{ManaCostView(card.manaCost)}</td>
+    <td class="text-center">{card.count}</td>
+    <th>
+      <button class="btn btn-danger" onclick={() => removeCard(card)}>X</button>
+    </th>
   </tr>
 )
 
+const notEmpty = (ob): boolean => Object.keys(ob).some((prop) => !!prop)
+
 export const CardCollectionView = (state: AppState, actions: AppActions) => () => (
   <div class="container">
-    {/*<AddCardForm/>*/}
+    <AddCardForm/>
+    <br/>
     <div oncreate={() => actions.cardCollection.getCards()}>
-      {!state.cardCollection.cards.length && <LoadingSpinner/>}
-      {state.cardCollection.cards.length > 0 && <CardListTable cards={state.cardCollection.cards}/>}
+      {!notEmpty(state.cardCollection.cards) && <LoadingSpinner/>}
+      {notEmpty(state.cardCollection.cards) &&
+      <CardListTable cards={state.cardCollection.cards} removeCard={actions.cardCollection.removeCardFromCollection}/>}
     </div>
   </div>
 )
