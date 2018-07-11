@@ -28,6 +28,7 @@ export const loginActions: LoginActions = {
     event.preventDefault()
     try {
       await LoginService.login(state.email, state.password)
+      window.location.hash = '/'
     } catch (e) {
       actions.handleSubmitError(e.message)
     }

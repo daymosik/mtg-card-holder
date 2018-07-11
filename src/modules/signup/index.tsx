@@ -28,6 +28,7 @@ export const signupActions: SignupActions = {
     event.preventDefault()
     try {
       await RegistrationService.register(state.email, state.password)
+      window.location.hash = '/'
     } catch (e) {
       actions.handleSubmitError(e.message)
     }
