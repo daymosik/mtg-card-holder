@@ -24,7 +24,7 @@ import CardDatabaseView, {
   CardDatabaseState,
   initialCardDatabaseState,
 } from './modules/card-database'
-import CardView, {cardActions, CardActions, CardState, initialCardState} from './modules/card-database/card'
+import CardView, {cardActions, CardActions, CardState, initialCardState} from './modules/card/card'
 import SetView, {cardSetActions, CardSetActions, CardSetState, initialCardSetState,} from './modules/card-database/set'
 import LoginView, {initialLoginState, LoginActions, loginActions, LoginState} from './modules/login'
 import SignupView, {initialSignupState, signupActions, SignupActions, SignupState} from './modules/signup'

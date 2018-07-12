@@ -4,7 +4,7 @@ import { h } from 'hyperapp'
 import { Link } from 'hyperapp-hash-router'
 import { MagicCard } from '../../../types/magic'
 import { AppActions, AppState } from '../../app'
-import ManaCostView from '../../components/card/mana-cost'
+import ManaCostView from '../card/mana-cost'
 import LoadingSpinner from '../../components/loading-spinner'
 
 import CardDatabaseService from '../../services/card-database'
