@@ -7,10 +7,12 @@ import CardDatabaseService from '../../services/card-database'
 export interface AddCardFormState {
   input: string
   autocomplete: MagicCard[],
-  chosenCard: MagicCard,
+  chosenCard: any,
+  // TODO
+  // chosenCard: MagicCard,
 }
 
-export const initialAddCardFormState = {
+export const initialAddCardFormState: AddCardFormState = {
   input: '',
   autocomplete: [],
   chosenCard: undefined,

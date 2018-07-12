@@ -116,6 +116,10 @@
   version "0.5.1"
   resolved "https://registry.yarnpkg.com/@hyperapp/router/-/router-0.5.1.tgz#bd188039964efde208ed161df8f284cd4f1076b3"
 
+"@types/node@^10.5.2":
+  version "10.5.2"
+  resolved "https://registry.yarnpkg.com/@types/node/-/node-10.5.2.tgz#f19f05314d5421fe37e74153254201a7bf00a707"
+
 "@webassemblyjs/ast@1.5.13":
   version "1.5.13"
   resolved "https://registry.yarnpkg.com/@webassemblyjs/ast/-/ast-1.5.13.tgz#81155a570bd5803a30ec31436bc2c9c0ede38f25"
