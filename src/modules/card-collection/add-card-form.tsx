@@ -62,7 +62,7 @@ export const AddCardForm = () => (state: AppState, actions: AppActions) => {
         }}
       />
       {state.cardForm.autocomplete.length > 0 &&
-      <div class="position-absolute bg-white w-100 text-black-50 rounded">
+      <div class="card-autocomplete-box position-absolute bg-white w-100 text-black-50 rounded">
         {state.cardForm.autocomplete.map((card) => (
           <div class="row" onclick={() => actions.cardForm.handleAutocompleteClick(card)}>
             <div class="col">{card.name}</div>
@@ -74,7 +74,9 @@ export const AddCardForm = () => (state: AppState, actions: AppActions) => {
       {state.cardForm.chosenCard &&
       <div class="row">
         <div class="col">
-          {JSON.stringify(state.cardForm.chosenCard)}
+
+          <h3>{state.cardForm.chosenCard.name}</h3>
+          <img src={state.cardForm.chosenCard.imageUrl}/>
 
           <button
             class="btn btn-primary"
