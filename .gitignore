@@ -2,3 +2,4 @@ node_modules/
 build/
 .env
 firebase-debug.log
+.idea/
