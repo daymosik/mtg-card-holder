@@ -23,8 +23,11 @@ deploy:
 run:
 	firebase serve
 
+test:
+	yarn run test
+
 node_modules/INSTALLED: package.json
 	yarn install
 	touch $@
 
-.PHONY: run deploy build watch clean
+.PHONY: run deploy build watch clean test

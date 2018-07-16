@@ -17,4 +17,4 @@ else
   export FIREBASE_MESSAGING_SENDER_ID="${FIREBASE_MESSAGING_SENDER_ID}"
 fi
 
-yarn run build
+yarn run build-with-tests
