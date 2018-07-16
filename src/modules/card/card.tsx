@@ -22,14 +22,10 @@ export interface CardActions {
 
 export const cardActions = {
   getCard: ({rootState, id}) => async (state: CardState, actions: CardActions) => {
-    try {
-      const card: MagicCard = await CardDatabaseService.getCardById(id)
-      const moreInfo: MagicCardMoreInfo = await CardDatabaseService.getCardMoreInfo(id)
-      actions.getCardsCommit({card, moreInfo})
-      return card
-    } catch (e) {
-      console.log(e)
-    }
+    const card: MagicCard = await CardDatabaseService.getCardById(id)
+    const moreInfo: MagicCardMoreInfo = await CardDatabaseService.getCardMoreInfo(id)
+    actions.getCardsCommit({card, moreInfo})
+    return card
   },
   getCardsCommit: ({card, moreInfo}) => (state: CardState): CardState => ({...state, card, moreInfo}),
 }

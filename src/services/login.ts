@@ -1,14 +1,9 @@
 import * as firebase from 'firebase'
+import AuthService, { authType } from './auth'
 
 class LoginService {
-
   public login = async (email: string, password: string): Promise<any> => {
-    try {
-      const data = await firebase.auth().signInWithEmailAndPassword(email, password)
-      return data.user
-    } catch (e) {
-      return Promise.reject(e)
-    }
+    return AuthService.authenticate(email, password, authType.Login)
   }
 
   public logout = async () => {

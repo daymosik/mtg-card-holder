@@ -33,53 +33,74 @@ export const navigationAgtions: NavigationActions = {
   ),
 }
 
+interface NavigationButtonProps {
+  onclick: () => void
+}
+
+const NavigationButton = ({ onclick }: NavigationButtonProps) => (
+  <button
+    class="navbar-toggler"
+    type="button"
+    data-toggle="collapse"
+    data-target="#navbarSupportedContent"
+    aria-controls="navbarSupportedContent"
+    aria-expanded="false"
+    aria-label="Toggle navigation"
+    onclick={() => onclick()}
+  >
+    <span class="navbar-toggler-icon"/>
+  </button>
+)
+
+interface NavigationListItemProps {
+  name: string
+  path?: string
+  onclick?: () => void
+}
+
+const NavigationListItem = ({ path, name, onclick }: NavigationListItemProps) => (
+  <li class="nav-item">
+    {path && <Link class="nav-link" to={path}>{name}</Link>}
+    {onclick && <a class="nav-link" onclick={() => onclick()}>{name}</a>}
+  </li>
+)
+
+interface NavigationMenuProps {
+  mobileMenuOpen: boolean
+  hideMobileMenu: () => void
+  authorized: boolean
+}
+
+const NavigationMenu = ({ mobileMenuOpen, hideMobileMenu, authorized }: NavigationMenuProps) => (
+  <div
+    class={`collapse navbar-collapse pull-right ${mobileMenuOpen ? 'show' : ''}`}
+    id="navbarSupportedContent"
+    onclick={() => hideMobileMenu()}
+  >
+    <ul class="navbar-nav mr-auto">
+      <NavigationListItem path={NavigationPath.CardDatabase} name={'Card Database'}/>
+      <NavigationListItem path={NavigationPath.CardCollection} name={'My Collection'}/>
+    </ul>
+    <ul class="navbar-nav">
+      {!authorized && <NavigationListItem path={NavigationPath.Signup} name={'Signup'}/>}
+      {!authorized && <NavigationListItem path={NavigationPath.Login} name={'Login'}/>}
+      {authorized && <NavigationListItem onclick={LoginService.logout} name={'Logout'}/>}
+    </ul>
+  </div>
+)
+
 export const NavigationView = () => (state: AppState, actions: AppActions) => (
   <nav class="navbar navbar-expand-lg navbar-dark">
     <div class="container">
-      <button
-        class="navbar-toggler"
-        type="button"
-        data-toggle="collapse"
-        data-target="#navbarSupportedContent"
-        aria-controls="navbarSupportedContent"
-        aria-expanded="false"
-        aria-label="Toggle navigation"
-        onclick={() => actions.nav.toggleMobileMenu()}
-      >
-        <span class="navbar-toggler-icon"/>
-      </button>
+      <NavigationButton onclick={() => actions.nav.toggleMobileMenu()}/>
 
-      <Link class="navbar-brand" to="/" alt="MTG Card Holder"></Link>
+      <Link class="navbar-brand" to="/" alt="MTG Card Holder"/>
 
-      <div
-        class={`collapse navbar-collapse pull-right ${state.nav.mobileMenuOpen ? 'show' : ''}`}
-        id="navbarSupportedContent"
-        onclick={() => actions.nav.hideMobileMenu()}
-      >
-        <ul class="navbar-nav mr-auto">
-          <li class="nav-item">
-            <Link class="nav-link" to={NavigationPath.CardDatabase}>Card Database</Link>
-          </li>
-          <li class="nav-item">
-            <Link class="nav-link" to={NavigationPath.CardCollection}>My Collection</Link>
-          </li>
-        </ul>
-        <ul class="navbar-nav">
-          {!state.auth.authorized &&
-          <li class="nav-item">
-            <Link class="nav-link" to={NavigationPath.Signup}>Signup</Link>
-          </li>}
-          {!state.auth.authorized &&
-          <li class="nav-item">
-            <Link class="nav-link" to={NavigationPath.Login}>Login</Link>
-          </li>}
-          {state.auth.authorized &&
-          <li class="nav-item flex">
-            <a class="nav-link" onclick={LoginService.logout}>Logout</a>
-          </li>}
-        </ul>
-      </div>
-
+      <NavigationMenu
+        mobileMenuOpen={state.nav.mobileMenuOpen}
+        hideMobileMenu={actions.nav.hideMobileMenu}
+        authorized={state.auth.authorized}
+      />
     </div>
   </nav>
 )

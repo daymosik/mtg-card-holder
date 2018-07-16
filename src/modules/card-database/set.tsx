@@ -21,13 +21,9 @@ export interface CardSetActions {
 
 export const cardSetActions: CardSetActions = {
   getCards: (set) => async (state: CardSetState, actions: CardSetActions) => {
-    // try {
     const cards: MagicCard[] = await CardDatabaseService.getCardsBySet(set)
     actions.getCardsCommit(cards)
     return cards
-    // } catch (e) {
-    //   console.log(e)
-    // }
   },
   getCardsCommit: (cards: MagicCard[]) => (state: CardSetState): CardSetState => ({ ...state, cards }),
 }

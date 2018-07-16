@@ -3,6 +3,7 @@ import { Link } from 'hyperapp-hash-router'
 import { AppActions, AppState } from '../../app'
 import { NavigationPath } from '../../navigation'
 import RegistrationService from '../../services/registration'
+import { AuthForm } from '../auth/auth-form'
 
 export interface SignupState {
   email: string
@@ -19,7 +20,7 @@ export const initialSignupState: SignupState = {
 export interface SignupActions {
   handleInputChange: (object) => (state: SignupState) => SignupState
   submitForm: (event: Event) => (state: SignupState, actions: SignupActions) => void
-  handleSubmitError: (message: string) => (state: SignupState) => SignupState
+  handleSignupSubmitError: (message: string) => (state: SignupState) => SignupState
 }
 
 export const signupActions: SignupActions = {
@@ -30,47 +31,21 @@ export const signupActions: SignupActions = {
       await RegistrationService.register(state.email, state.password)
       window.location.hash = '/'
     } catch (e) {
-      actions.handleSubmitError(e.message)
+      actions.handleSignupSubmitError(e.message)
     }
   },
-  handleSubmitError: (message: string) => (state: SignupState): SignupState => ({ ...state, errorMessage: message }),
+  handleSignupSubmitError: (message: string) => (state: SignupState): SignupState => ({
+    ...state,
+    errorMessage: message,
+  }),
 }
 
 export const SignupView = (state: AppState, actions: AppActions) => () => (
   <div class="container pt-5">
-    <form action="/" onsubmit={actions.signup.submitForm}>
-      <h2>Register</h2>
-
-      {state.signup.errorMessage && <p className="error-message">{state.signup.errorMessage}</p>}
-
-      <div class="form-group">
-        <label for="exampleInputEmail1">Email address</label>
-        <input
-          type="text"
-          name="email"
-          class="form-control"
-          onkeyup={(event) => actions.signup.handleInputChange({ email: event.target.value })}
-        />
-      </div>
-
-      <div class="form-group">
-        <label for="exampleInputEmail1">Password</label>
-        <input
-          type="password"
-          name="password"
-          class="form-control"
-          onkeyup={(event) => actions.signup.handleInputChange({ password: event.target.value })}
-        />
-      </div>
-
-      <button class="btn btn-primary" type="submit">
-        Register
-      </button>
-
-      <div>
-        Already have an account? <Link to={NavigationPath.Login}>Login</Link>.
-      </div>
-    </form>
+    <h2>Register</h2>
+    <AuthForm state={state.signup} actions={actions.signup} buttonText={'Register'}>
+      <div>Already have an account? <Link to={NavigationPath.Login}>Login</Link>.</div>
+    </AuthForm>
   </div>
 )
 

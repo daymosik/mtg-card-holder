@@ -42,13 +42,9 @@ export interface CardDatabaseActions {
 
 export const cardDatabaseActions = {
   getSets: () => async (state: CardDatabaseState, actions: CardDatabaseActions) => {
-    try {
-      const sets: MagicSet[] = await CardDatabaseService.getSets()
-      actions.getSetsCommit(sets)
-      return sets
-    } catch (e) {
-      console.log(e)
-    }
+    const sets: MagicSet[] = await CardDatabaseService.getSets()
+    actions.getSetsCommit(sets)
+    return sets
   },
   getSetsCommit: (sets: MagicSet[]) => (state: CardDatabaseState): CardDatabaseState => ({ ...state, sets }),
 }
@@ -60,14 +56,14 @@ interface SetListTableProps {
 const SetListTable = ({ sets }: SetListTableProps) => (
   <table class="table table-dark bg-transparent table-sm">
     <thead>
-      <tr>
-        <th scope="col">#</th>
-        <th scope="col">Name</th>
-        <th scope="col" class="text-right">Release date</th>
-      </tr>
+    <tr>
+      <th scope="col">#</th>
+      <th scope="col">Name</th>
+      <th scope="col" class="text-right">Release date</th>
+    </tr>
     </thead>
     <tbody>
-      {sets.length > 0 && sets.map((set) => <SetListItem set={set}/>)}
+    {sets.length > 0 && sets.map((set) => <SetListItem set={set}/>)}
     </tbody>
   </table>
 )
@@ -84,42 +80,46 @@ const SetListItem = ({ set }: SetListItemProps) => (
   </tr>
 )
 
-export const CardDatabaseView = (state: AppState, actions: AppActions) => () => {
-  const main = [MagicSetType.Core, MagicSetType.DuelDeck, MagicSetType.Expansion]
-  const rest = setTypes.filter((t) => main.indexOf(t) < 0)
+interface SetListProps {
+  type: string
+  sets: MagicSet[]
+}
 
-  const getSetsByType = (type: MagicSetType): MagicSet[] => state.cardDatabase.sets
+const SetList = ({ type, sets }: SetListProps) => (
+  <div class="col-md-6 col-lg-4">
+    <h4>{type}</h4>
+    <SetListTable sets={sets}/>
+  </div>
+)
+
+interface SetListViewProps {
+  sets: MagicSet[],
+}
+
+const SetListView = ({ sets }: SetListViewProps) => {
+  const mainSetsList = [MagicSetType.Core, MagicSetType.DuelDeck, MagicSetType.Expansion]
+  const restSetsList = setTypes.filter((t) => mainSetsList.indexOf(t) < 0)
+
+  const getSetsByType = (type: MagicSetType): MagicSet[] => sets
     .filter((set) => set.type === type)
     .sort((a, b) => a.releaseDate > b.releaseDate ? -1 : 1)
 
   return (
-    <div class="container">
-      <h3>Card Database</h3>
-
-      <div oncreate={() => actions.cardDatabase.getSets()}>
-
-        {!state.cardDatabase.sets.length && <LoadingSpinner/>}
-
-        {state.cardDatabase.sets.length > 0 &&
-        <div class="row d-flex flex-row">
-          {main.map((type: MagicSetType) => (
-            <div class="col-md-6 col-lg-4">
-              <h4>{type}</h4>
-              <SetListTable sets={getSetsByType(type)}/>
-            </div>
-          ))}
-
-          {rest.map((type: MagicSetType) => (
-            <div class="col-md-6 col-lg-4">
-              <h4>{type}</h4>
-              <SetListTable sets={getSetsByType(type)}/>
-            </div>
-          ))}
-        </div>}
-
-      </div>
+    <div class="row d-flex flex-row">
+      {mainSetsList.map((type: MagicSetType) => <SetList type={type} sets={getSetsByType(type)}/>)}
+      {restSetsList.map((type: MagicSetType) => <SetList type={type} sets={getSetsByType(type)}/>)}
     </div>
   )
 }
+
+export const CardDatabaseView = (state: AppState, actions: AppActions) => () => (
+  <div class="container">
+    <h3>Card Database</h3>
+    <div oncreate={() => actions.cardDatabase.getSets()}>
+      {!state.cardDatabase.sets.length && <LoadingSpinner/>}
+      {state.cardDatabase.sets.length > 0 && <SetListView sets={state.cardDatabase.sets}/>}
+    </div>
+  </div>
+)
 
 export default CardDatabaseView

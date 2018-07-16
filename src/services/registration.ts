@@ -1,13 +1,8 @@
-import * as firebase from 'firebase'
+import AuthService, { authType } from './auth'
 
 class RegistrationService {
-  public register = async (email: string, password: string) => {
-    try {
-      const data = await firebase.auth().createUserWithEmailAndPassword(email, password)
-      return data.user
-    } catch (e) {
-      return Promise.reject(e)
-    }
+  public register = async (email: string, password: string): Promise<any> => {
+    return AuthService.authenticate(email, password, authType.Register)
   }
 }
 

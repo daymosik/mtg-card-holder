@@ -37,12 +37,11 @@ let USER_CARD_SUBSCRIBER
 export const cardCollectionActions: CardCollectionActions = {
   getCards: () => (state: CardCollectionState, actions: CardCollectionActions): void => {
     const user = auth().currentUser
-    if (user) {
-      if (!USER_CARD_SUBSCRIBER) {
-        USER_CARD_SUBSCRIBER = CardDatabaseService.userCardsSubscriber(user.uid)
-          .subscribe((value) => actions.updateCardsList(value))
-      }
+    if (!user || !!USER_CARD_SUBSCRIBER) {
+      return
     }
+    USER_CARD_SUBSCRIBER = CardDatabaseService.userCardsSubscriber(user.uid)
+      .subscribe((value) => actions.updateCardsList(value))
   },
   updateCardsList: (card: UserMagicCard) => (state: CardCollectionState): CardCollectionState => ({
     ...state,
