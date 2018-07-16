@@ -1,6 +1,7 @@
-import * as firebase from 'firebase'
-import {ActionsType, app, h} from 'hyperapp'
-import {Link, location, Route} from 'hyperapp-hash-router'
+import firebase = require('firebase/app')
+import 'firebase/database'
+import { ActionsType, app, h } from 'hyperapp'
+import { Link, location, Route } from 'hyperapp-hash-router'
 
 import './assets/styles/app.scss'
 import ProtectedRoute from './components/protected-route'
@@ -24,10 +25,15 @@ import CardDatabaseView, {
   CardDatabaseState,
   initialCardDatabaseState,
 } from './modules/card-database'
-import CardView, {cardActions, CardActions, CardState, initialCardState} from './modules/card/card'
-import SetView, {cardSetActions, CardSetActions, CardSetState, initialCardSetState,} from './modules/card-database/set'
-import LoginView, {initialLoginState, LoginActions, loginActions, LoginState} from './modules/login'
-import SignupView, {initialSignupState, signupActions, SignupActions, SignupState} from './modules/signup'
+import SetView, {
+  cardSetActions,
+  CardSetActions,
+  CardSetState,
+  initialCardSetState,
+} from './modules/card-database/set'
+import CardView, { cardActions, CardActions, CardState, initialCardState } from './modules/card/card'
+import LoginView, { initialLoginState, LoginActions, loginActions, LoginState } from './modules/login'
+import SignupView, { initialSignupState, signupActions, SignupActions, SignupState } from './modules/signup'
 import NavigationView, {
   initialNavigationState,
   NavigationActions,
@@ -70,8 +76,8 @@ interface AuthActions {
 }
 
 const authActions: AuthActions = {
-  authorize: () => (state: AuthState): AuthState => ({...state, authorized: true}),
-  unauthorize: () => (state: AuthState): AuthState => ({...state, authorized: false}),
+  authorize: () => (state: AuthState): AuthState => ({ ...state, authorized: true }),
+  unauthorize: () => (state: AuthState): AuthState => ({ ...state, authorized: false }),
 }
 
 export interface AppState {

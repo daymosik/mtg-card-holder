@@ -1,4 +1,5 @@
-import { auth } from 'firebase'
+import firebase = require('firebase/app')
+import 'firebase/auth'
 import { Observable } from 'rxjs'
 import { MagicCard, MagicCardMoreInfo, MagicSet } from '../../types/magic'
 import { firebaseDatabase } from '../app'
@@ -9,7 +10,7 @@ const responseToArray = (object: object): any[] => object ? Object.keys(object).
 
 class CardDatabase {
   public async addCardToCollection(card: MagicCard): Promise<MagicCard> {
-    const user = auth().currentUser
+    const user = firebase.auth().currentUser
     if (!user) {
       return Promise.reject('not authorized')
     }
@@ -19,7 +20,7 @@ class CardDatabase {
   }
 
   public async removeCardFromCollection(card: MagicCard): Promise<MagicCard> {
-    const user = auth().currentUser
+    const user = firebase.auth().currentUser
     if (!user) {
       return Promise.reject('not authorized')
     }

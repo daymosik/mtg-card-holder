@@ -1,6 +1,9 @@
+const analize = false
+
 const webpack = require('webpack')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const ExtractTextPlugin = require('extract-text-webpack-plugin')
+const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin
 
 const plugins = [
   new HtmlWebpackPlugin({
@@ -18,5 +21,9 @@ const plugins = [
     }
   }),
 ]
+
+if (analize) {
+  plugins.push(new BundleAnalyzerPlugin())
+}
 
 module.exports = plugins

@@ -1,13 +1,14 @@
-import { auth } from 'firebase'
+import firebase = require('firebase/app')
+import 'firebase/auth'
 import { h } from 'hyperapp'
 
 import { Link } from 'hyperapp-hash-router'
 import { MagicCard } from '../../../types/magic'
 import { AppActions, AppState } from '../../app'
-import ManaCostView from '../card/mana-cost'
 import LoadingSpinner from '../../components/loading-spinner'
 
 import CardDatabaseService from '../../services/card-database'
+import ManaCostView from '../card/mana-cost'
 import AddCardForm from './add-card-form'
 
 export interface UserMagicCard extends MagicCard {
@@ -36,7 +37,7 @@ let USER_CARD_SUBSCRIBER
 
 export const cardCollectionActions: CardCollectionActions = {
   getCards: () => (state: CardCollectionState, actions: CardCollectionActions): void => {
-    const user = auth().currentUser
+    const user = firebase.auth().currentUser
     if (!user || !!USER_CARD_SUBSCRIBER) {
       return
     }
@@ -61,20 +62,20 @@ interface CardListTableProps {
 const CardListTable = ({ cards, removeCard }: CardListTableProps) => (
   <table class="table table-dark bg-transparent">
     <thead>
-      <tr>
-        <th scope="col">#</th>
-        <th scope="col">Name</th>
-        <th scope="col">Type</th>
-        <th></th>
-        <th scope="col" class="text-center">Count</th>
-        <th></th>
-      </tr>
+    <tr>
+      <th scope="col">#</th>
+      <th scope="col">Name</th>
+      <th scope="col">Type</th>
+      <th></th>
+      <th scope="col" class="text-center">Count</th>
+      <th></th>
+    </tr>
     </thead>
     <tbody>
-      {cards && Object.keys(cards).map((key, iterator) => {
-        const card = cards[key]
-        return card.count > 0 && <CardListItem key={iterator} card={card} removeCard={removeCard}/>
-      })}
+    {cards && Object.keys(cards).map((key, iterator) => {
+      const card = cards[key]
+      return card.count > 0 && <CardListItem key={iterator} card={card} removeCard={removeCard}/>
+    })}
     </tbody>
   </table>
 )
