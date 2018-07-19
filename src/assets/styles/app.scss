@@ -2,6 +2,11 @@
 @import "loading-spinner";
 @import "mana-color";
 
+$nabar-height: 56px;
+
+$card-width: 223px;
+$card-height: 311px;
+
 html {
   min-height: 100%;
   position: relative;
@@ -10,8 +15,9 @@ html {
 body {
   background: url("../images/bg.jpg") repeat;
   color: #FFF;
-  padding-top: 70px;
+  padding-top: $nabar-height;
   padding-bottom: 60px;
+  min-height: 100vh;
 }
 
 .navbar {
@@ -20,6 +26,7 @@ body {
   position: fixed;
   top: 0px;
   z-index: 999;
+  height: $nabar-height;
 }
 
 .navbar-brand {
@@ -27,6 +34,11 @@ body {
   background: url("../images/magic-the-gathering-logo.png") top center no-repeat #000;
   height: 40px;
   width: 139px;
+}
+
+.wrapper {
+  padding-top: 10px;
+  min-height: 100%;
 }
 
 footer {
@@ -49,4 +61,16 @@ a {
 
 .card-autocomplete-box {
   z-index: 9;
+}
+
+.cards-list-image {
+  width: $card-width;
+  height: $card-height;
+  background: url("../images/magic-the-gathering-logo.png") center center no-repeat #7f7f7f;
+
+  a {
+    display: inline-block;
+    width: $card-width;
+    height: $card-height;
+  }
 }

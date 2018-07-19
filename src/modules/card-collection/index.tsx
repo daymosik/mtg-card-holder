@@ -5,10 +5,12 @@ import { h } from 'hyperapp'
 import { Link } from 'hyperapp-hash-router'
 import { MagicCard } from '../../../types/magic'
 import { AppActions, AppState } from '../../app'
+import CardsListImages from '../../components/cards/cards-list-images'
+import { CardsDisplayType, default as CardsListSwitcher } from '../../components/cards/cards-list-switcher'
+import CardsListTable from '../../components/cards/cards-list-table'
 import LoadingSpinner from '../../components/loading-spinner'
 
 import CardDatabaseService from '../../services/card-database'
-import ManaCostView from '../card/mana-cost'
 import AddCardForm from './add-card-form'
 
 export interface UserMagicCard extends MagicCard {
@@ -21,16 +23,19 @@ export interface UserMagicCardCollection {
 
 export interface CardCollectionState {
   cards: UserMagicCardCollection
+  displayType: CardsDisplayType
 }
 
 export const initialCardCollectionState: CardCollectionState = {
   cards: {},
+  displayType: CardsDisplayType.List,
 }
 
 export interface CardCollectionActions {
   getCards: () => (state: CardCollectionState, actions: CardCollectionActions) => void
   updateCardsList: (card: UserMagicCard) => (state: CardCollectionState) => CardCollectionState
   removeCardFromCollection: (card: UserMagicCard) => (state: CardCollectionState) => Promise<MagicCard>
+  setDisplayType: (displayType: CardsDisplayType) => (state: CardCollectionState) => CardCollectionState,
 }
 
 let USER_CARD_SUBSCRIBER
@@ -52,65 +57,33 @@ export const cardCollectionActions: CardCollectionActions = {
     },
   }),
   removeCardFromCollection: (card: MagicCard) => async () => CardDatabaseService.removeCardFromCollection(card),
+  setDisplayType: (displayType: CardsDisplayType) => (state: CardCollectionState): CardCollectionState => ({
+    ...state,
+    displayType,
+  }),
 }
 
-interface CardListTableProps {
-  cards: UserMagicCardCollection
-  removeCard: any
-}
-
-const CardListTable = ({ cards, removeCard }: CardListTableProps) => (
-  <table class="table table-dark bg-transparent">
-    <thead>
-    <tr>
-      <th scope="col">#</th>
-      <th scope="col">Name</th>
-      <th scope="col">Type</th>
-      <th></th>
-      <th scope="col" class="text-center">Count</th>
-      <th></th>
-    </tr>
-    </thead>
-    <tbody>
-    {cards && Object.keys(cards).map((key, iterator) => {
-      const card = cards[key]
-      return card.count > 0 && <CardListItem key={iterator} card={card} removeCard={removeCard}/>
-    })}
-    </tbody>
-  </table>
-)
-
-interface CardListItemProps {
-  card: UserMagicCard
-  key: number
-  removeCard: any
-}
-
-const CardListItem = ({ card, key, removeCard }: CardListItemProps) => (
-  <tr>
-    <th scope="row">{key}</th>
-    <td><Link to={`/card/${card.id}`}>{card.name}</Link></td>
-    <td>{card.type}</td>
-    <td class="text-right">{ManaCostView(card.manaCost)}</td>
-    <td class="text-center">{card.count}</td>
-    <th>
-      <button class="btn btn-danger" onclick={() => removeCard(card)}>X</button>
-    </th>
-  </tr>
-)
-
-const notEmpty = (ob): boolean => Object.keys(ob).some((prop) => !!prop)
-
-export const CardCollectionView = (state: AppState, actions: AppActions) => () => (
-  <div class="container">
-    <AddCardForm/>
-    <br/>
-    <div oncreate={() => actions.cardCollection.getCards()}>
-      {!notEmpty(state.cardCollection.cards) && <LoadingSpinner/>}
-      {notEmpty(state.cardCollection.cards) &&
-      <CardListTable cards={state.cardCollection.cards} removeCard={actions.cardCollection.removeCardFromCollection}/>}
+export const CardCollectionView = (state: AppState, actions: AppActions) => () => {
+  const cards = Object.keys(state.cardCollection.cards).map((key) => state.cardCollection.cards[key])
+    .filter((card) => card.count > 0)
+  return (
+    <div class="container">
+      <AddCardForm/>
+      <div oncreate={() => actions.cardCollection.getCards()}>
+        {!cards.length && <LoadingSpinner/>}
+        {cards.length > 0 &&
+        <div>
+          <div class="row">
+            <CardsListSwitcher className="ml-auto" setDisplayType={actions.cardCollection.setDisplayType}/>
+          </div>
+          {state.cardCollection.displayType === CardsDisplayType.List && (
+            <CardsListTable cards={cards} decreaseCardCount={actions.cardCollection.removeCardFromCollection}/>
+          )}
+          {state.cardCollection.displayType === CardsDisplayType.Images && <CardsListImages cards={cards}/>}
+        </div>}
+      </div>
     </div>
-  </div>
-)
+  )
+}
 
 export default CardCollectionView
