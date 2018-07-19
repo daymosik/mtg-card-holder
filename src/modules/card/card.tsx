@@ -2,6 +2,8 @@ import { h } from 'hyperapp'
 import { MagicCard, MagicCardMoreInfo } from '../../../types/magic'
 import { AppActions, AppState } from '../../app'
 import LoadingSpinner from '../../components/loading-spinner'
+
+import Tooltip from '../../components/tooltip'
 import CardDatabaseService from '../../services/card-database'
 
 // TODO Maybe ?
@@ -33,7 +35,11 @@ export const cardActions = {
 const handleMoreInfoDetails = (key: keyof MagicCardMoreInfo, value: any) => {
   switch (key) {
     case 'printings':
-      return <div class="h2">{value.map((set) => (<i class={`m-2 ss ss-${set.toLowerCase()}`}/>))}</div>
+      return (
+        <div class="h2">{value.map((set) => (
+          <Tooltip title={set}><i class={`m-2 ss ss-${set.toLowerCase()}`}/></Tooltip>))}
+        </div>
+      )
     default:
       return value
   }
