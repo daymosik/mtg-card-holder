@@ -63,7 +63,8 @@ const CardListItem = ({ card, key }: CardListItemProps) => (
 )
 
 export const SetView = (state: AppState, actions: AppActions) => ({ match }) => (
-  <div oncreate={() => actions.cardSet.getCards(match.params.code)}>
+  <div class="container" oncreate={() => actions.cardSet.getCards(match.params.code)}>
+    <h1><i class={`ss ss-${match.params.code.toLowerCase()}`}/></h1>
     {!state.cardSet.cards.length && <LoadingSpinner/>}
     {state.cardSet.cards.length > 0 && <CardListTable cards={state.cardSet.cards}/>}
   </div>

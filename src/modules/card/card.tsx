@@ -1,6 +1,6 @@
-import {h} from 'hyperapp'
-import {MagicCard, MagicCardMoreInfo} from '../../../types/magic'
-import {AppActions, AppState} from '../../app'
+import { h } from 'hyperapp'
+import { MagicCard, MagicCardMoreInfo } from '../../../types/magic'
+import { AppActions, AppState } from '../../app'
 import LoadingSpinner from '../../components/loading-spinner'
 import CardDatabaseService from '../../services/card-database'
 
@@ -21,13 +21,22 @@ export interface CardActions {
 }
 
 export const cardActions = {
-  getCard: ({rootState, id}) => async (state: CardState, actions: CardActions) => {
+  getCard: ({ rootState, id }) => async (state: CardState, actions: CardActions) => {
     const card: MagicCard = await CardDatabaseService.getCardById(id)
     const moreInfo: MagicCardMoreInfo = await CardDatabaseService.getCardMoreInfo(id)
-    actions.getCardsCommit({card, moreInfo})
+    actions.getCardsCommit({ card, moreInfo })
     return card
   },
-  getCardsCommit: ({card, moreInfo}) => (state: CardState): CardState => ({...state, card, moreInfo}),
+  getCardsCommit: ({ card, moreInfo }) => (state: CardState): CardState => ({ ...state, card, moreInfo }),
+}
+
+const handleMoreInfoDetails = (key: keyof MagicCardMoreInfo, value: any) => {
+  switch (key) {
+    case 'printings':
+      return <div class="h2">{value.map((set) => (<i class={`m-2 ss ss-${set.toLowerCase()}`}/>))}</div>
+    default:
+      return value
+  }
 }
 
 interface CardItemProps {
@@ -35,7 +44,7 @@ interface CardItemProps {
   moreInfo: MagicCardMoreInfo | null,
 }
 
-const CardItem = ({card, moreInfo}: CardItemProps) => (
+const CardItem = ({ card, moreInfo }: CardItemProps) => (
   <div>
     <h1>{card.name}</h1>
     <div class="row">
@@ -43,13 +52,13 @@ const CardItem = ({card, moreInfo}: CardItemProps) => (
         <img src={card.imageUrl}/>
       </div>
       <div class="col-md-8 col-lg-9">
-        {moreInfo && Object.keys(moreInfo).map((key) => moreInfo[key].length ? (
+        {moreInfo && Object.keys(moreInfo).map((key: keyof MagicCardMoreInfo) => moreInfo[key] ? (
           <div class="row form-group">
             <div class="col-sm-3 col-lg-2">
               {key}
             </div>
             <div class="col-sm-9 col-lg-10">
-              {moreInfo[key]}
+              {handleMoreInfoDetails(key, moreInfo[key])}
             </div>
           </div>
         ) : null)}
@@ -58,8 +67,8 @@ const CardItem = ({card, moreInfo}: CardItemProps) => (
   </div>
 )
 
-export const CardView = (state: AppState, actions: AppActions) => ({match}) => (
-  <div class="container" oncreate={() => actions.card.getCard({rootState: state, id: match.params.id})}>
+export const CardView = (state: AppState, actions: AppActions) => ({ match }) => (
+  <div class="container" oncreate={() => actions.card.getCard({ rootState: state, id: match.params.id })}>
     {!state.card.card && <LoadingSpinner/>}
     {state.card.card &&
     <div>

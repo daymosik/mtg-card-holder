@@ -44,6 +44,7 @@ export const cardDatabaseActions = {
   getSets: () => async (state: CardDatabaseState, actions: CardDatabaseActions) => {
     const sets: MagicSet[] = await CardDatabaseService.getSets()
     actions.getSetsCommit(sets)
+    console.log(sets)
     return sets
   },
   getSetsCommit: (sets: MagicSet[]) => (state: CardDatabaseState): CardDatabaseState => ({ ...state, sets }),
@@ -57,25 +58,28 @@ const SetListTable = ({ sets }: SetListTableProps) => (
   <table class="table table-dark bg-transparent table-sm">
     <thead>
     <tr>
-      <th scope="col">#</th>
+      {/*<th scope="col">#</th>*/}
+      <th scope="col"></th>
       <th scope="col">Name</th>
       <th scope="col" class="text-right">Release date</th>
     </tr>
     </thead>
     <tbody>
-    {sets.length > 0 && sets.map((set) => <SetListItem set={set}/>)}
+    {sets.length > 0 && sets.map((set, index) => <SetListItem index={index} set={set}/>)}
     </tbody>
   </table>
 )
 
 interface SetListItemProps {
+  index: number
   set: MagicSet
 }
 
 const SetListItem = ({ set }: SetListItemProps) => (
   <tr>
-    <th scope="row">1</th>
-    <td><Link to={`/set/${set.code}`}>{set.name}</Link></td>
+    {/*<th scope="row">{index + 1}</th>*/}
+    <td class="h4 text-center"><i class={`ss ss-${set.code.toLowerCase()}`}/></td>
+    <td class="align-content-center"><Link to={`/set/${set.code}`}>{set.name}</Link></td>
     <td class="text-nowrap text-right">{set.releaseDate}</td>
   </tr>
 )
