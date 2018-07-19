@@ -3570,6 +3570,10 @@ jsprim@^1.2.2:
     json-schema "0.2.3"
     verror "1.10.0"
 
+keyrune@^3.2.1:
+  version "3.2.1"
+  resolved "https://registry.yarnpkg.com/keyrune/-/keyrune-3.2.1.tgz#158907a46fa459b035133a5588f5f87b0e5ef129"
+
 kind-of@^3.0.2, kind-of@^3.0.3, kind-of@^3.2.0:
   version "3.2.2"
   resolved "https://registry.yarnpkg.com/kind-of/-/kind-of-3.2.2.tgz#31ea21a734bab9bbb0f32466d893aea51e4a3c64"

@@ -17,6 +17,7 @@
     "firebase": "^5.2.0",
     "hyperapp": "^1.2.6",
     "hyperapp-hash-router": "^0.1.0",
+    "keyrune": "^3.2.1",
     "rxjs": "^6.2.1"
   },
   "devDependencies": {
