@@ -17,6 +17,12 @@ module.exports = {
     rules: config.rules,
   },
   plugins: config.plugins,
+  node: {
+    console: true,
+    fs: 'empty',
+    net: 'empty',
+    tls: 'empty'
+  },
   optimization: {
     minimizer: [
       new UglifyJsPlugin(),

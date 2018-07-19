@@ -93,9 +93,14 @@ class CardDatabase {
     })
   }
 
+  public async getSet(setCode: string): Promise<MagicSet> {
+    const set = await firebaseDatabase.ref(`sets/${setCode}`).once('value')
+    return set.val()
+  }
+
   public async getSets(): Promise<MagicSet[]> {
     const sets = await firebaseDatabase.ref('sets').once('value')
-    return sets.val()
+    return responseToArray(sets.val())
   }
 
   private async getUserCardCount(userId: string, cardId: string): Promise<number> {
