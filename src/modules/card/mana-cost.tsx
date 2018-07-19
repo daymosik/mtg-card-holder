@@ -29,13 +29,7 @@ export const ManaCostView = (manaCost: string) => {
     return
   }
   const colors = parseManaCost(manaCost)
-  return (
-    <div>
-      <div>
-        {colors.map((color) => <ColorImage color={color} />)}
-      </div>
-    </div>
-  )
+  return colors.map((color) => <ColorImage color={color} />)
 }
 
 export default ManaCostView

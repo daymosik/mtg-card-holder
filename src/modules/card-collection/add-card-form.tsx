@@ -66,9 +66,13 @@ const AddCardInput = ({ handleInputChange, autocompleteList, handleAutocompleteC
     {autocompleteList.length > 0 &&
     <div class="card-autocomplete-box position-absolute bg-white w-100 text-black-50 rounded">
       {autocompleteList.map((card) => (
-        <div class="row" onclick={() => handleAutocompleteClick(card)}>
-          <div class="col">{card.name}</div>
-          <div class="col text-right">{ManaCostView(card.manaCost)}</div>
+        <div class="row " onclick={() => handleAutocompleteClick(card)}>
+          <div class="col">
+            <div class="p-1 border-bottom d-flex">
+              <div>{card.name}</div>
+              <div class="ml-auto">{ManaCostView(card.manaCost)}</div>
+            </div>
+          </div>
         </div>
       ))}
     </div>}

@@ -14,6 +14,7 @@ html {
 }
 
 body {
+  font-family: 'Open Sans', sans-serif;
   background: url("../images/bg.jpg") repeat;
   color: #FFF;
   padding-top: $nabar-height;
@@ -27,7 +28,6 @@ body {
   position: fixed;
   top: 0px;
   z-index: 999;
-  height: $nabar-height;
 }
 
 .navbar-brand {
@@ -68,10 +68,18 @@ a {
   width: $card-width;
   height: $card-height;
   background: url("../images/magic-the-gathering-logo.png") center center no-repeat #7f7f7f;
+  text-align: center;
 
   a {
     display: inline-block;
     width: $card-width;
     height: $card-height;
+  }
+
+  .fas {
+    color: #000;
+    font-size: 160px;
+    opacity: 0.6;
+    line-height: $card-height;
   }
 }

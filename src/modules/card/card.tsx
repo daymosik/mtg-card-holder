@@ -55,7 +55,9 @@ const CardItem = ({ card, moreInfo }: CardItemProps) => (
     <h1>{card.name}</h1>
     <div class="row">
       <div class="col-md-4 col-lg-3">
-        <img src={card.imageUrl}/>
+        <div class="cards-list-image rounded m-2">
+          {card.imageUrl ? <img src={card.imageUrl}/> : <i class="fas fa-ban"/>}
+        </div>
       </div>
       <div class="col-md-8 col-lg-9">
         {moreInfo && Object.keys(moreInfo).map((key: keyof MagicCardMoreInfo) => moreInfo[key] ? (
