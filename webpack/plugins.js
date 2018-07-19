@@ -4,10 +4,18 @@ const webpack = require('webpack')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const ExtractTextPlugin = require('extract-text-webpack-plugin')
 const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin
+const WebpackPwaManifest = require('webpack-pwa-manifest')
 
 const plugins = [
   new HtmlWebpackPlugin({
     template: 'src/index.html'
+  }),
+  new WebpackPwaManifest({
+    name: 'MTG Card Holder',
+    short_name: 'MTG Card Holder',
+    description: 'Magic The Gathering Card Holder app',
+    theme_color: '#000000',
+    background_color: '#000000',
   }),
   new ExtractTextPlugin('styles.css'),
   new webpack.DefinePlugin({
