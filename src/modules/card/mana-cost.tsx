@@ -16,9 +16,10 @@ const parseManaCost = (manaCost): string[] => {
 
 const ColorImage = ({color}) => {
   const isNumber = !isNaN(parseInt(color, 10))
+  const shouldDisplayName = isNumber || color === 'X'
   return (
     <span class={`manaColor size-20 ${colorsMap[color]}`}>
-      {isNumber ? color : <span>&nbsp;</span>}
+      {shouldDisplayName ? color : <span>&nbsp;</span>}
     </span>
   )
 }
