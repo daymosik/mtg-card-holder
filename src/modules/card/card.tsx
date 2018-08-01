@@ -10,26 +10,29 @@ import CardDatabaseService from '../../services/card-database'
 export interface CardState {
   card: MagicCard | null
   moreInfo: MagicCardMoreInfo | null
+  cardCount: number
 }
 
 export const initialCardState: CardState = {
   card: null,
   moreInfo: null,
+  cardCount: 0,
 }
 
 export interface CardActions {
-  getCard: typeof cardActions.getCard
-  getCardsCommit: typeof cardActions.getCardsCommit
+  getCard: (id) => (state: CardState, actions: CardActions) => Promise<MagicCard>
+  getCardCommit: (object: CardState) => (state: CardState) => CardState
 }
 
-export const cardActions = {
-  getCard: ({ rootState, id }) => async (state: CardState, actions: CardActions) => {
+export const cardActions: CardActions = {
+  getCard: (id) => async (state: CardState, actions: CardActions) => {
     const card: MagicCard = await CardDatabaseService.getCardById(id)
     const moreInfo: MagicCardMoreInfo = await CardDatabaseService.getCardMoreInfo(id)
-    actions.getCardsCommit({ card, moreInfo })
+    const cardCount = await CardDatabaseService.getUserCardCount(id)
+    actions.getCardCommit({ card, moreInfo, cardCount })
     return card
   },
-  getCardsCommit: ({ card, moreInfo }) => (state: CardState): CardState => ({ ...state, card, moreInfo }),
+  getCardCommit: (newState: CardState) => (state: CardState): CardState => ({ ...state, ...newState }),
 }
 
 const handleMoreInfoDetails = (key: keyof MagicCardMoreInfo, value: any) => {
@@ -48,9 +51,10 @@ const handleMoreInfoDetails = (key: keyof MagicCardMoreInfo, value: any) => {
 interface CardItemProps {
   card: MagicCard
   moreInfo: MagicCardMoreInfo | null,
+  cardCount: number
 }
 
-const CardItem = ({ card, moreInfo }: CardItemProps) => (
+const CardItem = ({ card, moreInfo, cardCount }: CardItemProps) => (
   <div>
     <h1>{card.name}</h1>
     <div class="row">
@@ -60,6 +64,15 @@ const CardItem = ({ card, moreInfo }: CardItemProps) => (
         </div>
       </div>
       <div class="col-md-8 col-lg-9">
+        <div class="row form-group">
+          <div class="col-sm-3 col-lg-2">
+            Card count:
+          </div>
+          <div class="col-sm-9 col-lg-10">
+            {cardCount}
+          </div>
+        </div>
+        <hr/>
         {moreInfo && Object.keys(moreInfo).map((key: keyof MagicCardMoreInfo) => moreInfo[key] ? (
           <div class="row form-group">
             <div class="col-sm-3 col-lg-2">
@@ -76,13 +89,14 @@ const CardItem = ({ card, moreInfo }: CardItemProps) => (
 )
 
 export const CardView = (state: AppState, actions: AppActions) => ({ match }) => (
-  <div class="container" oncreate={() => actions.card.getCard({ rootState: state, id: match.params.id })}>
+  <div class="container" oncreate={() => actions.card.getCard(match.params.id)}>
     {!state.card.card && <LoadingSpinner/>}
     {state.card.card &&
     <div>
       <CardItem
         card={state.card.card}
         moreInfo={state.card.moreInfo}
+        cardCount={state.card.cardCount}
       />
     </div>}
   </div>

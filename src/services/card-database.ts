@@ -14,7 +14,7 @@ class CardDatabase {
     if (!user) {
       return Promise.reject('not authorized')
     }
-    const cardCount = await this.getUserCardCount(user.uid, card.id)
+    const cardCount = await this.getUserCardCount(card.id)
     await this.setUserCardCount(user.uid, card.id, cardCount + 1)
     return card
   }
@@ -24,7 +24,7 @@ class CardDatabase {
     if (!user) {
       return Promise.reject('not authorized')
     }
-    const cardCount = await this.getUserCardCount(user.uid, card.id)
+    const cardCount = await this.getUserCardCount(card.id)
     await this.setUserCardCount(user.uid, card.id, cardCount === 1 ? null : cardCount - 1)
     return card
   }
@@ -59,19 +59,6 @@ class CardDatabase {
     return ref.val()
   }
 
-  // public async getUserCards(userId): Promise<UserMagicCard[]> {
-  //     const ref = await firebaseDatabase.ref(`user-cards/${userId}`).once('value')
-  //     const cards = ref.val()
-  //
-  //     await firebaseDatabase.ref(`user-cards/${userId}`).set({})
-  //
-  //     await Object.keys(cards).map(async (key) => {
-  //       await firebaseDatabase.ref(`user-cards/${userId}/${cards[key].id}`).set(cards[key].count)
-  //       console.log(cards[key].id)
-  //     })
-  //     return cards
-  // }
-
   public userCardsSubscriber(userId): Observable<UserMagicCard> {
     const getCard = async (id: string, count: number): Promise<UserMagicCard> => {
       const card = await this.getCardById(id)
@@ -103,8 +90,9 @@ class CardDatabase {
     return responseToArray(sets.val())
   }
 
-  private async getUserCardCount(userId: string, cardId: string): Promise<number> {
-    const ref = await firebaseDatabase.ref(`user-cards/${userId}/${cardId}`).once('value')
+  public async getUserCardCount(cardId: string): Promise<number> {
+    const user = firebase.auth().currentUser
+    const ref = await firebaseDatabase.ref(`user-cards/${user ? user.uid : '0'}/${cardId}`).once('value')
     return ref.val() || 0
   }
 
