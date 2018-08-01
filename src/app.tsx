@@ -41,6 +41,7 @@ import NavigationView, {
   NavigationPath,
   NavigationState,
 } from './navigation'
+import LazyLoad from './utils/lazy-load'
 
 const firebaseConfig = {
   apiKey: process.env.FIREBASE_API_KEY,
@@ -135,7 +136,7 @@ const appActions: ActionsType<AppState, AppActions> = {
 const Home = () => <div class="container">Home</div>
 
 const view = (state: AppState, actions: AppActions) => (
-  <div class="wrapper">
+  <div class="wrapper" oncreate={LazyLoad.startLazyLoad}>
     <NavigationView/>
     <Route path={NavigationPath.Home} render={Home}/>
     <Route path={NavigationPath.Login} render={LoginView(state, actions)}/>
