@@ -3,26 +3,25 @@ const LazyLoad = {
     let lazyImages = [].slice.call(document.querySelectorAll('img.lazy'))
     let active = false
 
+    const handleImage = (lazyImage) => {
+      const shouldLoad = (
+        lazyImage.getBoundingClientRect().top <= window.innerHeight && lazyImage.getBoundingClientRect().bottom >= 0
+      ) && getComputedStyle(lazyImage).display !== 'none'
+      if (shouldLoad) {
+        lazyImage.src = lazyImage.dataset.src
+        lazyImage.classList.remove('lazy')
+        lazyImages = lazyImages.filter((image) => image !== lazyImage)
+
+        if (lazyImages.length === 0) {
+          // LazyLoad.stopLazyLoad()
+        }
+      }
+    }
+
     if (active === false) {
       active = true
-
       setTimeout(() => {
-        lazyImages.forEach((lazyImage) => {
-          const shouldLoad = (
-            lazyImage.getBoundingClientRect().top <= window.innerHeight && lazyImage.getBoundingClientRect().bottom >= 0
-          ) && getComputedStyle(lazyImage).display !== 'none'
-          if (shouldLoad) {
-            lazyImage.src = lazyImage.dataset.src
-            lazyImage.classList.remove('lazy')
-
-            lazyImages = lazyImages.filter((image) => image !== lazyImage)
-
-            if (lazyImages.length === 0) {
-              // LazyLoad.stopLazyLoad()
-            }
-          }
-        })
-
+        lazyImages.forEach(handleImage)
         active = false
       }, 200)
     }

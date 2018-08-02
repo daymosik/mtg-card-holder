@@ -53,6 +53,26 @@ const handleMoreInfoDetails = (key: keyof MagicCardMoreInfo, value: any) => {
   }
 }
 
+interface MoreInfoProps {
+  moreInfo: MagicCardMoreInfo | undefined
+}
+
+const MoreInfo = ({moreInfo}: MoreInfoProps) => {
+  if (!moreInfo) {
+    return null
+  }
+  return Object.keys(moreInfo).map((key: keyof MagicCardMoreInfo) => moreInfo[key] ? (
+    <div class="row form-group">
+      <div class="col-sm-3 col-lg-2">
+        {key}
+      </div>
+      <div class="col-sm-9 col-lg-10">
+        {handleMoreInfoDetails(key, moreInfo[key])}
+      </div>
+    </div>
+  ) : null)
+}
+
 interface CardItemProps {
   card: MagicCard
   moreInfo: MagicCardMoreInfo | undefined,
@@ -78,16 +98,7 @@ const CardItem = ({ card, moreInfo, cardCount }: CardItemProps) => (
           </div>
         </div>
         <hr/>
-        {moreInfo && Object.keys(moreInfo).map((key: keyof MagicCardMoreInfo) => moreInfo[key] ? (
-          <div class="row form-group">
-            <div class="col-sm-3 col-lg-2">
-              {key}
-            </div>
-            <div class="col-sm-9 col-lg-10">
-              {handleMoreInfoDetails(key, moreInfo[key])}
-            </div>
-          </div>
-        ) : null)}
+        <MoreInfo moreInfo={moreInfo} />
       </div>
     </div>
   </div>
