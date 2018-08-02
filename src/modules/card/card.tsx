@@ -6,33 +6,38 @@ import LoadingSpinner from '../../components/loading-spinner'
 import Tooltip from '../../components/tooltip'
 import CardDatabaseService from '../../services/card-database'
 
-// TODO Maybe ?
 export interface CardState {
-  card: MagicCard | null
-  moreInfo: MagicCardMoreInfo | null
+  card: MagicCard | undefined
+  moreInfo: MagicCardMoreInfo | undefined
   cardCount: number
 }
 
 export const initialCardState: CardState = {
-  card: null,
-  moreInfo: null,
+  card: undefined,
+  moreInfo: undefined,
   cardCount: 0,
 }
 
 export interface CardActions {
-  getCard: (id) => (state: CardState, actions: CardActions) => Promise<MagicCard>
-  getCardCommit: (object: CardState) => (state: CardState) => CardState
+  initView: (cardId: string) => (state: CardState, actions: CardActions) => CardState
+  getCardCommit: (array) => (state: CardState) => CardState
 }
 
 export const cardActions: CardActions = {
-  getCard: (id) => async (state: CardState, actions: CardActions) => {
-    const card: MagicCard = await CardDatabaseService.getCardById(id)
-    const moreInfo: MagicCardMoreInfo = await CardDatabaseService.getCardMoreInfo(id)
-    const cardCount = await CardDatabaseService.getUserCardCount(id)
-    actions.getCardCommit({ card, moreInfo, cardCount })
-    return card
+  initView: (cardId: string) => (state: CardState, actions: CardActions) => {
+    Promise.all([
+      CardDatabaseService.getCardById(cardId),
+      CardDatabaseService.getCardMoreInfo(cardId),
+      CardDatabaseService.getUserCardCount(cardId),
+    ]).then((response) => actions.getCardCommit(response))
+    return initialCardState
   },
-  getCardCommit: (newState: CardState) => (state: CardState): CardState => ({ ...state, ...newState }),
+  getCardCommit: ([card, moreInfo, cardCount]) => (state: CardState): CardState => ({
+    ...state,
+    card,
+    moreInfo,
+    cardCount,
+  }),
 }
 
 const handleMoreInfoDetails = (key: keyof MagicCardMoreInfo, value: any) => {
@@ -50,7 +55,7 @@ const handleMoreInfoDetails = (key: keyof MagicCardMoreInfo, value: any) => {
 
 interface CardItemProps {
   card: MagicCard
-  moreInfo: MagicCardMoreInfo | null,
+  moreInfo: MagicCardMoreInfo | undefined,
   cardCount: number
 }
 
@@ -89,7 +94,7 @@ const CardItem = ({ card, moreInfo, cardCount }: CardItemProps) => (
 )
 
 export const CardView = (state: AppState, actions: AppActions) => ({ match }) => (
-  <div class="container" oncreate={() => actions.card.getCard(match.params.id)}>
+  <div class="container" oncreate={() => actions.card.initView(match.params.id)}>
     {!state.card.card && <LoadingSpinner/>}
     {state.card.card &&
     <div>

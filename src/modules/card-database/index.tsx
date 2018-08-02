@@ -4,7 +4,6 @@ import { MagicSet, MagicSetType } from '../../../types/magic'
 import { AppActions, AppState } from '../../app'
 import LoadingSpinner from '../../components/loading-spinner'
 import CardDatabaseService from '../../services/card-database'
-import MtgApi from '../../services/mtg-api'
 
 const setTypes: MagicSetType[] = [
   MagicSetType.Core,

@@ -32,7 +32,7 @@ export const initialCardCollectionState: CardCollectionState = {
 }
 
 export interface CardCollectionActions {
-  getCards: () => (state: CardCollectionState, actions: CardCollectionActions) => void
+  initView: () => (state: CardCollectionState, actions: CardCollectionActions) => void
   updateCardsList: (card: UserMagicCard) => (state: CardCollectionState) => CardCollectionState
   removeCardFromCollection: (card: UserMagicCard) => (state: CardCollectionState) => Promise<MagicCard>
   setDisplayType: (displayType: CardsDisplayType) => (state: CardCollectionState) => CardCollectionState,
@@ -41,7 +41,7 @@ export interface CardCollectionActions {
 let USER_CARD_SUBSCRIBER
 
 export const cardCollectionActions: CardCollectionActions = {
-  getCards: () => (state: CardCollectionState, actions: CardCollectionActions): void => {
+  initView: () => (state: CardCollectionState, actions: CardCollectionActions): void => {
     const user = firebase.auth().currentUser
     if (!user || !!USER_CARD_SUBSCRIBER) {
       return
@@ -69,7 +69,7 @@ export const CardCollectionView = (state: AppState, actions: AppActions) => () =
   return (
     <div class="container">
       <AddCardForm/>
-      <div oncreate={() => actions.cardCollection.getCards()}>
+      <div oncreate={() => actions.cardCollection.initView()}>
         {!cards.length && <LoadingSpinner/>}
         {cards.length > 0 &&
         <div>

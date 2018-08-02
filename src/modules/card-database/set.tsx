@@ -9,36 +9,34 @@ import LoadingSpinner from '../../components/loading-spinner'
 import CardDatabaseService from '../../services/card-database'
 
 export interface CardSetState {
-  set: MagicSet | null,
+  set: MagicSet | undefined,
   cards: MagicCard[],
   displayType: CardsDisplayType,
 }
 
 export const initialCardSetState: CardSetState = {
-  set: null,
+  set: undefined,
   cards: [],
   displayType: CardsDisplayType.List,
 }
 
-interface GetCardsCommitPayload {
-  cards: MagicCard[],
-  set: MagicSet
-}
+type GetCardsCommitPayload = [MagicCard[], MagicSet]
 
 export interface CardSetActions {
-  getCards: (set: string) => (state: CardSetState, actions: CardSetActions) => Promise<MagicCard[]>,
+  initView: (setId: string) => (state: CardSetState, actions: CardSetActions) => CardSetState,
   getCardsCommit: (object: GetCardsCommitPayload) => (state: CardSetState) => CardSetState,
   setDisplayType: (displayType: CardsDisplayType) => (state: CardSetState) => CardSetState,
 }
 
 export const cardSetActions: CardSetActions = {
-  getCards: (set) => async (state: CardSetState, actions: CardSetActions) => {
-    const setInfo: MagicSet = await CardDatabaseService.getSet(set)
-    const cards: MagicCard[] = await CardDatabaseService.getCardsBySet(set)
-    actions.getCardsCommit({ cards, set: setInfo })
-    return cards
+  initView: (setId: string) => (state: CardSetState, actions: CardSetActions) => {
+    Promise.all([
+      CardDatabaseService.getCardsBySet(setId),
+      CardDatabaseService.getSet(setId),
+    ]).then((response) => actions.getCardsCommit(response))
+    return initialCardSetState
   },
-  getCardsCommit: ({ cards, set }) => (state: CardSetState): CardSetState => ({
+  getCardsCommit: ([cards, set]) => (state: CardSetState): CardSetState => ({
     ...state,
     cards,
     set,
@@ -49,7 +47,7 @@ export const cardSetActions: CardSetActions = {
 export const SetView = (state: AppState, actions: AppActions) => ({ match }) => {
   const cards = state.cardSet.cards
   return (
-    <div class="container" oncreate={() => actions.cardSet.getCards(match.params.code)}>
+    <div class="container" oncreate={() => actions.cardSet.initView(match.params.code)}>
       {!state.cardSet.set && <LoadingSpinner/>}
       {state.cardSet.set &&
       <div>
