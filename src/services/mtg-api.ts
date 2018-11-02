@@ -1,5 +1,5 @@
 import * as Magic from 'mtgsdk-ts'
-import { firebaseDatabase } from '../app'
+import { firebaseDatabase } from '../firebase'
 
 export default class MtgApi {
   // public importCards() {

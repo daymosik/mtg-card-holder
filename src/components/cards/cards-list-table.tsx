@@ -2,7 +2,7 @@ import { h } from 'hyperapp'
 import { Link } from 'hyperapp-hash-router'
 
 import { MagicCard } from '../../../types/magic'
-import { UserMagicCard } from '../../modules/card-collection'
+import { UserMagicCard } from '../../modules/card-collection/card-collection'
 import ManaCostView from '../../modules/card/mana-cost'
 
 interface CardsListTableProps {

@@ -1,7 +1,7 @@
 import { h } from 'hyperapp'
 import { Link } from 'hyperapp-hash-router'
-import { AppActions, AppState } from './app'
-import LoginService from './services/login'
+import { AppActions, AppState } from '../app'
+import LoginService from '../services/login'
 
 export enum NavigationPath {
   Home = '/',
@@ -9,6 +9,7 @@ export enum NavigationPath {
   Signup = '/signup',
   CardDatabase = '/card-database',
   CardCollection = '/card-collection',
+  Admin = '/admin',
 }
 
 export interface NavigationState {
@@ -80,6 +81,7 @@ const NavigationMenu = ({ mobileMenuOpen, hideMobileMenu, authorized }: Navigati
     <ul class="navbar-nav mr-auto">
       <NavigationListItem path={NavigationPath.CardDatabase} name={'Card Database'}/>
       <NavigationListItem path={NavigationPath.CardCollection} name={'My Collection'}/>
+      <NavigationListItem path={NavigationPath.Admin} name={'Admin'}/>
     </ul>
     <ul class="navbar-nav">
       {!authorized && <NavigationListItem path={NavigationPath.Signup} name={'Signup'}/>}

@@ -1,7 +1,7 @@
 import { h } from 'hyperapp'
 import { Link } from 'hyperapp-hash-router'
 import { AppActions, AppState } from '../../app'
-import { NavigationPath } from '../../navigation'
+import { NavigationPath } from '../../slices/navigation'
 import LoginService from '../../services/login'
 import { AuthForm } from '../auth/auth-form'
 

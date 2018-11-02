@@ -2,8 +2,8 @@ import firebase = require('firebase/app')
 import 'firebase/auth'
 import { Observable } from 'rxjs'
 import { MagicCard, MagicCardMoreInfo, MagicSet } from '../../types/magic'
-import { firebaseDatabase } from '../app'
-import { UserMagicCard } from '../modules/card-collection'
+import { firebaseDatabase } from '../firebase'
+import { UserMagicCard } from '../modules/card-collection/card-collection'
 
 const capitalizeFirstLetter = (str: string): string => str.charAt(0).toUpperCase() + str.slice(1)
 const responseToArray = (object: object): any[] => object ? Object.keys(object).map((key) => object[key]) : []

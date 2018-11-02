@@ -2,8 +2,8 @@ import { h } from 'hyperapp'
 import { FormGroup } from '../../components/form'
 import { FormInputEmail, FormInputPassword } from '../../components/form/input'
 
-import { LoginActions, LoginState } from '../login'
-import { SignupActions, SignupState } from '../signup'
+import { LoginActions, LoginState } from '../login/login'
+import { SignupActions, SignupState } from '../signup/signup'
 
 export interface AuthFormProps {
   state: LoginState | SignupState
