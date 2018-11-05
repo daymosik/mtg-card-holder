@@ -8,7 +8,7 @@ import { UserMagicCard } from '../modules/card-collection/card-collection'
 const capitalizeFirstLetter = (str: string): string => str.charAt(0).toUpperCase() + str.slice(1)
 const responseToArray = (object: object): any[] => object ? Object.keys(object).map((key) => object[key]) : []
 
-class CardDatabase {
+export class CardDatabase {
   public async addCardToCollection(card: MagicCard): Promise<MagicCard> {
     const user = firebase.auth().currentUser
     if (!user) {

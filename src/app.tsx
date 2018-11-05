@@ -5,7 +5,7 @@ import './assets/styles/app.scss'
 import { authActions, AuthActions, AuthState, initialAuthState } from './auth'
 import ProtectedRoute from './components/protected-route'
 import './firebase'
-import AdminView from './modules/admin/admin'
+import AdminView, { adminActions, AdminActions, AdminState, initialAdminState } from './modules/admin/admin'
 import FooterView from './slices/footer'
 
 import CardCollectionView, {
@@ -55,6 +55,7 @@ export interface AppState {
   card: CardState,
   cardForm: AddCardFormState,
   cardCollection: CardCollectionState,
+  admin: AdminState,
 }
 
 const initialState: AppState = {
@@ -68,6 +69,7 @@ const initialState: AppState = {
   card: initialCardState,
   cardForm: initialAddCardFormState,
   cardCollection: initialCardCollectionState,
+  admin: initialAdminState,
 }
 
 export interface AppActions {
@@ -81,6 +83,7 @@ export interface AppActions {
   card: CardActions,
   cardForm: AddCardFormActions,
   cardCollection: CardCollectionActions,
+  admin: AdminActions,
 }
 
 const appActions: ActionsType<AppState, AppActions> = {
@@ -94,6 +97,7 @@ const appActions: ActionsType<AppState, AppActions> = {
   card: cardActions,
   cardForm: addCardFormActions,
   cardCollection: cardCollectionActions,
+  admin: adminActions,
 }
 
 const Home = () => <div class="container">Home</div>
