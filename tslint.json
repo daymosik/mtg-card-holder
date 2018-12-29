@@ -8,6 +8,7 @@
     "trailing-comma": [true, { "multiline": "always", "singleline": "never" }],
     "interface-name": [true, "never-prefix"],
     "no-submodule-imports": false,
+    "no-implicit-dependencies": false,
     "object-literal-sort-keys": false,
     "no-console": false
   },

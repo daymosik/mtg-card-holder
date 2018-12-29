@@ -26,6 +26,9 @@ run:
 test:
 	yarn run test
 
+lint:
+	tslint -p . -t codeFrame
+
 node_modules/INSTALLED: package.json
 	yarn install
 	touch $@

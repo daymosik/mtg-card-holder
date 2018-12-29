@@ -9,6 +9,18 @@
     "sourceMap": true,
     "strictNullChecks": true,
     "jsx": "react",
-    "jsxFactory": "h"
+    "jsxFactory": "h",
+    "baseUrl": ".",
+    "paths": {
+      "@app": [ "src/ts/app.tsx" ],
+      "@auth": [ "src/ts/auth.ts" ],
+      "@firebase-config": [ "src/ts/firebase.ts" ],
+      "@components/*": [ "src/ts/components/*" ],
+      "@models/*": [ "src/ts/models/*" ],
+      "@modules/*": [ "src/ts/modules/*" ],
+      "@services/*": [ "src/ts/services/*" ],
+      "@slices/*": [ "src/ts/slices/*" ],
+      "@utils/*": [ "src/ts/utils/*" ]
+    }
   }
 }
