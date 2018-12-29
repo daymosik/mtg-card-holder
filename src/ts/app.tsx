@@ -4,6 +4,7 @@ import AdminView, { adminActions, AdminActions, AdminState, initialAdminState } 
 import {
   addCardFormActions, AddCardFormActions, AddCardFormState, initialAddCardFormState,
 } from '@modules/card-collection/add-card-form'
+import CameraView from '@modules/card-collection/camera'
 import CardCollectionView, {
   cardCollectionActions, CardCollectionActions, CardCollectionState, initialCardCollectionState,
 } from '@modules/card-collection/card-collection'
@@ -90,8 +91,9 @@ const view = (state: AppState, actions: AppActions) => (
     <Route path={NavigationPath.Home} render={Home}/>
     <Route path={NavigationPath.Login} render={LoginView(state, actions)}/>
     <Route path={NavigationPath.Signup} render={SignupView(state, actions)}/>
-    <ProtectedRoute path={NavigationPath.CardDatabase} render={CardDatabaseView}/>
+    <Route path={NavigationPath.CardDatabase} render={CardDatabaseView}/>
     <ProtectedRoute path={NavigationPath.CardCollection} render={CardCollectionView}/>
+    <Route path={NavigationPath.Camera} render={CameraView(state, actions)}/>
     <Route path={`/set/:code`} render={SetView(state, actions)}/>
     <Route path={`/card/:id`} render={CardView(state, actions)}/>
     <ProtectedRoute path={NavigationPath.Admin} render={AdminView}/>

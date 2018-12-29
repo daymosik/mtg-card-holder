@@ -15,7 +15,7 @@ const rules = [
       use: ['css-loader', 'sass-loader']
     })
   },
-  { test: /\.(png|jpg)$/, loader: 'file-loader' },
+  { test: /\.(png|jpg|jpeg|gif)$/, loader: 'file-loader' },
 ]
 
 module.exports = rules

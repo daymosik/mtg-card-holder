@@ -9,6 +9,7 @@ export enum NavigationPath {
   Signup = '/signup',
   CardDatabase = '/card-database',
   CardCollection = '/card-collection',
+  Camera = '/camera',
   Admin = '/admin',
 }
 
@@ -81,6 +82,7 @@ const NavigationMenu = ({ mobileMenuOpen, hideMobileMenu, authorized }: Navigati
     <ul class="navbar-nav mr-auto">
       <NavigationListItem path={NavigationPath.CardDatabase} name={'Card Database'}/>
       <NavigationListItem path={NavigationPath.CardCollection} name={'My Collection'}/>
+      <NavigationListItem path={NavigationPath.Camera} name={'Camera'}/>
       <NavigationListItem path={NavigationPath.Admin} name={'Admin'}/>
     </ul>
     <ul class="navbar-nav">
