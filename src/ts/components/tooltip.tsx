@@ -1,5 +1,5 @@
 import { h } from 'hyperapp'
-import * as tippy from 'tippy.js'
+import tippy, {Options} from 'tippy.js'
 
 interface TooltipOptions {
   allowTitleHTML: boolean
@@ -43,7 +43,7 @@ interface TooltipOptions {
   zIndex: number
 }
 
-const tooltipDefaultOptions: TooltipOptions = {
+const tooltipDefaultOptions: Options = {
   ...tippy.defaults,
   arrow: true,
   theme: 'mtg',

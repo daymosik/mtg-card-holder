@@ -34,9 +34,9 @@ module.exports = {
     net: 'empty',
     tls: 'empty'
   },
-  optimization: {
-    minimizer: [
-      new UglifyJsPlugin(),
-    ],
-  },
+  // optimization: {
+  //   minimizer: [
+  //     new UglifyJsPlugin(),
+  //   ],
+  // },
 }
