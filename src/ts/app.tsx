@@ -16,18 +16,20 @@ import SetView, {
 import CardView, { cardActions, CardActions, CardState, initialCardState } from '@modules/card/card'
 import LoginView, { initialLoginState, LoginActions, loginActions, LoginState } from '@modules/login/login'
 import SignupView, { initialSignupState, signupActions, SignupActions, SignupState } from '@modules/signup/signup'
+import { LocationState, parseLocation, Route } from '@services/location'
 import FooterView from '@slices/footer'
 import NavigationView, {
   initialNavigationState, NavigationActions, navigationAgtions, NavigationPath, NavigationState,
 } from '@slices/navigation'
 import LazyLoad from '@utils/lazy-load'
+import firebase = require('firebase/app')
+import 'firebase/auth'
 import { ActionsType, app, h } from 'hyperapp'
-import { Link, location, Route } from 'hyperapp-hash-router'
 import '../assets/styles/app.scss'
 import ProtectedRoute from './components/protected-route'
 
 export interface AppState {
-  location: location.state
+  location: LocationState,
   auth: AuthState
   nav: NavigationState
   login: LoginState
@@ -41,7 +43,7 @@ export interface AppState {
 }
 
 const initialState: AppState = {
-  location: location.state,
+  location: parseLocation(),
   auth: initialAuthState,
   nav: initialNavigationState,
   login: initialLoginState,
@@ -55,7 +57,7 @@ const initialState: AppState = {
 }
 
 export interface AppActions {
-  location: location.actions
+  // location: location.actions
   auth: AuthActions,
   nav: NavigationActions,
   login: LoginActions,
@@ -68,8 +70,8 @@ export interface AppActions {
   admin: AdminActions,
 }
 
-const appActions: ActionsType<AppState, AppActions> = {
-  location: location.actions,
+export const appActions: ActionsType<AppState, AppActions> = {
+  // location: location.actions,
   auth: authActions,
   nav: navigationAgtions,
   login: loginActions,
@@ -84,21 +86,40 @@ const appActions: ActionsType<AppState, AppActions> = {
 
 const Home = () => <div class="container">Home</div>
 
-const view = (state: AppState, actions: AppActions) => (
+const view = (state: AppState) => (
   <div class="wrapper" oncreate={LazyLoad.startLazyLoad}>
-    <NavigationView/>
-    <Route path={NavigationPath.Home} render={Home}/>
-    <Route path={NavigationPath.Login} render={LoginView(state, actions)}/>
-    <Route path={NavigationPath.Signup} render={SignupView(state, actions)}/>
-    <ProtectedRoute path={NavigationPath.CardDatabase} render={CardDatabaseView}/>
-    <ProtectedRoute path={NavigationPath.CardCollection} render={CardCollectionView}/>
-    <Route path={`/set/:code`} render={SetView(state, actions)}/>
-    <Route path={`/card/:id`} render={CardView(state, actions)}/>
-    <ProtectedRoute path={NavigationPath.Admin} render={AdminView}/>
+    <NavigationView {...state}/>
+    <Route {...state} path={NavigationPath.Home} render={Home}/>
+    <Route {...state} path={NavigationPath.Login} render={LoginView}/>
+    <Route {...state} path={NavigationPath.Signup} render={SignupView}/>
+    <ProtectedRoute {...state} path={NavigationPath.CardDatabase} render={CardDatabaseView}/>
+    <ProtectedRoute {...state} path={NavigationPath.CardCollection} render={CardCollectionView}/>
+    <Route {...state} path={`/set/:code`} render={SetView(state)}/>
+    <Route {...state} path={`/card/:id`} render={CardView(state)}/>
+    <ProtectedRoute {...state} path={NavigationPath.Admin} render={AdminView}/>
     <FooterView/>
   </div>
 )
 
-export const mainActions = app(initialState, appActions, view, document.body)
+app({
+  init: initialState,
+  // appActions,
+  view,
+  subscriptions: (state) => {
+    console.log(state)
+    appActions.cardDatabase.getSets(state)
 
-const unsubscribe = location.subscribe(mainActions.location)
+    firebase.auth().onAuthStateChanged((user: firebase.User) => {
+      // if (user) {
+      //   mainActions.auth.authorize()
+      // } else {
+      //   mainActions.auth.unauthorize()
+      // }
+    })
+  },
+  node: document.getElementById('app'),
+})
+
+// export const mainActions = app(initialState, appActions, view, document.body)
+
+// const unsubscribe = location.subscribe(mainActions.location)

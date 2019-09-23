@@ -1,9 +1,9 @@
-import { AppActions, AppState } from '@app'
+import { appActions, AppActions, AppState } from '@app'
 import { AuthForm } from '@modules/auth/auth-form'
 import LoginService from '@services/login'
 import { NavigationPath } from '@slices/navigation'
 import { h } from 'hyperapp'
-import { Link } from 'hyperapp-hash-router'
+import { Link } from '@services/location'
 
 export interface LoginState {
   email: string
@@ -37,10 +37,10 @@ export const loginActions: LoginActions = {
   handleLoginSubmitError: (message: string) => (state: LoginState): LoginState => ({ ...state, errorMessage: message }),
 }
 
-export const LoginView = (state: AppState, actions: AppActions) => () => (
+export const LoginView = (state: AppState) => (
   <div class="container pt-5">
     <h2>Login</h2>
-    <AuthForm state={state.login} actions={actions.login} buttonText={'Log In'}>
+    <AuthForm state={state.login} actions={appActions.login} buttonText={'Log In'}>
       <div>Don't have an account? <Link to={NavigationPath.Signup}>Create one</Link>.</div>
     </AuthForm>
   </div>

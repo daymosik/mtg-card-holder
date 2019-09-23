@@ -1,4 +1,4 @@
-import { AppActions, AppState } from '@app'
+import { appActions, AppActions, AppState } from '@app'
 import CardsListImages from '@components/cards/cards-list-images'
 import { CardsDisplayType, default as CardsListSwitcher } from '@components/cards/cards-list-switcher'
 import CardsListTable from '@components/cards/cards-list-table'
@@ -8,7 +8,7 @@ import CardDatabaseService from '@services/card-database'
 import firebase = require('firebase/app')
 import 'firebase/auth'
 import { h } from 'hyperapp'
-import { Link } from 'hyperapp-hash-router'
+import { Link } from '@services/location'
 import AddCardForm from './add-card-form'
 
 export interface UserMagicCard extends MagicCard {
@@ -61,21 +61,21 @@ export const cardCollectionActions: CardCollectionActions = {
   }),
 }
 
-export const CardCollectionView = (state: AppState, actions: AppActions) => () => {
+export const CardCollectionView = (state: AppState) => {
   const cards = Object.keys(state.cardCollection.cards).map((key) => state.cardCollection.cards[key])
     .filter((card) => card.count > 0)
   return (
     <div class="container">
       <AddCardForm/>
-      <div oncreate={() => actions.cardCollection.initView()}>
+      <div oncreate={() => appActions.cardCollection.initView()}>
         {!cards.length && <LoadingSpinner/>}
         {cards.length > 0 &&
         <div>
           <div class="row">
-            <CardsListSwitcher className="ml-auto" setDisplayType={actions.cardCollection.setDisplayType}/>
+            <CardsListSwitcher className="ml-auto" setDisplayType={appActions.cardCollection.setDisplayType}/>
           </div>
           {state.cardCollection.displayType === CardsDisplayType.List && (
-            <CardsListTable cards={cards} decreaseCardCount={actions.cardCollection.removeCardFromCollection}/>
+            <CardsListTable cards={cards} decreaseCardCount={appActions.cardCollection.removeCardFromCollection}/>
           )}
           {state.cardCollection.displayType === CardsDisplayType.Images && <CardsListImages cards={cards}/>}
         </div>}

@@ -1,15 +1,15 @@
-import { AppActions, AppState } from '@app'
+import { appActions, AppState } from '@app'
+import { Link } from '@services/location'
 import LoginService from '@services/login'
 import { h } from 'hyperapp'
-import { Link } from 'hyperapp-hash-router'
 
 export enum NavigationPath {
-  Home = '/',
-  Login = '/login',
-  Signup = '/signup',
-  CardDatabase = '/card-database',
-  CardCollection = '/card-collection',
-  Admin = '/admin',
+  Home = '',
+  Login = 'login',
+  Signup = 'signup',
+  CardDatabase = 'card-database',
+  CardCollection = 'card-collection',
+  Admin = 'admin',
 }
 
 export interface NavigationState {
@@ -21,21 +21,21 @@ export const initialNavigationState: NavigationState = {
 }
 
 export interface NavigationActions {
-  toggleMobileMenu: () => (state: NavigationState) => NavigationState
-  hideMobileMenu: () => (state: NavigationState) => NavigationState
+  toggleMobileMenu: (state: AppState) => AppState
+  hideMobileMenu: (state: AppState) => AppState
 }
 
 export const navigationAgtions: NavigationActions = {
-  toggleMobileMenu: () => (state: NavigationState): NavigationState => (
-    { ...state, mobileMenuOpen: !state.mobileMenuOpen }
+  toggleMobileMenu: (state: AppState): AppState => (
+    { ...state, nav: { ...state.nav, mobileMenuOpen: !state.nav.mobileMenuOpen } }
   ),
-  hideMobileMenu: () => (state: NavigationState): NavigationState => (
-    { ...state, mobileMenuOpen: false }
+  hideMobileMenu: (state: AppState): AppState => (
+    { ...state, nav: { ...state.nav, mobileMenuOpen: false } }
   ),
 }
 
 interface NavigationButtonProps {
-  onclick: () => void
+  onclick: (state) => AppState
 }
 
 const NavigationButton = ({ onclick }: NavigationButtonProps) => (
@@ -47,7 +47,7 @@ const NavigationButton = ({ onclick }: NavigationButtonProps) => (
     aria-controls="navbarSupportedContent"
     aria-expanded="false"
     aria-label="Toggle navigation"
-    onclick={() => onclick()}
+    onclick={(state) => onclick(state)}
   >
     <span class="navbar-toggler-icon"/>
   </button>
@@ -68,7 +68,7 @@ const NavigationListItem = ({ path, name, onclick }: NavigationListItemProps) =>
 
 interface NavigationMenuProps {
   mobileMenuOpen: boolean
-  hideMobileMenu: () => void
+  hideMobileMenu: (state: AppState) => AppState
   authorized: boolean
 }
 
@@ -76,7 +76,7 @@ const NavigationMenu = ({ mobileMenuOpen, hideMobileMenu, authorized }: Navigati
   <div
     class={`collapse navbar-collapse pull-right ${mobileMenuOpen ? 'show' : ''}`}
     id="navbarSupportedContent"
-    onclick={() => hideMobileMenu()}
+    onclick={(state) => hideMobileMenu(state)}
   >
     <ul class="navbar-nav mr-auto">
       <NavigationListItem path={NavigationPath.CardDatabase} name={'Card Database'}/>
@@ -91,20 +91,24 @@ const NavigationMenu = ({ mobileMenuOpen, hideMobileMenu, authorized }: Navigati
   </div>
 )
 
-export const NavigationView = () => (state: AppState, actions: AppActions) => (
-  <nav class="navbar navbar-expand-lg navbar-dark">
-    <div class="container">
-      <NavigationButton onclick={() => actions.nav.toggleMobileMenu()}/>
+export const NavigationView = (state: AppState) => {
+  return (
+    <nav class="navbar navbar-expand-lg navbar-dark">
+      <div class="container">
+        <NavigationButton onclick={(s) => appActions.nav.toggleMobileMenu(s)}/>
 
-      <Link class="navbar-brand" to="/" alt="MTG Card Holder"/>
+        <Link to="/">
+          <div class="navbar-brand" alt="MTG Card Holder"/>
+        </Link>
 
-      <NavigationMenu
-        mobileMenuOpen={state.nav.mobileMenuOpen}
-        hideMobileMenu={actions.nav.hideMobileMenu}
-        authorized={state.auth.authorized}
-      />
-    </div>
-  </nav>
-)
+        <NavigationMenu
+          mobileMenuOpen={state.nav.mobileMenuOpen}
+          hideMobileMenu={appActions.nav.hideMobileMenu}
+          authorized={state.auth.authorized}
+        />
+      </div>
+    </nav>
+  )
+}
 
 export default NavigationView

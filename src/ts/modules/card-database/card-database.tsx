@@ -1,9 +1,9 @@
-import { AppActions, AppState } from '@app'
+import { appActions, AppState } from '@app'
 import LoadingSpinner from '@components/loading-spinner'
 import { MagicSet, MagicSetType } from '@models/magic'
 import CardDatabaseService from '@services/card-database'
+import { Link } from '@services/location'
 import { h } from 'hyperapp'
-import { Link } from 'hyperapp-hash-router'
 
 const setTypes: MagicSetType[] = [
   MagicSetType.Core,
@@ -41,9 +41,11 @@ export interface CardDatabaseActions {
 }
 
 export const cardDatabaseActions = {
-  getSets: () => async (state: CardDatabaseState, actions: CardDatabaseActions) => {
+  getSets: async (state: CardDatabaseState) => {
+    console.log('a')
+
     const sets: MagicSet[] = await CardDatabaseService.getSets()
-    actions.getSetsCommit(sets)
+    // actions.getSetsCommit(sets)
     return sets
   },
   getSetsCommit: (sets: MagicSet[]) => (state: CardDatabaseState): CardDatabaseState => ({ ...state, sets }),
@@ -112,10 +114,10 @@ const SetListView = ({ sets }: SetListViewProps) => {
   )
 }
 
-export const CardDatabaseView = (state: AppState, actions: AppActions) => () => (
+export const CardDatabaseView = (state: AppState) => (
   <div class="container">
     <h3>Card Database</h3>
-    <div oncreate={() => actions.cardDatabase.getSets()}>
+    <div onCreate={() => appActions.cardDatabase.getSets()}>
       {!state.cardDatabase.sets.length && <LoadingSpinner/>}
       {state.cardDatabase.sets.length > 0 && <SetListView sets={state.cardDatabase.sets}/>}
     </div>

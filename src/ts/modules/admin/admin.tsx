@@ -1,4 +1,4 @@
-import { AppActions, AppState } from '@app'
+import { appActions, AppActions, AppState } from '@app'
 import { FormGroup } from '@components/form'
 import MtgApiService from '@services/mtg-api'
 import { h } from 'hyperapp'
@@ -30,18 +30,18 @@ export const adminActions: AdminActions = {
   },
 }
 
-export const AdminView = (state: AppState, actions: AppActions) => () => (
+export const AdminView = (state: AppState) => (
   <div class="container">
     <h2>Administration</h2>
 
     <form onsubmit={(e) => e.preventDefault()}>
       {state.admin.errorMessage && <p className="error-message">{state.admin.errorMessage}</p>}
       <FormGroup label={'Import sets'}>
-        <button class="btn btn-primary form-control" onclick={actions.admin.importSets}>Import</button>
+        <button class="btn btn-primary form-control" onclick={appActions.admin.importSets}>Import</button>
       </FormGroup>
 
       <FormGroup label={'Import cards'}>
-        <button class="btn btn-primary form-control" onclick={actions.admin.importCards}>Import</button>
+        <button class="btn btn-primary form-control" onclick={appActions.admin.importCards}>Import</button>
       </FormGroup>
     </form>
 

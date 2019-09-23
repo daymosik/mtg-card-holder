@@ -1,9 +1,9 @@
-import { AppActions, AppState } from '@app'
+import { appActions, AppActions, AppState } from '@app'
 import { AuthForm } from '@modules/auth/auth-form'
 import RegistrationService from '@services/registration'
 import { NavigationPath } from '@slices/navigation'
 import { h } from 'hyperapp'
-import { Link } from 'hyperapp-hash-router'
+import { Link } from '@services/location'
 
 export interface SignupState {
   email: string
@@ -40,10 +40,10 @@ export const signupActions: SignupActions = {
   }),
 }
 
-export const SignupView = (state: AppState, actions: AppActions) => () => (
+export const SignupView = (state: AppState) => (
   <div class="container pt-5">
     <h2>Register</h2>
-    <AuthForm state={state.signup} actions={actions.signup} buttonText={'Register'}>
+    <AuthForm state={state.signup} actions={appActions.signup} buttonText={'Register'}>
       <div>Already have an account? <Link to={NavigationPath.Login}>Login</Link>.</div>
     </AuthForm>
   </div>

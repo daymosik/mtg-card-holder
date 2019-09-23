@@ -1,7 +1,7 @@
 import { MagicCard } from '@models/magic'
 import LazyLoad from '@utils/lazy-load'
 import { h } from 'hyperapp'
-import { Link } from 'hyperapp-hash-router'
+import { Link } from '@services/location'
 
 interface CardsListImagesProps {
   cards: MagicCard[]

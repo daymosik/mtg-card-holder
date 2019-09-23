@@ -6,7 +6,7 @@ import LoadingSpinner from '@components/loading-spinner'
 import { MagicCard, MagicSet } from '@models/magic'
 import CardDatabaseService from '@services/card-database'
 import { h } from 'hyperapp'
-import { Link } from 'hyperapp-hash-router'
+import { Link } from '@services/location'
 
 export interface CardSetState {
   set: MagicSet | undefined,
