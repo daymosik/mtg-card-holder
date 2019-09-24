@@ -16,7 +16,7 @@ const FormInput = ({ name, type, value, handleInputChange }: FormInputProps) => 
     type={type}
     name={name}
     value={value}
-    onkeyup={(event) => handleInputChange({ [name]: event.target.value })}
+    oninput={[handleInputChange, (event) => ({ [name]: event.target.value })]}
   />
 )
 

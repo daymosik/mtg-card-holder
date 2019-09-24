@@ -1,7 +1,6 @@
-import { appActions, AppState } from '@app'
+import { AppState } from '@app'
 import LoadingSpinner from '@components/loading-spinner'
 import { MagicSet, MagicSetType } from '@models/magic'
-import CardDatabaseService from '@services/card-database'
 import { Link } from '@services/location'
 import { h } from 'hyperapp'
 
@@ -36,19 +35,11 @@ export const initialCardDatabaseState = {
 }
 
 export interface CardDatabaseActions {
-  getSets: typeof cardDatabaseActions.getSets
-  getSetsCommit: typeof cardDatabaseActions.getSetsCommit
+  getSetsCommit: (state: AppState, sets: MagicSet[]) => AppState
 }
 
-export const cardDatabaseActions = {
-  getSets: async (state: CardDatabaseState) => {
-    console.log('a')
-
-    const sets: MagicSet[] = await CardDatabaseService.getSets()
-    // actions.getSetsCommit(sets)
-    return sets
-  },
-  getSetsCommit: (sets: MagicSet[]) => (state: CardDatabaseState): CardDatabaseState => ({ ...state, sets }),
+export const cardDatabaseActions: CardDatabaseActions = {
+  getSetsCommit: (state, sets) => ({ ...state, cardDatabase: { sets } }),
 }
 
 interface SetListTableProps {
@@ -77,7 +68,7 @@ interface SetListItemProps {
 const SetListItem = ({ set }: SetListItemProps) => (
   <tr>
     <td class="h4 text-center"><i class={`ss ss-${set.code.toLowerCase()}`}/></td>
-    <td class="align-content-center"><Link to={`/set/${set.code}`}>{set.name}</Link></td>
+    <td class="align-content-center"><Link to={`set/${set.code}`}>{set.name}</Link></td>
     <td class="text-nowrap text-right">{set.releaseDate}</td>
   </tr>
 )
@@ -117,7 +108,7 @@ const SetListView = ({ sets }: SetListViewProps) => {
 export const CardDatabaseView = (state: AppState) => (
   <div class="container">
     <h3>Card Database</h3>
-    <div onCreate={() => appActions.cardDatabase.getSets()}>
+    <div>
       {!state.cardDatabase.sets.length && <LoadingSpinner/>}
       {state.cardDatabase.sets.length > 0 && <SetListView sets={state.cardDatabase.sets}/>}
     </div>

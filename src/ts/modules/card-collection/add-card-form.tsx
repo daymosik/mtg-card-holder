@@ -1,4 +1,4 @@
-import { AppActions, AppState } from '@app'
+import { appActions, AppActions, AppState } from '@app'
 import { MagicCard } from '@models/magic'
 import ManaCostView from '@modules/card/mana-cost'
 import CardDatabaseService from '@services/card-database'
@@ -99,20 +99,20 @@ const AddCardInfo = ({ chosenCard, addCardToCollection }: AddCardInfoProps) => (
   </div>
 )
 
-export const AddCardForm = () => (state: AppState, actions: AppActions) => {
+export const AddCardForm = (state: AppState) => {
   return (
     <div class="position-relative">
       <AddCardInput
         handleInputChange={(event) => {
-          actions.cardForm.handleInputChange(event.target.value)
-          actions.cardForm.fetchAutocomplete(event.target.value)
+          appActions.cardForm.handleInputChange(event.target.value)
+          appActions.cardForm.fetchAutocomplete(event.target.value)
         }}
         autocompleteList={state.cardForm.autocomplete}
-        handleAutocompleteClick={actions.cardForm.handleAutocompleteClick}
+        handleAutocompleteClick={appActions.cardForm.handleAutocompleteClick}
       />
 
       {state.cardForm.chosenCard &&
-      <AddCardInfo chosenCard={state.cardForm.chosenCard} addCardToCollection={actions.cardForm.addCardToCollection}/>}
+      <AddCardInfo chosenCard={state.cardForm.chosenCard} addCardToCollection={appActions.cardForm.addCardToCollection}/>}
     </div>
   )
 }

@@ -9,6 +9,7 @@ const Unauthorized = () => (
 
 const isCurrentRoute = (path) => window.location.hash.includes(path)
 
+// TODO: type
 // export const ProtectedRoute = (state, { path, render }) => {
 export const ProtectedRoute = (props) => {
   if (isCurrentRoute(props.path)) {

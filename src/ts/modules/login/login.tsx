@@ -18,23 +18,34 @@ export const initialLoginState: LoginState = {
 }
 
 export interface LoginActions {
-  handleInputChange: (object) => (state: LoginState) => LoginState
-  submitForm: (event: Event) => (state: LoginState, actions: LoginActions) => void
-  handleLoginSubmitError: (message: string) => (state: LoginState) => LoginState
+  handleInputChange: (state: AppState, object: { [key: string]: string }) => AppState
+  submitForm: (state: AppState, event: Event) => void
+  handleLoginSubmitError: (state: AppState, message: string) => AppState
 }
 
 export const loginActions: LoginActions = {
-  handleInputChange: (object) => (state: LoginState): LoginState => ({ ...state, ...object }),
-  submitForm: (event: Event) => async (state: LoginState, actions: LoginActions) => {
+  handleInputChange: (state, object) => ({
+    ...state,
+    login: { ...state.login, ...object },
+  }),
+  submitForm: (state, event) => {
     event.preventDefault()
-    try {
-      await LoginService.login(state.email, state.password)
-      window.location.hash = '/'
-    } catch (e) {
-      actions.handleLoginSubmitError(e.message)
+
+    const func = async (s) => {
+      try {
+        await LoginService.login(s.login.email, s.login.password)
+        window.location.hash = '/'
+      } catch (e) {
+        appActions.login.handleLoginSubmitError(s, e.message)
+      }
     }
+
+    return [{ ...state }, func(state)]
   },
-  handleLoginSubmitError: (message: string) => (state: LoginState): LoginState => ({ ...state, errorMessage: message }),
+  handleLoginSubmitError: (state, message) => ({
+    ...state,
+    login: { ...state.login, errorMessage: message },
+  }),
 }
 
 export const LoginView = (state: AppState) => (

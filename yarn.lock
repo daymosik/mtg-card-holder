@@ -312,6 +312,11 @@
     lodash.camelcase "^4.3.0"
     protobufjs "^6.8.6"
 
+"@hyperapp/events@^0.0.3":
+  version "0.0.3"
+  resolved "https://registry.yarnpkg.com/@hyperapp/events/-/events-0.0.3.tgz#b258441e670a1d5da08db2d23f5e3eb152143e1d"
+  integrity sha512-Kboh7bpHDHMSjjJJAOYGDig+kVhGSWJfEbV39Zo+NcKPtwbjR4hK9hANiLWCN+FfdFvB5ayVDkpttmGA/EGf6g==
+
 "@jest/console@^24.7.1":
   version "24.7.1"
   resolved "https://registry.yarnpkg.com/@jest/console/-/console-24.7.1.tgz#32a9e42535a97aedfe037e725bd67e954b459545"

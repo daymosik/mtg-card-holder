@@ -66,7 +66,7 @@ export const CardCollectionView = (state: AppState) => {
     .filter((card) => card.count > 0)
   return (
     <div class="container">
-      <AddCardForm/>
+      <AddCardForm {...state}/>
       <div oncreate={() => appActions.cardCollection.initView()}>
         {!cards.length && <LoadingSpinner/>}
         {cards.length > 0 &&

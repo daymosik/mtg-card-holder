@@ -1,8 +1,8 @@
-import { AppActions, AppState } from '@app'
+import { appActions, AppState } from '@app'
 import LoadingSpinner from '@components/loading-spinner'
 import Tooltip from '@components/tooltip'
 import { MagicCard, MagicCardMoreInfo } from '@models/magic'
-import CardDatabaseService from '@services/card-database'
+import { MatchProps } from '@services/location'
 import { h } from 'hyperapp'
 
 export interface CardState {
@@ -18,24 +18,18 @@ export const initialCardState: CardState = {
 }
 
 export interface CardActions {
-  initView: (cardId: string) => (state: CardState, actions: CardActions) => CardState
-  getCardCommit: (array) => (state: CardState) => CardState
+  getCardCommit: (state: AppState, array) => AppState
 }
 
 export const cardActions: CardActions = {
-  initView: (cardId: string) => (state: CardState, actions: CardActions) => {
-    Promise.all([
-      CardDatabaseService.getCardById(cardId),
-      CardDatabaseService.getCardMoreInfo(cardId),
-      CardDatabaseService.getUserCardCount(cardId),
-    ]).then((response) => actions.getCardCommit(response))
-    return initialCardState
-  },
-  getCardCommit: ([card, moreInfo, cardCount]) => (state: CardState): CardState => ({
+  getCardCommit: (state, [card, moreInfo, cardCount]) => ({
     ...state,
-    card,
-    moreInfo,
-    cardCount,
+    card: {
+      ...state.card,
+      card,
+      moreInfo,
+      cardCount,
+    },
   }),
 }
 
@@ -56,7 +50,7 @@ interface MoreInfoProps {
   moreInfo: MagicCardMoreInfo | undefined
 }
 
-const MoreInfo = ({moreInfo}: MoreInfoProps) => {
+const MoreInfo = ({ moreInfo }: MoreInfoProps) => {
   if (!moreInfo) {
     return null
   }
@@ -66,7 +60,8 @@ const MoreInfo = ({moreInfo}: MoreInfoProps) => {
         {key}
       </div>
       <div class="col-sm-9 col-lg-10">
-        {handleMoreInfoDetails(key, moreInfo[key])}
+        {/*TODO*/}
+        {/*{handleMoreInfoDetails(key, moreInfo[key])}*/}
       </div>
     </div>
   ) : null)
@@ -97,24 +92,29 @@ const CardItem = ({ card, moreInfo, cardCount }: CardItemProps) => (
           </div>
         </div>
         <hr/>
-        <MoreInfo moreInfo={moreInfo} />
+        <MoreInfo moreInfo={moreInfo}/>
       </div>
     </div>
   </div>
 )
 
-export const CardView = (state: AppState, actions: AppActions) => ({ match }) => (
-  <div class="container" oncreate={() => actions.card.initView(match.params.id)}>
-    {!state.card.card && <LoadingSpinner/>}
-    {state.card.card &&
-    <div>
+export const CardView = (state: AppState & MatchProps) => {
+  const event = new CustomEvent('init-card-view', { detail: state.params.id })
+  if (!state.card.card || state.card.card.id !== state.params.id) {
+    dispatchEvent(event)
+  }
+
+  return (
+    <div class="container">
+      {!state.card.card && <LoadingSpinner/>}
+      {state.card.card &&
       <CardItem
         card={state.card.card}
         moreInfo={state.card.moreInfo}
         cardCount={state.card.cardCount}
-      />
-    </div>}
-  </div>
-)
+      />}
+    </div>
+  )
+}
 
 export default CardView

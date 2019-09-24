@@ -12,22 +12,21 @@ export const initialAdminState: AdminState = {
 }
 
 export interface AdminActions {
-  setErrorMessage: (message: string) => (state: AdminState) => AdminState
-  importSets: () => (state: AdminState, actions: AdminActions) => void
-  importCards: () => (state: AdminState, actions: AdminActions) => void
+  setErrorMessage: (state: AppState, message: string) => AppState
+  importSets: () => void
+  importCards: () => void
 }
 
 export const adminActions: AdminActions = {
-  setErrorMessage: (message: string) => (state: AdminState): AdminState => ({
+  setErrorMessage: (state, message) => ({
     ...state,
-    errorMessage: message,
+    admin: {
+      ...state.admin,
+      errorMessage: message,
+    },
   }),
-  importSets: () => async (state: AdminState, actions: AdminActions) => {
-    await MtgApiService.importSets()
-  },
-  importCards: () => async (state: AdminState, actions: AdminActions) => {
-    await MtgApiService.importCards()
-  },
+  importSets: () => MtgApiService.importSets(),
+  importCards: () => MtgApiService.importCards(),
 }
 
 export const AdminView = (state: AppState) => (

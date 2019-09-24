@@ -11,7 +11,7 @@ const CardsListImages = ({ cards }: CardsListImagesProps) => (
   <div class="row d-flex flex-row justify-content-center" oncreate={LazyLoad.lazyLoad}>
     {cards.map((card) => (
       <div class="cards-list-image rounded m-2">
-        <Link to={`/card/${card.id}`}>
+        <Link to={`card/${card.id}`}>
           {card.imageUrl ? <img class="lazy" data-src={card.imageUrl}/> : <i class="fas fa-ban"/>}
         </Link>
       </div>

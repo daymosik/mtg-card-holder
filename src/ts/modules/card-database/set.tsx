@@ -1,12 +1,11 @@
-import { AppActions, AppState } from '@app'
+import { appActions, AppState } from '@app'
 import CardsListImages from '@components/cards/cards-list-images'
 import CardsListSwitcher, { CardsDisplayType } from '@components/cards/cards-list-switcher'
 import CardsListTable from '@components/cards/cards-list-table'
 import LoadingSpinner from '@components/loading-spinner'
 import { MagicCard, MagicSet } from '@models/magic'
-import CardDatabaseService from '@services/card-database'
+import { MatchProps } from '@services/location'
 import { h } from 'hyperapp'
-import { Link } from '@services/location'
 
 export interface CardSetState {
   set: MagicSet | undefined,
@@ -23,37 +22,38 @@ export const initialCardSetState: CardSetState = {
 type GetCardsCommitPayload = [MagicCard[], MagicSet]
 
 export interface CardSetActions {
-  initView: (setId: string) => (state: CardSetState, actions: CardSetActions) => CardSetState,
-  getCardsCommit: (object: GetCardsCommitPayload) => (state: CardSetState) => CardSetState,
+  getCardsCommit: (state: AppState, object: GetCardsCommitPayload) => AppState,
   setDisplayType: (displayType: CardsDisplayType) => (state: CardSetState) => CardSetState,
 }
 
 export const cardSetActions: CardSetActions = {
-  initView: (setId: string) => (state: CardSetState, actions: CardSetActions) => {
-    Promise.all([
-      CardDatabaseService.getCardsBySet(setId),
-      CardDatabaseService.getSet(setId),
-    ]).then((response) => actions.getCardsCommit(response))
-    return initialCardSetState
-  },
-  getCardsCommit: ([cards, set]) => (state: CardSetState): CardSetState => ({
+  getCardsCommit: (state, [cards, set]) => ({
     ...state,
-    cards,
-    set,
+    cardSet: {
+      ...state.cardSet,
+      cards,
+      set,
+    },
   }),
   setDisplayType: (displayType: CardsDisplayType) => (state: CardSetState): CardSetState => ({ ...state, displayType }),
 }
 
-export const SetView = (state: AppState, actions: AppActions) => ({ match }) => {
+export const SetView = (state: AppState & MatchProps) => {
   const cards = state.cardSet.cards
+
+  const event = new CustomEvent('init-set-view', { detail: state.params.code })
+  if (!state.cardSet.set || state.cardSet.set.code !== state.params.code) {
+    dispatchEvent(event)
+  }
+
   return (
-    <div class="container" oncreate={() => actions.cardSet.initView(match.params.code)}>
+    <div class="container">
       {!state.cardSet.set && <LoadingSpinner/>}
       {state.cardSet.set &&
       <div>
         <div class="row">
           <h1><i class={`m-3 ss ss-${state.cardSet.set.code.toLowerCase()}`}/> {state.cardSet.set.name}</h1>
-          <CardsListSwitcher className="ml-auto pt-sm-3" setDisplayType={actions.cardSet.setDisplayType}/>
+          <CardsListSwitcher className="ml-auto pt-sm-3" setDisplayType={appActions.cardSet.setDisplayType}/>
         </div>
         {cards.length > 0 &&
         <div>

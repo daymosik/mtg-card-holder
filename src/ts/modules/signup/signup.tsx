@@ -33,6 +33,15 @@ export const signupActions: SignupActions = {
     } catch (e) {
       actions.handleSignupSubmitError(e.message)
     }
+
+    // const SendHttp = state => [
+    //   { ...state, error: null, fetching: true },
+    //   Http.fetch({
+    //     url: state.url,
+    //     action: SuccessResponse,
+    //     error: ErrorResponse
+    //   })
+    // ]
   },
   handleSignupSubmitError: (message: string) => (state: SignupState): SignupState => ({
     ...state,

@@ -11,7 +11,7 @@ export interface AuthFormProps {
 }
 
 export const AuthForm = ({ state, actions, buttonText }: AuthFormProps, children) => (
-  <form action="/" onsubmit={actions.submitForm}>
+  <form action="/" onsubmit={[actions.submitForm, (event) => event]}>
     {state.errorMessage && <p className="error-message">{state.errorMessage}</p>}
     <FormGroup label={'Email address'}>
       <FormInputEmail value={state.email} handleInputChange={actions.handleInputChange}/>

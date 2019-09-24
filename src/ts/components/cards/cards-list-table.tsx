@@ -1,8 +1,8 @@
 import { MagicCard } from '@models/magic'
 import { UserMagicCard } from '@modules/card-collection/card-collection'
 import ManaCostView from '@modules/card/mana-cost'
-import { h } from 'hyperapp'
 import { Link } from '@services/location'
+import { h } from 'hyperapp'
 
 interface CardsListTableProps {
   cards: Array<MagicCard | UserMagicCard>
@@ -49,7 +49,7 @@ const CardsListTableItem = ({ card, key, decreaseCardCount }: CardListItemProps)
   return (
     <tr>
       <th scope="row">{key + 1}</th>
-      <td><Link to={`/card/${card.id}`}>{card.name}</Link></td>
+      <td><Link to={`card/${card.id}`}>{card.name}</Link></td>
       <td>{card.type}</td>
       <td class="text-right">{ManaCostView(card.manaCost)}</td>
       {isUserCard && <td class="text-center">{card.count}</td>}

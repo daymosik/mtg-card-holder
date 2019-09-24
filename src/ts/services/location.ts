@@ -1,4 +1,5 @@
 import { AppState } from '@app'
+import { parseRoute } from '@utils/parse-route'
 import { h } from 'hyperapp'
 
 export interface LocationState {
@@ -6,14 +7,16 @@ export interface LocationState {
 }
 
 export interface LocationActions {
-  setCurrent: (s: LocationState) => LocationState
+  setCurrent: (s: AppState) => AppState
 }
 
-export const rawLocationActions: LocationActions = {
-  setCurrent: (state: LocationState) => state,
+export const locationActions: LocationActions = {
+  setCurrent: (state) => {
+    return ({ ...state, location: parseLocation() })
+  },
 }
 
-export function locationSubscribe(sub: (s: LocationState) => any): void {
+export function locationSubscribe(sub: (s: LocationState) => AppState): void {
   function listener() {
     sub(parseLocation())
   }
@@ -37,9 +40,22 @@ export interface RouteProps extends AppState {
   render: JSX.Element
 }
 
-export const Route = (props: RouteProps) => (
-  props.location.route === props.path ? props.render(props) : undefined
-)
+export interface MatchProps {
+  isExact: boolean
+  params: any
+  path: string
+  url: string
+}
+
+export const Route = (props: RouteProps) => {
+  // TODO
+  const match = parseRoute(props.path, props.location.route, {
+    // exact: !props.parent,
+  })
+  return (
+    props.location.route === props.path || (match && match.path) ? props.render({ ...props, ...match }) : undefined
+  )
+}
 
 function routeMatches(s: LocationState, path: string) {
   const c = s.route
