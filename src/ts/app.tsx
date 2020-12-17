@@ -1,104 +1,54 @@
-import { authActions, AuthActions, AuthState, initialAuthState } from '@auth'
-import '@firebase-config'
-import AdminView, { adminActions, AdminActions, AdminState, initialAdminState } from '@modules/admin/admin'
-import {
-  addCardFormActions, AddCardFormActions, AddCardFormState, initialAddCardFormState,
-} from '@modules/card-collection/add-card-form'
-import CardCollectionView, {
-  cardCollectionActions, CardCollectionActions, CardCollectionState, initialCardCollectionState,
-} from '@modules/card-collection/card-collection'
-import CardDatabaseView, {
-  cardDatabaseActions, CardDatabaseActions, CardDatabaseState, initialCardDatabaseState,
-} from '@modules/card-database/card-database'
-import SetView, {
-  cardSetActions, CardSetActions, CardSetState, initialCardSetState,
-} from '@modules/card-database/set'
-import CardView, { cardActions, CardActions, CardState, initialCardState } from '@modules/card/card'
-import LoginView, { initialLoginState, LoginActions, loginActions, LoginState } from '@modules/login/login'
-import SignupView, { initialSignupState, signupActions, SignupActions, SignupState } from '@modules/signup/signup'
-import FooterView from '@slices/footer'
-import NavigationView, {
-  initialNavigationState, NavigationActions, navigationAgtions, NavigationPath, NavigationState,
-} from '@slices/navigation'
-import LazyLoad from '@utils/lazy-load'
-import { ActionsType, app, h } from 'hyperapp'
-import { Link, location, Route } from 'hyperapp-hash-router'
-import '../assets/styles/app.scss'
-import ProtectedRoute from './components/protected-route'
+import 'firebase-config'
+import PrivateRoute from 'components/private-route'
+import { NavigationPath } from 'models/routes'
+import AdminView from 'modules/admin/admin'
+import CardCollectionView from 'modules/card-collection/card-collection'
+import CardDatabaseView from 'modules/card-database/card-database'
+import SetView from 'modules/card-database/set'
+import CardView from 'modules/card/card'
+import LoginView from 'modules/login/login'
+import SignupView from 'modules/signup/signup'
+import { Provider } from 'react-redux'
+import FooterView from 'slices/footer'
+import NavigationView from 'slices/navigation'
+import { FunctionalComponent, h } from 'preact'
+import { Route, Router, RouterOnChangeArgs } from 'preact-router'
+import store from 'store/index'
+import 'auth'
+import StartupView from './startup'
 
-export interface AppState {
-  location: location.state
-  auth: AuthState
-  nav: NavigationState
-  login: LoginState
-  signup: SignupState
-  cardDatabase: CardDatabaseState
-  cardSet: CardSetState,
-  card: CardState,
-  cardForm: AddCardFormState,
-  cardCollection: CardCollectionState,
-  admin: AdminState,
+const Home: FunctionalComponent = () => <div class="container">Home</div>
+
+const App: FunctionalComponent = () => {
+  // TODO
+  let currentUrl: string
+  const handleRoute = (e: RouterOnChangeArgs) => {
+    currentUrl = e.url
+    console.log(currentUrl)
+  }
+
+  return (
+    <div id="preact_root">
+      <Provider store={store}>
+        <StartupView>
+          <div class="wrapper">
+            <NavigationView />
+            <Router onChange={handleRoute}>
+              <Route path={NavigationPath.Home} component={Home} />
+              <Route path={NavigationPath.Login} component={LoginView} />
+              <Route path={NavigationPath.Signup} component={SignupView} />
+              <PrivateRoute path={NavigationPath.CardDatabase} component={CardDatabaseView} />
+              <PrivateRoute path={NavigationPath.CardCollection} component={CardCollectionView} />
+              <Route path={`/set/:code`} component={SetView} />
+              <Route path={`/card/:id`} component={CardView} />
+              <PrivateRoute path={NavigationPath.Admin} component={AdminView} />
+            </Router>
+            <FooterView />
+          </div>
+        </StartupView>
+      </Provider>
+    </div>
+  )
 }
 
-const initialState: AppState = {
-  location: location.state,
-  auth: initialAuthState,
-  nav: initialNavigationState,
-  login: initialLoginState,
-  signup: initialSignupState,
-  cardDatabase: initialCardDatabaseState,
-  cardSet: initialCardSetState,
-  card: initialCardState,
-  cardForm: initialAddCardFormState,
-  cardCollection: initialCardCollectionState,
-  admin: initialAdminState,
-}
-
-export interface AppActions {
-  location: location.actions
-  auth: AuthActions,
-  nav: NavigationActions,
-  login: LoginActions,
-  signup: SignupActions
-  cardDatabase: CardDatabaseActions,
-  cardSet: CardSetActions,
-  card: CardActions,
-  cardForm: AddCardFormActions,
-  cardCollection: CardCollectionActions,
-  admin: AdminActions,
-}
-
-const appActions: ActionsType<AppState, AppActions> = {
-  location: location.actions,
-  auth: authActions,
-  nav: navigationAgtions,
-  login: loginActions,
-  signup: signupActions,
-  cardDatabase: cardDatabaseActions,
-  cardSet: cardSetActions,
-  card: cardActions,
-  cardForm: addCardFormActions,
-  cardCollection: cardCollectionActions,
-  admin: adminActions,
-}
-
-const Home = () => <div class="container">Home</div>
-
-const view = (state: AppState, actions: AppActions) => (
-  <div class="wrapper" oncreate={LazyLoad.startLazyLoad}>
-    <NavigationView/>
-    <Route path={NavigationPath.Home} render={Home}/>
-    <Route path={NavigationPath.Login} render={LoginView(state, actions)}/>
-    <Route path={NavigationPath.Signup} render={SignupView(state, actions)}/>
-    <ProtectedRoute path={NavigationPath.CardDatabase} render={CardDatabaseView}/>
-    <ProtectedRoute path={NavigationPath.CardCollection} render={CardCollectionView}/>
-    <Route path={`/set/:code`} render={SetView(state, actions)}/>
-    <Route path={`/card/:id`} render={CardView(state, actions)}/>
-    <ProtectedRoute path={NavigationPath.Admin} render={AdminView}/>
-    <FooterView/>
-  </div>
-)
-
-export const mainActions = app(initialState, appActions, view, document.body)
-
-const unsubscribe = location.subscribe(mainActions.location)
+export default App

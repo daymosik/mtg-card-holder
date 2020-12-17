@@ -1,18 +1,18 @@
-import AuthService, { authType } from '@services/auth'
-import firebase = require('firebase/app')
+import AuthService, { authType } from 'services/auth'
+import firebase from 'firebase/app'
 import 'firebase/auth'
 
 export class LoginService {
-  public login = async (email: string, password: string): Promise<any> => {
+  public login = async (email: string, password: string): Promise<unknown> => {
     return AuthService.authenticate(email, password, authType.Login)
   }
 
-  public logout = async () => {
+  public logout = async (): Promise<void> => {
     try {
-      firebase.auth().signOut()
+      await firebase.auth().signOut()
       window.location.reload()
-      // tslint:disable-next-line:no-empty
     } catch (e) {
+      console.info(e)
     }
   }
 }

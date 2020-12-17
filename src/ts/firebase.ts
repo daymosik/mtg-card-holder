@@ -1,4 +1,4 @@
-import firebase = require('firebase/app')
+import firebase from 'firebase/app'
 import 'firebase/database'
 
 const firebaseConfig = {
@@ -9,6 +9,10 @@ const firebaseConfig = {
   storageBucket: process.env.FIREBASE_STORAGE_BUCKET,
   messagingSenderId: process.env.FIREBASE_MESSAGING_SENDER_ID,
 }
+
+// TODO
+// export const firebaseApp = typeof window !== 'undefined' ? firebase.initializeApp(firebaseConfig) : {}
+// export const firebaseDatabase = typeof window !== 'undefined' ? firebase.database() : {}
 
 export const firebaseApp = firebase.initializeApp(firebaseConfig)
 export const firebaseDatabase = firebase.database()

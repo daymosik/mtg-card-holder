@@ -1,30 +1,13 @@
-import { mainActions } from '@app'
-import '@firebase-config'
-import firebase = require('firebase/app')
+import 'firebase-config'
+import firebase from 'firebase/app'
 import 'firebase/auth'
+import { setAuthStatus } from 'store/actions/auth-actions'
+import store from 'store/index'
 
-firebase.auth().onAuthStateChanged((user: firebase.User) => {
+firebase.auth().onAuthStateChanged((user: firebase.User | null) => {
   if (user) {
-    mainActions.auth.authorize()
+    store.dispatch(setAuthStatus(true))
   } else {
-    mainActions.auth.unauthorize()
+    store.dispatch(setAuthStatus(false))
   }
 })
-
-export interface AuthState {
-  authorized: boolean,
-}
-
-export const initialAuthState: AuthState = {
-  authorized: false,
-}
-
-export interface AuthActions {
-  authorize: () => (state: AuthState) => AuthState
-  unauthorize: () => (state: AuthState) => AuthState
-}
-
-export const authActions: AuthActions = {
-  authorize: () => (state: AuthState): AuthState => ({ ...state, authorized: true }),
-  unauthorize: () => (state: AuthState): AuthState => ({ ...state, authorized: false }),
-}

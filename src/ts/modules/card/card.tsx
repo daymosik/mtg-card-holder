@@ -1,54 +1,29 @@
-import { AppActions, AppState } from '@app'
-import LoadingSpinner from '@components/loading-spinner'
-import Tooltip from '@components/tooltip'
-import { MagicCard, MagicCardMoreInfo } from '@models/magic'
-import CardDatabaseService from '@services/card-database'
-import { h } from 'hyperapp'
+import LoadingSpinner from 'components/loading-spinner'
+import Tooltip from 'components/tooltip'
+import { MagicCard, MagicCardMoreInfo } from 'models/magic'
+import { useEffect, useState } from 'preact/hooks'
+import CardDatabaseService from 'services/card-database'
+import { FunctionalComponent, h } from 'preact'
 
-export interface CardState {
-  card: MagicCard | undefined
-  moreInfo: MagicCardMoreInfo | undefined
-  cardCount: number
-}
+type MagicCardMoreInfoKeys = keyof MagicCardMoreInfo
+type MagicCardMoreInfoValues = MagicCardMoreInfo[MagicCardMoreInfoKeys]
 
-export const initialCardState: CardState = {
-  card: undefined,
-  moreInfo: undefined,
-  cardCount: 0,
-}
-
-export interface CardActions {
-  initView: (cardId: string) => (state: CardState, actions: CardActions) => CardState
-  getCardCommit: (array) => (state: CardState) => CardState
-}
-
-export const cardActions: CardActions = {
-  initView: (cardId: string) => (state: CardState, actions: CardActions) => {
-    Promise.all([
-      CardDatabaseService.getCardById(cardId),
-      CardDatabaseService.getCardMoreInfo(cardId),
-      CardDatabaseService.getUserCardCount(cardId),
-    ]).then((response) => actions.getCardCommit(response))
-    return initialCardState
-  },
-  getCardCommit: ([card, moreInfo, cardCount]) => (state: CardState): CardState => ({
-    ...state,
-    card,
-    moreInfo,
-    cardCount,
-  }),
-}
-
-const handleMoreInfoDetails = (key: keyof MagicCardMoreInfo, value: any) => {
+const handleMoreInfoDetails = (key: MagicCardMoreInfoKeys, value: MagicCardMoreInfoValues) => {
   switch (key) {
     case 'printings':
       return (
-        <div class="h2">{value.map((set) => (
-          <Tooltip title={set}><i class={`m-2 ss ss-${set.toLowerCase()}`}/></Tooltip>))}
+        <div class="h2">
+          {(value as string[]).map((set) => (
+            <div key={set}>
+              <Tooltip title={set}>
+                <i class={`m-2 ss ss-${set.toLowerCase()}`} />
+              </Tooltip>
+            </div>
+          ))}
         </div>
       )
     default:
-      return value
+      return <span>{JSON.stringify(value)}</span>
   }
 }
 
@@ -56,65 +31,93 @@ interface MoreInfoProps {
   moreInfo: MagicCardMoreInfo | undefined
 }
 
-const MoreInfo = ({moreInfo}: MoreInfoProps) => {
+const MoreInfo: FunctionalComponent<MoreInfoProps> = ({ moreInfo }): JSX.Element => {
   if (!moreInfo) {
-    return null
+    return <div />
   }
-  return Object.keys(moreInfo).map((key: keyof MagicCardMoreInfo) => moreInfo[key] ? (
-    <div class="row form-group">
-      <div class="col-sm-3 col-lg-2">
-        {key}
-      </div>
-      <div class="col-sm-9 col-lg-10">
-        {handleMoreInfoDetails(key, moreInfo[key])}
-      </div>
+  return (
+    <div>
+      {Object.keys(moreInfo).map((key) => {
+        const keyo = key as MagicCardMoreInfoKeys
+        const info: MagicCardMoreInfoValues = moreInfo[keyo]
+
+        return info ? (
+          <div class="row form-group" key={JSON.stringify(key)}>
+            <div class="col-sm-3 col-lg-2">{JSON.stringify(key)}</div>
+            <div class="col-sm-9 col-lg-10">{handleMoreInfoDetails(keyo, info)}</div>
+          </div>
+        ) : (
+          <div />
+        )
+      })}
     </div>
-  ) : null)
+  )
 }
 
 interface CardItemProps {
   card: MagicCard
-  moreInfo: MagicCardMoreInfo | undefined,
+  moreInfo: MagicCardMoreInfo | undefined
   cardCount: number
 }
 
-const CardItem = ({ card, moreInfo, cardCount }: CardItemProps) => (
+const CardItem: FunctionalComponent<CardItemProps> = ({ card, moreInfo, cardCount }) => (
   <div>
     <h1>{card.name}</h1>
     <div class="row">
       <div class="col-md-4 col-lg-3">
         <div class="cards-list-image rounded m-2">
-          {card.imageUrl ? <img src={card.imageUrl}/> : <i class="fas fa-ban"/>}
+          {card.imageUrl ? <img src={card.imageUrl} /> : <i class="fas fa-ban" />}
         </div>
       </div>
       <div class="col-md-8 col-lg-9">
         <div class="row form-group">
-          <div class="col-sm-3 col-lg-2">
-            Card count:
-          </div>
-          <div class="col-sm-9 col-lg-10">
-            {cardCount}
-          </div>
+          <div class="col-sm-3 col-lg-2">Card count:</div>
+          <div class="col-sm-9 col-lg-10">{cardCount}</div>
         </div>
-        <hr/>
+        <hr />
         <MoreInfo moreInfo={moreInfo} />
       </div>
     </div>
   </div>
 )
 
-export const CardView = (state: AppState, actions: AppActions) => ({ match }) => (
-  <div class="container" oncreate={() => actions.card.initView(match.params.id)}>
-    {!state.card.card && <LoadingSpinner/>}
-    {state.card.card &&
-    <div>
-      <CardItem
-        card={state.card.card}
-        moreInfo={state.card.moreInfo}
-        cardCount={state.card.cardCount}
-      />
-    </div>}
-  </div>
-)
+export interface CardViewProps {
+  matches: {
+    id: string
+  }
+}
+
+export const CardView: FunctionalComponent<CardViewProps> = ({ matches }) => {
+  const [card, setCard] = useState<MagicCard | undefined>(undefined)
+  const [moreInfo, setCardMoreInfo] = useState<MagicCardMoreInfo | undefined>(undefined)
+  const [cardCount, setCardCount] = useState<number>(0)
+
+  const initializeView = async (cardId: string): Promise<void> => {
+    await Promise.all([
+      CardDatabaseService.getCardById(cardId),
+      CardDatabaseService.getCardMoreInfo(cardId),
+      CardDatabaseService.getUserCardCount(cardId),
+    ]).then(([card, moreInfo, cardCount]) => {
+      setCard(card)
+      setCardMoreInfo(moreInfo)
+      setCardCount(cardCount)
+    })
+  }
+
+  useEffect(() => {
+    void initializeView(matches.id)
+  }, [matches.id])
+
+  return (
+    <div class="container">
+      {!card && <LoadingSpinner />}
+      {card && (
+        <div>
+          <CardItem card={card} moreInfo={moreInfo} cardCount={cardCount} />
+        </div>
+      )}
+    </div>
+  )
+}
 
 export default CardView

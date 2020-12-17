@@ -1,68 +1,107 @@
-import { firebaseDatabase } from '@firebase-config'
-import { MagicCard, MagicCardMoreInfo } from '@models/magic'
+import { firebaseDatabase } from 'firebase-config'
+import { MagicCard, MagicCardMoreInfo } from 'models/magic'
 import * as Magic from 'mtgsdk-ts'
 
-const magicCardKeys: Array<keyof MagicCard> = (
-  ['id', 'name', 'manaCost', 'colors', 'imageUrl', 'rarity', 'set', 'number', 'power', 'toughness', 'type']
-)
+const magicCardKeys: Array<keyof MagicCard> = [
+  'id',
+  'name',
+  'manaCost',
+  'colors',
+  'imageUrl',
+  'rarity',
+  'set',
+  'number',
+  'power',
+  'toughness',
+  'type',
+]
 
 const magicCardMoreInfoKeys: Array<keyof MagicCardMoreInfo> = [
-  'cmc', 'colorIdentity', 'supertypes', 'types', 'subtypes', 'setName', 'text', 'flavor', 'artist', 'loyalty', 'layout',
-  'multiverseid', 'watermark', 'rulings', 'printings', 'originalText', 'originalType', 'legalities',
+  'cmc',
+  'colorIdentity',
+  'supertypes',
+  'types',
+  'subtypes',
+  'setName',
+  'text',
+  'flavor',
+  'artist',
+  'loyalty',
+  'layout',
+  'multiverseid',
+  'watermark',
+  'rulings',
+  'printings',
+  'originalText',
+  'originalType',
+  'legalities',
 ]
 
 export class MtgApi {
-  public importCards() {
+  public importCards(): void {
     const emiter = Magic.Cards.all({})
     const info = {
       cardsCount: 0,
       cardsAdded: 0,
     }
 
-    emiter.on('data', async (card) => {
-      const ref = await firebaseDatabase.ref(`cards/${card.id}`).once('value')
-      const foundCard = ref.val()
+    emiter
+      .on('data', async (card: Magic.Card) => {
+        const ref = await firebaseDatabase.ref(`cards/${card.id}`).once('value')
+        // TODO: as
+        const foundCard = ref.val() as Magic.Card
 
-      info.cardsCount++
+        info.cardsCount++
 
-      if (!foundCard) {
-        console.log(card)
+        if (!foundCard) {
+          console.log(card)
 
-        const cardSimple = Object.keys(card).reduce((prev, key) => ({
-          ...prev,
-          ...(magicCardKeys.includes(key as keyof MagicCard) ? { [key]: card[key] } : {}),
-        }), {})
+          const cardSimple = Object.keys(card).reduce(
+            (prev, key) => ({
+              ...prev,
+              ...(magicCardKeys.includes(key as keyof MagicCard) ? { [key]: card[key as keyof Magic.Card] } : {}),
+            }),
+            {},
+          )
 
-        const cardMoreInfo = Object.keys(card).reduce((prev, key) => ({
-          ...prev,
-          ...(magicCardMoreInfoKeys.includes(key as keyof MagicCardMoreInfo) ? { [key]: card[key] } : {}),
-        }), {})
+          const cardMoreInfo = Object.keys(card).reduce(
+            (prev, key) => ({
+              ...prev,
+              ...(magicCardMoreInfoKeys.includes(key as keyof MagicCardMoreInfo)
+                ? { [key]: card[key as keyof Magic.Card] }
+                : {}),
+            }),
+            {},
+          )
 
-        await firebaseDatabase.ref(`cards/${card.id}`).set(cardSimple)
-        await firebaseDatabase.ref(`cards-more-info/${card.id}`).set(cardMoreInfo)
+          await firebaseDatabase.ref(`cards/${card.id}`).set(cardSimple)
+          await firebaseDatabase.ref(`cards-more-info/${card.id}`).set(cardMoreInfo)
 
-        info.cardsAdded++
-      }
-    }).on('end', () => {
-      console.log('done')
-      console.log(info)
-    })
+          info.cardsAdded++
+        }
+      })
+      .on('end', () => {
+        console.log('done')
+        console.log(info)
+      })
   }
 
-  public importSets() {
+  public importSets(): void {
     const emiter = Magic.Sets.all({})
 
-    emiter.on('data', async (set) => {
-      const ref = await firebaseDatabase.ref(`sets/${set.code}`).once('value')
-      const foundSet = ref.val()
+    emiter
+      .on('data', async (set) => {
+        const ref = await firebaseDatabase.ref(`sets/${set.code}`).once('value')
+        const foundSet = ref.val() as Magic.Set
 
-      if (!foundSet) {
-        console.log(set)
-        await firebaseDatabase.ref(`sets/${set.code}`).set(set)
-      }
-    }).on('end', () => {
-      console.log('done')
-    })
+        if (!foundSet) {
+          console.log(set)
+          await firebaseDatabase.ref(`sets/${set.code}`).set(set)
+        }
+      })
+      .on('end', () => {
+        console.log('done')
+      })
   }
 
   // public importTypes() {

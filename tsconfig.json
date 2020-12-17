@@ -1,26 +1,28 @@
 {
   "compilerOptions": {
-    "lib": [
-      "dom",
-      "es2017"
-    ],
     "target": "es5",
-    "module": "commonjs",
+    "module": "esnext",
     "sourceMap": true,
+    "noEmit": true,
+    "strict": true,
     "strictNullChecks": true,
+    "moduleResolution": "node",
+    "esModuleInterop": true,
     "jsx": "react",
     "jsxFactory": "h",
     "baseUrl": ".",
     "paths": {
-      "@app": [ "src/ts/app.tsx" ],
-      "@auth": [ "src/ts/auth.ts" ],
-      "@firebase-config": [ "src/ts/firebase.ts" ],
-      "@components/*": [ "src/ts/components/*" ],
-      "@models/*": [ "src/ts/models/*" ],
-      "@modules/*": [ "src/ts/modules/*" ],
-      "@services/*": [ "src/ts/services/*" ],
-      "@slices/*": [ "src/ts/slices/*" ],
-      "@utils/*": [ "src/ts/utils/*" ]
+      "app": [ "src/ts/app.tsx" ],
+      "auth": [ "src/ts/auth.ts" ],
+      "firebase-config": [ "src/ts/firebase.ts" ],
+      "components/*": [ "src/ts/components/*" ],
+      "models/*": [ "src/ts/models/*" ],
+      "modules/*": [ "src/ts/modules/*" ],
+      "services/*": [ "src/ts/services/*" ],
+      "slices/*": [ "src/ts/slices/*" ],
+      "utils/*": [ "src/ts/utils/*" ],
+      "store/*": [ "src/ts/store/*" ],
     }
-  }
+  },
+  "include": ["src/**/*.tsx", "src/**/*.ts"]
 }

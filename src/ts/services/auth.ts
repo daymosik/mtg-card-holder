@@ -1,4 +1,4 @@
-import firebase = require('firebase/app')
+import firebase from 'firebase/app'
 import 'firebase/auth'
 
 export enum authType {
@@ -7,10 +7,11 @@ export enum authType {
 }
 
 export class Auth {
-  public authenticate = async (email: string, password: string, type: authType): Promise<any> => {
-    const data = type === authType.Login
-      ? await firebase.auth().signInWithEmailAndPassword(email, password)
-      : await firebase.auth().createUserWithEmailAndPassword(email, password)
+  public authenticate = async (email: string, password: string, type: authType): Promise<unknown> => {
+    const data =
+      type === authType.Login
+        ? await firebase.auth().signInWithEmailAndPassword(email, password)
+        : await firebase.auth().createUserWithEmailAndPassword(email, password)
     return data.user
   }
 }

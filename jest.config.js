@@ -1,10 +1,6 @@
+// eslint-disable-next-line no-undef
 module.exports = {
-  coverageDirectory: "coverage",
-  globals: {
-    "ts-jest": { "tsConfigFile": "tsconfig.json" }
-  },
-  moduleFileExtensions: ["ts", "tsx", "js"],
-  testEnvironment: "node",
-  testMatch: ["**/test/*.+(ts|tsx|js)"],
-  transform: { "^.+\\.(ts|tsx)$": "ts-jest" },
+  preset: 'jest-preset-preact',
+  setupFiles: ['<rootDir>/test/test-setup.ts'],
+  testURL: 'http://localhost:8080',
 }
