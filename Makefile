@@ -5,14 +5,13 @@ include .env
 export $(shell sed 's/=.*//' .env)
 
 build: node_modules/INSTALLED $(shell find src -type f)
+	yarn run lint
+	yarn run test
 	yarn run build
 	touch $@
 
-build-dev:
-	yarn run build-dev
-
 watch:
-	yarn run watch
+	yarn run dev
 
 clean:
 	rm -rf build
