@@ -1,0 +1,48 @@
+name: build
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [ 15.x ]
+
+    steps:
+      - uses: actions/checkout@v1
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v1
+        with:
+          node-version: ${{ matrix.node-version }}
+
+      - name: Create env file
+        run: |
+          touch .env
+          echo FIREBASE_API_KEY=${{ secrets.FIREBASE_API_KEY }} >> .env
+          echo FIREBASE_AUTH_DOMAIN=${{ secrets.FIREBASE_AUTH_DOMAIN }} >> .env
+          echo FIREBASE_DATABASE_URL=${{ secrets.FIREBASE_DATABASE_URL }} >> .env
+          echo FIREBASE_PROJECT_ID=${{ secrets.FIREBASE_PROJECT_ID }} >> .env
+          echo FIREBASE_STORAGE_BUCKET=${{ secrets.FIREBASE_STORAGE_BUCKET }} >> .env
+          echo FIREBASE_MESSAGING_SENDER_ID=${{ secrets.FIREBASE_MESSAGING_SENDER_ID }} >> .env
+          cat .env
+
+      - name: Install firebase
+        run: npm install -g firebase-tools
+
+      - name: Install dependencies
+        run: yarn install
+        env:
+          CI: true
+
+      - name: Test and build
+        run: npm run build-with-tests
+        env:
+          CI: true
+
+      - name: Deploy
+        run: firebase deploy --token ${{ secrets.FIREBASE_TOKEN }}
