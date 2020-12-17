@@ -1,49 +1,53 @@
-import { AppActions, AppState } from '@app'
-import { AuthForm } from '@modules/auth/auth-form'
-import LoginService from '@services/login'
-import { NavigationPath } from '@slices/navigation'
-import { h } from 'hyperapp'
-import { Link } from 'hyperapp-hash-router'
+import { NavigationPath } from 'models/routes'
+import { AuthForm } from 'modules/auth/auth-form'
+import { useState } from 'preact/hooks'
+import { JSXInternal } from 'preact/src/jsx'
+import { useDispatch } from 'react-redux'
+import LoginService from 'services/login'
+import { FunctionalComponent, h } from 'preact'
+import { Link } from 'preact-router'
+import { setAuthStatus } from 'store/actions/auth-actions'
 
-export interface LoginState {
-  email: string
-  password: string
-  errorMessage: string
-}
+export const LoginView: FunctionalComponent = () => {
+  const dispatch = useDispatch()
 
-export const initialLoginState: LoginState = {
-  email: '',
-  password: '',
-  errorMessage: '',
-}
+  const [email, setEmail] = useState('')
+  const [password, setPassword] = useState('')
+  const [errorMessage, setErrorMessage] = useState('')
 
-export interface LoginActions {
-  handleInputChange: (object) => (state: LoginState) => LoginState
-  submitForm: (event: Event) => (state: LoginState, actions: LoginActions) => void
-  handleLoginSubmitError: (message: string) => (state: LoginState) => LoginState
-}
+  const handleEmail = (value: string) => setEmail(value)
+  const handlePassword = (value: string) => setPassword(value)
 
-export const loginActions: LoginActions = {
-  handleInputChange: (object) => (state: LoginState): LoginState => ({ ...state, ...object }),
-  submitForm: (event: Event) => async (state: LoginState, actions: LoginActions) => {
+  const submitForm = async (event: JSXInternal.TargetedEvent<HTMLFormElement>) => {
     event.preventDefault()
     try {
-      await LoginService.login(state.email, state.password)
-      window.location.hash = '/'
+      await LoginService.login(email, password)
+      dispatch(setAuthStatus(true))
     } catch (e) {
-      actions.handleLoginSubmitError(e.message)
+      console.info(e)
+      // TODO: as
+      setErrorMessage(e ? (e as Error).message : '')
     }
-  },
-  handleLoginSubmitError: (message: string) => (state: LoginState): LoginState => ({ ...state, errorMessage: message }),
-}
+  }
 
-export const LoginView = (state: AppState, actions: AppActions) => () => (
-  <div class="container pt-5">
-    <h2>Login</h2>
-    <AuthForm state={state.login} actions={actions.login} buttonText={'Log In'}>
-      <div>Don't have an account? <Link to={NavigationPath.Signup}>Create one</Link>.</div>
-    </AuthForm>
-  </div>
-)
+  return (
+    <div class="container pt-5">
+      <h2>Login</h2>
+      <AuthForm
+        email={email}
+        password={password}
+        submitForm={submitForm}
+        handleEmail={handleEmail}
+        handlePassword={handlePassword}
+        errorMessage={errorMessage}
+        buttonText={'Log In'}
+      >
+        <div>
+          Don&apos;t have an account? <Link href={NavigationPath.Signup}>Create one</Link>.
+        </div>
+      </AuthForm>
+    </div>
+  )
+}
 
 export default LoginView

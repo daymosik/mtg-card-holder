@@ -1,14 +1,15 @@
 const LazyLoad = {
-  lazyLoad: () => {
-    let lazyImages = [].slice.call(document.querySelectorAll('img.lazy'))
+  lazyLoad: (): void => {
+    let lazyImages: HTMLImageElement[] = [].slice.call(document.querySelectorAll('img.lazy'))
     let active = false
 
-    const handleImage = (lazyImage) => {
-      const shouldLoad = (
-        lazyImage.getBoundingClientRect().top <= window.innerHeight && lazyImage.getBoundingClientRect().bottom >= 0
-      ) && getComputedStyle(lazyImage).display !== 'none'
+    const handleImage = (lazyImage: HTMLImageElement) => {
+      const shouldLoad =
+        lazyImage.getBoundingClientRect().top <= window.innerHeight &&
+        lazyImage.getBoundingClientRect().bottom >= 0 &&
+        getComputedStyle(lazyImage).display !== 'none'
       if (shouldLoad) {
-        lazyImage.src = lazyImage.dataset.src
+        lazyImage.src = lazyImage.dataset.src || ''
         lazyImage.classList.remove('lazy')
         lazyImages = lazyImages.filter((image) => image !== lazyImage)
 
@@ -26,13 +27,13 @@ const LazyLoad = {
       }, 200)
     }
   },
-  startLazyLoad: () => {
+  startLazyLoad: (): void => {
     LazyLoad.lazyLoad()
     document.addEventListener('scroll', LazyLoad.lazyLoad)
     window.addEventListener('resize', LazyLoad.lazyLoad)
     window.addEventListener('orientationchange', LazyLoad.lazyLoad)
   },
-  stopLazyLoad: () => {
+  stopLazyLoad: (): void => {
     document.removeEventListener('scroll', LazyLoad.lazyLoad)
     window.removeEventListener('resize', LazyLoad.lazyLoad)
     window.removeEventListener('orientationchange', LazyLoad.lazyLoad)

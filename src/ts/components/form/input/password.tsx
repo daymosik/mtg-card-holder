@@ -1,16 +1,11 @@
-import { h } from 'hyperapp'
+import { FunctionalComponent, h } from 'preact'
 import { FormInput } from './index'
 
 export interface FormInputPasswordProps {
-  value: string,
-  handleInputChange: any
+  value: string
+  handleInputChange: (value: string) => void
 }
 
-export const FormInputPassword = ({value, handleInputChange}: FormInputPasswordProps) => (
-  <FormInput
-    name={'password'}
-    type={'password'}
-    value={value}
-    handleInputChange={handleInputChange}
-  />
+export const FormInputPassword: FunctionalComponent<FormInputPasswordProps> = ({ value, handleInputChange }) => (
+  <FormInput name={'password'} type={'password'} value={value} handleInputChange={handleInputChange} />
 )

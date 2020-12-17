@@ -4,3 +4,4 @@ build/
 firebase-debug.log
 .idea/
 coverage/
+size-plugin.json

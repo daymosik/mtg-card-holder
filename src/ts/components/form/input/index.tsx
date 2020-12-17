@@ -1,27 +1,22 @@
-import { h } from 'hyperapp'
+import { FunctionalComponent, h } from 'preact'
 import { FormInputEmail } from './email'
 import { FormInputPassword } from './password'
 
 export interface FormInputProps {
-  name: string,
+  name: string
   value: string
-  type: string,
-  // TODO
-  handleInputChange: any,
+  type: string
+  handleInputChange: (value: string) => void
 }
 
-const FormInput = ({ name, type, value, handleInputChange }: FormInputProps) => (
+const FormInput: FunctionalComponent<FormInputProps> = ({ name, type, value, handleInputChange }) => (
   <input
     class="form-control"
     type={type}
     name={name}
     value={value}
-    onkeyup={(event) => handleInputChange({ [name]: event.target.value })}
+    onInput={(event) => handleInputChange((event.target as HTMLInputElement).value)}
   />
 )
 
-export {
-  FormInput,
-  FormInputEmail,
-  FormInputPassword,
-}
+export { FormInput, FormInputEmail, FormInputPassword }

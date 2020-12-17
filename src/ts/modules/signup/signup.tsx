@@ -1,52 +1,49 @@
-import { AppActions, AppState } from '@app'
-import { AuthForm } from '@modules/auth/auth-form'
-import RegistrationService from '@services/registration'
-import { NavigationPath } from '@slices/navigation'
-import { h } from 'hyperapp'
-import { Link } from 'hyperapp-hash-router'
+import { NavigationPath } from 'models/routes'
+import { AuthForm } from 'modules/auth/auth-form'
+import { useState } from 'preact/hooks'
+import { JSXInternal } from 'preact/src/jsx'
+import RegistrationService from 'services/registration'
+import { FunctionalComponent, h } from 'preact'
+import { Link } from 'preact-router'
 
-export interface SignupState {
-  email: string
-  password: string
-  errorMessage: string
-}
+export const SignupView: FunctionalComponent = () => {
+  const [email, setEmail] = useState('')
+  const [password, setPassword] = useState('')
+  const [errorMessage, setErrorMessage] = useState('')
 
-export const initialSignupState: SignupState = {
-  email: '',
-  password: '',
-  errorMessage: '',
-}
+  const handleEmail = (value: string) => setEmail(value)
+  const handlePassword = (value: string) => setPassword(value)
 
-export interface SignupActions {
-  handleInputChange: (object) => (state: SignupState) => SignupState
-  submitForm: (event: Event) => (state: SignupState, actions: SignupActions) => void
-  handleSignupSubmitError: (message: string) => (state: SignupState) => SignupState
-}
-
-export const signupActions: SignupActions = {
-  handleInputChange: (object) => (state: SignupState): SignupState => ({ ...state, ...object }),
-  submitForm: (event: Event) => async (state: SignupState, actions: SignupActions) => {
+  const submitForm = async (event: JSXInternal.TargetedEvent<HTMLFormElement>) => {
     event.preventDefault()
     try {
-      await RegistrationService.register(state.email, state.password)
+      await RegistrationService.register(email, password)
       window.location.hash = '/'
     } catch (e) {
-      actions.handleSignupSubmitError(e.message)
+      console.info(e)
+      // TODO: as
+      setErrorMessage(e ? (e as Error).message : '')
     }
-  },
-  handleSignupSubmitError: (message: string) => (state: SignupState): SignupState => ({
-    ...state,
-    errorMessage: message,
-  }),
-}
+  }
 
-export const SignupView = (state: AppState, actions: AppActions) => () => (
-  <div class="container pt-5">
-    <h2>Register</h2>
-    <AuthForm state={state.signup} actions={actions.signup} buttonText={'Register'}>
-      <div>Already have an account? <Link to={NavigationPath.Login}>Login</Link>.</div>
-    </AuthForm>
-  </div>
-)
+  return (
+    <div class="container pt-5">
+      <h2>Register</h2>
+      <AuthForm
+        email={email}
+        password={password}
+        submitForm={submitForm}
+        handleEmail={handleEmail}
+        handlePassword={handlePassword}
+        errorMessage={errorMessage}
+        buttonText={'Register'}
+      >
+        <div>
+          Already have an account? <Link href={NavigationPath.Login}>Login</Link>.
+        </div>
+      </AuthForm>
+    </div>
+  )
+}
 
 export default SignupView

@@ -1,12 +1,12 @@
-import { h } from 'hyperapp'
+import { FunctionalComponent, h } from 'preact'
 
 export interface FormGroupProps {
   label: string
 }
 
-export const FormGroup = ({ label }: FormGroupProps, children) => (
+export const FormGroup: FunctionalComponent<FormGroupProps> = ({ label, children }) => (
   <div class="form-group">
-    <label for="exampleInputEmail1">{label}</label>
+    <label htmlFor="exampleInputEmail1">{label}</label>
     {children}
   </div>
 )

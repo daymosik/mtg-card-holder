@@ -1,7 +1,7 @@
-import AuthService, { authType } from '@services/auth'
+import AuthService, { authType } from 'services/auth'
 
 export class RegistrationService {
-  public register = async (email: string, password: string): Promise<any> => {
+  public register = async (email: string, password: string): Promise<unknown> => {
     return AuthService.authenticate(email, password, authType.Register)
   }
 }

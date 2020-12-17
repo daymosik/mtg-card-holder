@@ -1,9 +1,9 @@
-import { h } from 'hyperapp'
+import { FunctionalComponent, h } from 'preact'
 
-export const LoadingSpinner = () => (
+export const LoadingSpinner: FunctionalComponent = () => (
   <div class="spinner">
-    <div class="double-bounce1"/>
-    <div class="double-bounce2"/>
+    <div class="double-bounce1" />
+    <div class="double-bounce2" />
   </div>
 )
 

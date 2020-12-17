@@ -1,51 +1,46 @@
-import { AppActions, AppState } from '@app'
-import { FormGroup } from '@components/form'
-import MtgApiService from '@services/mtg-api'
-import { h } from 'hyperapp'
+import { FormGroup } from 'components/form'
+import { useState } from 'preact/hooks'
+import { FunctionalComponent, h } from 'preact'
+import MtgApiService from 'services/mtg-api'
 
-export interface AdminState {
-  errorMessage: string
+export const AdminView: FunctionalComponent = () => {
+  const [errorMessage, changeErrorMessage] = useState('')
+
+  const importSets = () => {
+    // TODO
+    MtgApiService.importSets()
+    handleErrorMessage('')
+  }
+  const importCards = () => {
+    // TODO
+    MtgApiService.importCards()
+    handleErrorMessage('')
+  }
+
+  const handleErrorMessage = (message: string) => {
+    changeErrorMessage(message)
+  }
+
+  return (
+    <div class="container">
+      <h2>Administration</h2>
+
+      <form onSubmit={(e) => e.preventDefault()}>
+        {errorMessage && <p className="error-message">{errorMessage}</p>}
+        <FormGroup label={'Import sets'}>
+          <button class="btn btn-primary form-control" onClick={importSets}>
+            Import
+          </button>
+        </FormGroup>
+
+        <FormGroup label={'Import cards'}>
+          <button class="btn btn-primary form-control" onClick={importCards}>
+            Import
+          </button>
+        </FormGroup>
+      </form>
+    </div>
+  )
 }
-
-export const initialAdminState: AdminState = {
-  errorMessage: '',
-}
-
-export interface AdminActions {
-  setErrorMessage: (message: string) => (state: AdminState) => AdminState
-  importSets: () => (state: AdminState, actions: AdminActions) => void
-  importCards: () => (state: AdminState, actions: AdminActions) => void
-}
-
-export const adminActions: AdminActions = {
-  setErrorMessage: (message: string) => (state: AdminState): AdminState => ({
-    ...state,
-    errorMessage: message,
-  }),
-  importSets: () => async (state: AdminState, actions: AdminActions) => {
-    await MtgApiService.importSets()
-  },
-  importCards: () => async (state: AdminState, actions: AdminActions) => {
-    await MtgApiService.importCards()
-  },
-}
-
-export const AdminView = (state: AppState, actions: AppActions) => () => (
-  <div class="container">
-    <h2>Administration</h2>
-
-    <form onsubmit={(e) => e.preventDefault()}>
-      {state.admin.errorMessage && <p className="error-message">{state.admin.errorMessage}</p>}
-      <FormGroup label={'Import sets'}>
-        <button class="btn btn-primary form-control" onclick={actions.admin.importSets}>Import</button>
-      </FormGroup>
-
-      <FormGroup label={'Import cards'}>
-        <button class="btn btn-primary form-control" onclick={actions.admin.importCards}>Import</button>
-      </FormGroup>
-    </form>
-
-  </div>
-)
 
 export default AdminView

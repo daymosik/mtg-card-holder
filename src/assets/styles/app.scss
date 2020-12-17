@@ -1,7 +1,7 @@
-@import "../../../node_modules/bootstrap/scss/bootstrap.scss";
-@import "loading-spinner";
-@import "mana-color";
-@import "tooltip";
+@import '../../../node_modules/bootstrap/scss/bootstrap.scss';
+@import 'loading-spinner';
+@import 'mana-color';
+@import 'tooltip';
 
 $nabar-height: 56px;
 
@@ -15,8 +15,8 @@ html {
 
 body {
   font-family: 'Open Sans', sans-serif;
-  background: url("../images/bg.jpg") repeat;
-  color: #FFF;
+  background: url('../images/bg.jpg') repeat;
+  color: #fff;
   padding-top: $nabar-height;
   padding-bottom: 60px;
   min-height: 100vh;
@@ -32,7 +32,7 @@ body {
 
 .navbar-brand {
   display: inline-block;
-  background: url("../images/magic-the-gathering-logo.png") top center no-repeat #000;
+  background: url('../images/magic-the-gathering-logo.png') top center no-repeat #000;
   height: 40px;
   width: 139px;
 }
@@ -67,7 +67,7 @@ a {
 .cards-list-image {
   width: $card-width;
   height: $card-height;
-  background: url("../images/magic-the-gathering-logo.png") center center no-repeat #7f7f7f;
+  background: url('../images/magic-the-gathering-logo.png') center center no-repeat #7f7f7f;
   text-align: center;
 
   a {
