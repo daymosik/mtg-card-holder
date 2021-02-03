@@ -47,6 +47,8 @@ export default {
       ),
     )
 
+    console.log(config.module)
+
     config.module.rules[4].use.splice(1, 0, {
       loader: '@teamsupercell/typings-for-css-modules-loader',
       options: {
@@ -54,6 +56,17 @@ export default {
         disableLocalsExport: true,
       },
     })
+
+    const { rule } = helpers.getLoadersByName(config, 'babel-loader')[0]
+
+    Object.assign(
+      rule,
+      {
+        ...rule,
+        exclude: /node_modules/,
+      }
+    )
+    console.log(config.module)
 
     // // Use any `index` file, not just index.js
     // config.resolve.alias["preact-cli-entrypoint"] = resolve(

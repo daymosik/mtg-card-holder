@@ -62,7 +62,7 @@ export class MtgApi {
               ...(magicCardKeys.includes(key as keyof MagicCard) ? { [key]: card[key as keyof Magic.Card] } : {}),
             }),
             {},
-          )
+          ) as MagicCard
 
           const cardMoreInfo = Object.keys(card).reduce(
             (prev, key) => ({
@@ -72,7 +72,7 @@ export class MtgApi {
                 : {}),
             }),
             {},
-          )
+          ) as MagicCardMoreInfo
 
           await firebaseDatabase.ref(`cards/${card.id}`).set(cardSimple)
           await firebaseDatabase.ref(`cards-more-info/${card.id}`).set(cardMoreInfo)

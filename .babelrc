@@ -1,0 +1,19 @@
+{
+  "plugins": [],
+  "presets": [
+    [
+      "@babel/preset-env",
+      {
+        "debug": true,
+        "loose": true,
+        "modules": false,
+        "targets": {
+          "browsers": [
+            "IE 10"
+          ]
+        }
+      }
+    ],
+    "preact-cli/babel"
+  ]
+}
