@@ -14,11 +14,9 @@ const handleMoreInfoDetails = (key: MagicCardMoreInfoKeys, value: MagicCardMoreI
       return (
         <div class="h2">
           {(value as string[]).map((set) => (
-            <div key={set}>
-              <Tooltip title={set}>
-                <i class={`m-2 ss ss-${set.toLowerCase()}`} />
-              </Tooltip>
-            </div>
+            <Tooltip title={set} key={set}>
+              <i class={`m-2 ss ss-${set.toLowerCase()}`} />
+            </Tooltip>
           ))}
         </div>
       )

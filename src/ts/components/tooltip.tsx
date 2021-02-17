@@ -1,24 +1,24 @@
 import { FunctionalComponent, h } from 'preact'
 import { useEffect, useRef } from 'preact/hooks'
-import tippy, { Options, ReferenceElement } from 'tippy.js'
+import tippy, { RenderProps, ReferenceElement } from 'tippy.js'
 
 // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-const tooltipDefaultOptions: Options = {
-  ...tippy.defaults,
+const tooltipDefaultOptions: RenderProps = {
+  ...tippy.defaultProps,
   arrow: true,
   theme: 'mtg',
 }
 
-const init = (element: ReferenceElement) => tippy(element, tooltipDefaultOptions)
+const init = (element: ReferenceElement, content: string) => tippy(element, { ...tooltipDefaultOptions, content })
 
 const destroy = (element: ReferenceElement) => element._tippy && element._tippy.destroy()
 
-const update = (element: ReferenceElement) => {
+const update = (element: ReferenceElement, content: string) => {
   if (element._tippy) {
     destroy(element)
-    init(element)
+    init(element, content)
   } else {
-    init(element)
+    init(element, content)
   }
 }
 
@@ -30,7 +30,7 @@ const Tooltip: FunctionalComponent<TooltipProps> = ({ title, children }) => {
   const element = useRef<HTMLDivElement>()
 
   useEffect(() => {
-    update(element.current)
+    update(element.current, title)
 
     // TODO
     // return () => {
