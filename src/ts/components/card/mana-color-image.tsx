@@ -11,7 +11,7 @@ const colorsMap: { [key: string]: string } = {
 const ManaColorImage = ({ color }: { color: string }) => {
   const isNumber = !isNaN(parseInt(color, 10))
   const shouldDisplayName = isNumber || color === 'X'
-  const colorName = colorsMap[color]
+  const colorName = colorsMap[color] || color.toLowerCase()
   return <span class={`manaColor size-20 ${colorName}`}>{shouldDisplayName ? color : <span>&nbsp;</span>}</span>
 }
 

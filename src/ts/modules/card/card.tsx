@@ -1,5 +1,6 @@
 import LoadingSpinner from 'components/loading-spinner'
 import { MagicCard, MagicCardMoreInfo } from 'models/magic'
+import CardInfo from 'modules/card/card-info'
 import CardMoreInfo from 'modules/card/card-more-info'
 import { useEffect, useState } from 'preact/hooks'
 import CardDatabaseService from 'services/card-database'
@@ -26,8 +27,11 @@ const CardItem: FunctionalComponent<CardItemProps> = ({ card, moreInfo, cardCoun
           <div class="col-sm-9 col-lg-10">{cardCount}</div>
         </div>
         <hr />
-        <CardMoreInfo card={card} moreInfo={moreInfo} />
+        <CardInfo card={card} />
       </div>
+    </div>
+    <div className="row">
+      <CardMoreInfo moreInfo={moreInfo} />
     </div>
   </div>
 )

@@ -60,7 +60,7 @@ const CardsListTableItem: FunctionalComponent<CardListItemProps> = ({ card, inde
 
       {isUserCard && decreaseCardCount && (
         <th>
-          <button class="btn btn-danger" onClick={() => decreaseCardCount(card)}>
+          <button class="btn btn-sm btn-danger" onClick={() => decreaseCardCount(card)}>
             X
           </button>
         </th>

@@ -71,16 +71,21 @@ export interface MagicCardMoreInfo {
   layout: string
   multiverseid: number
   watermark?: string
-  rulings: [
-    {
-      date: string
-      text: string
-    },
-  ]
+  rulings: MagicCardMoreInfoRulings[]
   printings: string[]
   originalText: string
   originalType: string
-  legalities: [{ format: string; legality: string }]
+  legalities: MagicCardMoreInfoLegalities[]
+}
+
+export interface MagicCardMoreInfoRulings {
+  date: string
+  text: string
+}
+
+export interface MagicCardMoreInfoLegalities {
+  format: string
+  legality: string
 }
 
 export type MagicCardKeys = keyof MagicCard
