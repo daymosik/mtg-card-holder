@@ -1,5 +1,5 @@
+import ManaCostView from 'components/card/mana-cost'
 import { MagicCard } from 'models/magic'
-import ManaCostView from 'modules/card/mana-cost'
 import { FunctionalComponent, h } from 'preact'
 import { Link } from 'preact-router'
 import { UserMagicCard } from 'store/reducers/card-collection-reducers'

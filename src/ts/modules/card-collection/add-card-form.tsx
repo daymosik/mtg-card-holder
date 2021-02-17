@@ -1,5 +1,5 @@
+import ManaCostView from 'components/card/mana-cost'
 import { MagicCard } from 'models/magic'
-import ManaCostView from 'modules/card/mana-cost'
 import { useState } from 'preact/hooks'
 import { JSXInternal } from 'preact/src/jsx'
 import CardDatabaseService from 'services/card-database'

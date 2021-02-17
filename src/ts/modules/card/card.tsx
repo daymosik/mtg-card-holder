@@ -1,3 +1,4 @@
+import ManaColorImage from 'components/card/mana-color-image'
 import LoadingSpinner from 'components/loading-spinner'
 import Tooltip from 'components/tooltip'
 import { MagicCard, MagicCardMoreInfo } from 'models/magic'
@@ -17,6 +18,14 @@ const handleMoreInfoDetails = (key: MagicCardMoreInfoKeys, value: MagicCardMoreI
             <Tooltip title={set} key={set}>
               <i class={`m-2 ss ss-${set.toLowerCase()}`} />
             </Tooltip>
+          ))}
+        </div>
+      )
+    case 'colorIdentity':
+      return (
+        <div>
+          {(value as string[]).map((color) => (
+            <ManaColorImage key={`${color}`} color={color} />
           ))}
         </div>
       )
