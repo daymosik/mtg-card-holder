@@ -82,3 +82,11 @@ export interface MagicCardMoreInfo {
   originalType: string
   legalities: [{ format: string; legality: string }]
 }
+
+export type MagicCardKeys = keyof MagicCard
+
+export type MagicCardValues = MagicCard[MagicCardKeys]
+
+export type MagicCardMoreInfoKeys = keyof MagicCardMoreInfo
+
+export type MagicCardMoreInfoValues = MagicCardMoreInfo[MagicCardMoreInfoKeys]

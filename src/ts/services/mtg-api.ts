@@ -1,8 +1,8 @@
 import { firebaseDatabase } from 'firebase-config'
-import { MagicCard, MagicCardMoreInfo } from 'models/magic'
+import { MagicCard, MagicCardKeys, MagicCardMoreInfo, MagicCardMoreInfoKeys } from 'models/magic'
 import * as Magic from 'mtgsdk-ts'
 
-const magicCardKeys: Array<keyof MagicCard> = [
+export const magicCardKeys: Array<MagicCardKeys> = [
   'id',
   'name',
   'manaCost',
@@ -16,7 +16,7 @@ const magicCardKeys: Array<keyof MagicCard> = [
   'type',
 ]
 
-const magicCardMoreInfoKeys: Array<keyof MagicCardMoreInfo> = [
+export const magicCardMoreInfoKeys: Array<MagicCardMoreInfoKeys> = [
   'cmc',
   'colorIdentity',
   'supertypes',

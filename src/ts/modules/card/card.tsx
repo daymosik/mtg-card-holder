@@ -1,67 +1,11 @@
-import ManaColorImage from 'components/card/mana-color-image'
 import LoadingSpinner from 'components/loading-spinner'
-import Tooltip from 'components/tooltip'
 import { MagicCard, MagicCardMoreInfo } from 'models/magic'
+import CardMoreInfo from 'modules/card/card-more-info'
 import { useEffect, useState } from 'preact/hooks'
 import CardDatabaseService from 'services/card-database'
 import { FunctionalComponent, h } from 'preact'
 
-type MagicCardMoreInfoKeys = keyof MagicCardMoreInfo
-type MagicCardMoreInfoValues = MagicCardMoreInfo[MagicCardMoreInfoKeys]
-
-const handleMoreInfoDetails = (key: MagicCardMoreInfoKeys, value: MagicCardMoreInfoValues) => {
-  switch (key) {
-    case 'printings':
-      return (
-        <div class="h2">
-          {(value as string[]).map((set) => (
-            <Tooltip title={set} key={set}>
-              <i class={`m-2 ss ss-${set.toLowerCase()}`} />
-            </Tooltip>
-          ))}
-        </div>
-      )
-    case 'colorIdentity':
-      return (
-        <div>
-          {(value as string[]).map((color) => (
-            <ManaColorImage key={`${color}`} color={color} />
-          ))}
-        </div>
-      )
-    default:
-      return <span>{JSON.stringify(value)}</span>
-  }
-}
-
-interface MoreInfoProps {
-  moreInfo: MagicCardMoreInfo | undefined
-}
-
-const MoreInfo: FunctionalComponent<MoreInfoProps> = ({ moreInfo }): JSX.Element => {
-  if (!moreInfo) {
-    return <div />
-  }
-  return (
-    <div>
-      {Object.keys(moreInfo).map((key) => {
-        const keyo = key as MagicCardMoreInfoKeys
-        const info: MagicCardMoreInfoValues = moreInfo[keyo]
-
-        return info ? (
-          <div class="row form-group" key={JSON.stringify(key)}>
-            <div class="col-sm-3 col-lg-2">{JSON.stringify(key)}</div>
-            <div class="col-sm-9 col-lg-10">{handleMoreInfoDetails(keyo, info)}</div>
-          </div>
-        ) : (
-          <div />
-        )
-      })}
-    </div>
-  )
-}
-
-interface CardItemProps {
+export interface CardItemProps {
   card: MagicCard
   moreInfo: MagicCardMoreInfo | undefined
   cardCount: number
@@ -82,7 +26,7 @@ const CardItem: FunctionalComponent<CardItemProps> = ({ card, moreInfo, cardCoun
           <div class="col-sm-9 col-lg-10">{cardCount}</div>
         </div>
         <hr />
-        <MoreInfo moreInfo={moreInfo} />
+        <CardMoreInfo card={card} moreInfo={moreInfo} />
       </div>
     </div>
   </div>
