@@ -8,7 +8,7 @@ const colorsMap: { [key: string]: string } = {
   R: 'red',
 }
 
-const ManaColorImage = ({ color }: { color: string }) => {
+const ManaColorImage = ({ color }: { color: string }): JSX.Element => {
   const isNumber = !isNaN(parseInt(color, 10))
   const shouldDisplayName = isNumber || color === 'X'
   const colorName = colorsMap[color] || color.toLowerCase()

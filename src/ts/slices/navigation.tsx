@@ -65,6 +65,7 @@ const NavigationMenu: FunctionalComponent<NavigationMenuProps> = ({
     <ul class="navbar-nav mr-auto">
       <NavigationListItem path={NavigationPath.CardDatabase} name={'Card Database'} />
       <NavigationListItem path={NavigationPath.CardCollection} name={'My Collection'} />
+      <NavigationListItem path={NavigationPath.CardRecognition} name={'Card recognition'} />
       <NavigationListItem path={NavigationPath.Admin} name={'Admin'} />
     </ul>
     <ul class="navbar-nav">
