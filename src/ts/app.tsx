@@ -8,7 +8,9 @@ import SetView from 'modules/card-database/set'
 import CardView from 'modules/card/card'
 import LoginView from 'modules/login/login'
 import SignupView from 'modules/signup/signup'
+import { useEffect } from 'preact/hooks'
 import { Provider } from 'react-redux'
+import cardRecognition from 'services/card-recognition'
 import FooterView from 'slices/footer'
 import NavigationView from 'slices/navigation'
 import { FunctionalComponent, h } from 'preact'
@@ -26,6 +28,10 @@ const App: FunctionalComponent = () => {
     currentUrl = e.url
     console.log(currentUrl)
   }
+
+  useEffect(() => {
+    void cardRecognition.demo()
+  })
 
   return (
     <div id="preact_root">

@@ -41,6 +41,7 @@
     "redux": "^4.0.5",
     "redux-thunk": "^2.3.0",
     "rxjs": "^6.6.3",
+    "tesseract.js": "^2.1.4",
     "tippy.js": "^6.2.7"
   },
   "devDependencies": {
