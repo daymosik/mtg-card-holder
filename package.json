@@ -26,6 +26,8 @@
     "build/*"
   ],
   "dependencies": {
+    "@teachablemachine/image": "^0.8.4",
+    "@tensorflow/tfjs": "^2.8.6",
     "axios": "^0.21.1",
     "bootstrap": "^4.6.0",
     "firebase": "^8.2.7",

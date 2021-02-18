@@ -4,5 +4,6 @@ export enum NavigationPath {
   Signup = '/signup',
   CardDatabase = '/card-database',
   CardCollection = '/card-collection',
+  CardRecognition = '/card-recognition',
   Admin = '/admin',
 }
