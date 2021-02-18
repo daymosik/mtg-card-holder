@@ -1,4 +1,5 @@
 import 'firebase-config'
+import CardRecognitionView from 'components/card-recognition'
 import PrivateRoute from 'components/private-route'
 import { NavigationPath } from 'models/routes'
 import AdminView from 'modules/admin/admin'
@@ -8,9 +9,7 @@ import SetView from 'modules/card-database/set'
 import CardView from 'modules/card/card'
 import LoginView from 'modules/login/login'
 import SignupView from 'modules/signup/signup'
-import { useEffect } from 'preact/hooks'
 import { Provider } from 'react-redux'
-import cardRecognition from 'services/card-recognition'
 import FooterView from 'slices/footer'
 import NavigationView from 'slices/navigation'
 import { FunctionalComponent, h } from 'preact'
@@ -19,7 +18,12 @@ import store from 'store/index'
 import 'auth'
 import StartupView from './startup'
 
-const Home: FunctionalComponent = () => <div class="container">Home</div>
+const Home: FunctionalComponent = () => (
+  <div class="container">
+    Home
+    <CardRecognitionView />
+  </div>
+)
 
 const App: FunctionalComponent = () => {
   // TODO
@@ -28,10 +32,6 @@ const App: FunctionalComponent = () => {
     currentUrl = e.url
     console.log(currentUrl)
   }
-
-  useEffect(() => {
-    void cardRecognition.demo()
-  })
 
   return (
     <div id="preact_root">
