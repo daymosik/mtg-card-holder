@@ -5,6 +5,10 @@ import 'firebase/auth'
 import { Observable, Subscriber } from 'rxjs'
 import { UserMagicCard } from 'store/reducers/card-collection-reducers'
 
+type MagicCardMap = { [key: string]: MagicCard }
+
+type MagicSetMap = { [key: string]: MagicSet }
+
 const capitalizeFirstLetter = (str: string): string => str.charAt(0).toUpperCase() + str.slice(1)
 const responseToArray = <T>(object: { [key: string]: T }): T[] =>
   object ? Object.keys(object).map((key) => object[key]) : []
@@ -39,7 +43,7 @@ export class CardDatabase {
       .endAt(valueToSend + '\uf8ff')
       .limitToFirst(10)
       .once('value')
-    return responseToArray(ref.val())
+    return responseToArray(ref.val() as MagicCardMap)
   }
 
   public async getCardById(id: string): Promise<MagicCard> {
@@ -50,7 +54,7 @@ export class CardDatabase {
 
   public async getCardsBySet(set: string): Promise<MagicCard[]> {
     const ref = await firebaseDatabase.ref('cards').orderByChild('set').equalTo(set).limitToFirst(500).once('value')
-    return responseToArray(ref.val())
+    return responseToArray(ref.val() as MagicCardMap)
   }
 
   public async getCardMoreInfo(id: string): Promise<MagicCardMoreInfo> {
@@ -70,6 +74,8 @@ export class CardDatabase {
       remove?: boolean,
     ): Promise<void> => {
       if (data && data.key) {
+        // TODO
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
         const card = await getCard(data.key, remove ? 0 : data.val())
         observer.next(card)
       }
@@ -105,7 +111,7 @@ export class CardDatabase {
 
   public async getSets(): Promise<MagicSet[]> {
     const sets = await firebaseDatabase.ref('sets').once('value')
-    return responseToArray(sets.val())
+    return responseToArray(sets.val() as MagicSetMap)
   }
 
   public async getUserCardCount(cardId: string): Promise<number> {

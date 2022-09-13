@@ -11,8 +11,7 @@ module.exports = {
     "plugin:react/recommended",
     "plugin:react-hooks/recommended",
     "plugin:prettier/recommended",
-    "prettier/@typescript-eslint",
-    "prettier/react"
+    "prettier"
   ],
   parser: "@typescript-eslint/parser",
   parserOptions: {
@@ -24,6 +23,7 @@ module.exports = {
   rules: {
     "react/no-unknown-property": ["error", { ignore: ["class"] }],
     "react/prop-types": "off",
+    "@typescript-eslint/no-misused-promises": "off"
   },
   settings: {
     react: {
@@ -38,5 +38,6 @@ module.exports = {
         "@typescript-eslint/explicit-function-return-type": "off",
       }
     }
-  ]
+  ],
+  ignorePatterns: ['.eslintrc.js']
 };

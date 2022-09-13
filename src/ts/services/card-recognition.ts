@@ -61,7 +61,7 @@ const cardRecognition = {
     webcam.canvas = canvasElement
 
     videoElement.srcObject = await window.navigator.mediaDevices.getUserMedia({ video: { facingMode: 'environment' } })
-    videoElement.addEventListener('loadedmetadata', (event: Event) => {
+    videoElement.addEventListener('loadedmetadata', () => {
       const { videoWidth: vw, videoHeight: vh } = videoElement
       videoElement.width = vw
       videoElement.height = vh
@@ -170,7 +170,7 @@ const cardRecognition = {
     // const image = 'https://tesseract.projectnaptha.com/img/eng_bw.png'
     // const image = require('../../assets/images/eng_bw.png').default
     // eslint-disable-next-line @typescript-eslint/no-var-requires,@typescript-eslint/no-unsafe-assignment,@typescript-eslint/no-unsafe-member-access
-    const image = require('../../assets/images/magic-card-photo2.jpg').default
+    const image: ImageLike = require('../../assets/images/magic-card-photo2.jpg').default
 
     return cardRecognition.recognizeText(image)
   },
