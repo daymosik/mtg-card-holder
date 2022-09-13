@@ -56,7 +56,7 @@ const CardsListTableItem: FunctionalComponent<CardListItemProps> = ({ card, inde
       </td>
       <td>{card.type}</td>
       <td class="text-right">{ManaCostView(card.manaCost)}</td>
-      {isUserCard && <td class="text-center">{(card as UserMagicCard).count}</td>}
+      {isUserCard && <td class="text-center">{card.count}</td>}
 
       {isUserCard && decreaseCardCount && (
         <th>
