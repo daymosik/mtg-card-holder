@@ -14,7 +14,7 @@ watch:
 	yarn run dev
 
 clean:
-	rm -rf build
+	rm -rf builds
 
 deploy:
 	firebase deploy

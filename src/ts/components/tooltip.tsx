@@ -1,5 +1,5 @@
 import { FunctionalComponent, h } from 'preact'
-import { useEffect, useRef } from 'preact/hooks'
+import { MutableRef, useEffect, useRef } from 'preact/hooks'
 import tippy, { RenderProps, ReferenceElement } from 'tippy.js'
 
 // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
@@ -27,7 +27,7 @@ interface TooltipProps {
 }
 
 const Tooltip: FunctionalComponent<TooltipProps> = ({ title, children }) => {
-  const element = useRef<HTMLDivElement>()
+  const element = useRef<HTMLDivElement>() as MutableRef<HTMLDivElement>
 
   useEffect(() => {
     update(element.current, title)
@@ -39,7 +39,7 @@ const Tooltip: FunctionalComponent<TooltipProps> = ({ title, children }) => {
   }, [])
 
   return (
-    <div class="d-inline-block" title={title} ref={element}>
+    <div className="d-inline-block" title={title} ref={element}>
       {children}
     </div>
   )
