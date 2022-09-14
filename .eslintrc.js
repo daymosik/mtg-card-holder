@@ -23,7 +23,11 @@ module.exports = {
   rules: {
     "react/no-unknown-property": ["error", { ignore: ["class"] }],
     "react/prop-types": "off",
-    "@typescript-eslint/no-misused-promises": "off"
+    "@typescript-eslint/no-misused-promises": "off",
+    "@typescript-eslint/no-unsafe-call": "off",
+    "@typescript-eslint/no-unsafe-assignment": "off",
+    "@typescript-eslint/no-unsafe-member-access": "off",
+    "@typescript-eslint/no-unsafe-argument": "off"
   },
   settings: {
     react: {

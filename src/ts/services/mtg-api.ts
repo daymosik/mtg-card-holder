@@ -1,6 +1,7 @@
 import { firebaseDatabase } from 'firebase-config'
 import { MagicCard, MagicCardKeys, MagicCardMoreInfo, MagicCardMoreInfoKeys } from 'models/magic'
 import * as Magic from 'mtgsdk-ts'
+import { get, ref, set } from 'firebase/database'
 
 export const magicCardKeys: Array<MagicCardKeys> = [
   'id',
@@ -47,9 +48,9 @@ export class MtgApi {
 
     emiter
       .on('data', async (card: Magic.Card) => {
-        const ref = await firebaseDatabase.ref(`cards/${card.id}`).once('value')
+        const response = await get(ref(firebaseDatabase, `cards/${card.id}`))
         // TODO: as
-        const foundCard = ref.val() as Magic.Card
+        const foundCard = response.val() as Magic.Card
 
         info.cardsCount++
 
@@ -74,8 +75,8 @@ export class MtgApi {
             {},
           )
 
-          await firebaseDatabase.ref(`cards/${card.id}`).set(cardSimple)
-          await firebaseDatabase.ref(`cards-more-info/${card.id}`).set(cardMoreInfo)
+          await set(ref(firebaseDatabase, `cards/${card.id}`), cardSimple)
+          await set(ref(firebaseDatabase, `cards-more-info/${card.id}`), cardMoreInfo)
 
           info.cardsAdded++
         }
@@ -90,13 +91,13 @@ export class MtgApi {
     const emiter = Magic.Sets.all({})
 
     emiter
-      .on('data', async (set) => {
-        const ref = await firebaseDatabase.ref(`sets/${set.code}`).once('value')
-        const foundSet = ref.val() as Magic.Set
+      .on('data', async (magicSet) => {
+        const response = await get(ref(firebaseDatabase, `sets/${magicSet.code}`))
+        const foundSet = response.val() as Magic.Set
 
         if (!foundSet) {
-          console.log(set)
-          await firebaseDatabase.ref(`sets/${set.code}`).set(set)
+          console.log(magicSet)
+          await set(ref(firebaseDatabase, `sets/${magicSet.code}`), magicSet)
         }
       })
       .on('end', () => {

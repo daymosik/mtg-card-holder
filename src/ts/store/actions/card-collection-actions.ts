@@ -1,5 +1,5 @@
 import { CardsDisplayType } from 'components/cards/cards-list-switcher'
-import firebase from 'firebase/app'
+import { getAuth } from 'firebase/auth'
 import { ThunkAction } from 'redux-thunk'
 import { Subscription } from 'rxjs'
 import CardDatabaseService from 'services/card-database'
@@ -15,7 +15,7 @@ let USER_CARD_SUBSCRIBER: Subscription
 
 export function getCardCollection(): ThunkAction<Promise<void>, RootState, null, CardCollectionSetAction> {
   return async (dispatch) => {
-    const user = firebase.auth().currentUser
+    const user = getAuth().currentUser
 
     if (!user || !!USER_CARD_SUBSCRIBER) {
       return Promise.reject()

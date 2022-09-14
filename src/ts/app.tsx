@@ -1,4 +1,3 @@
-import 'firebase-config'
 import PrivateRoute from 'components/private-route'
 import { NavigationPath } from 'models/routes'
 import AdminView from 'modules/admin/admin'

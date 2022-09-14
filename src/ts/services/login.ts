@@ -1,6 +1,5 @@
 import AuthService, { authType } from 'services/auth'
-import firebase from 'firebase/app'
-import 'firebase/auth'
+import { getAuth } from 'firebase/auth'
 
 export class LoginService {
   public login = async (email: string, password: string): Promise<unknown> => {
@@ -9,7 +8,7 @@ export class LoginService {
 
   public logout = async (): Promise<void> => {
     try {
-      await firebase.auth().signOut()
+      await getAuth().signOut()
       window.location.reload()
     } catch (e) {
       console.info(e)

@@ -1,9 +1,21 @@
 import { firebaseDatabase } from 'firebase-config'
 import { MagicCard, MagicCardMoreInfo, MagicSet } from 'models/magic'
-import firebase from 'firebase/app'
-import 'firebase/auth'
 import { Observable, Subscriber } from 'rxjs'
 import { UserMagicCard } from 'store/reducers/card-collection-reducers'
+import { getAuth } from 'firebase/auth'
+import {
+  DataSnapshot,
+  endAt,
+  equalTo,
+  get,
+  limitToFirst,
+  onValue,
+  orderByChild,
+  query,
+  ref,
+  set,
+  startAt,
+} from 'firebase/database'
 
 type MagicCardMap = { [key: string]: MagicCard }
 
@@ -15,7 +27,7 @@ const responseToArray = <T>(object: { [key: string]: T }): T[] =>
 
 export class CardDatabase {
   public async addCardToCollection(card: MagicCard): Promise<MagicCard> {
-    const user = firebase.auth().currentUser
+    const user = getAuth().currentUser
     if (!user) {
       return Promise.reject('not authorized')
     }
@@ -25,7 +37,7 @@ export class CardDatabase {
   }
 
   public async removeCardFromCollection(card: MagicCard): Promise<MagicCard> {
-    const user = firebase.auth().currentUser
+    const user = getAuth().currentUser
     if (!user) {
       return Promise.reject('not authorized')
     }
@@ -36,31 +48,35 @@ export class CardDatabase {
 
   public async getCardsForAutocomplete(value: string): Promise<MagicCard[]> {
     const valueToSend = capitalizeFirstLetter(value)
-    const ref = await firebaseDatabase
-      .ref('cards')
-      .orderByChild('name')
-      .startAt(valueToSend)
-      .endAt(valueToSend + '\uf8ff')
-      .limitToFirst(10)
-      .once('value')
-    return responseToArray(ref.val() as MagicCardMap)
+    const response = await get(
+      query(
+        ref(firebaseDatabase, 'cards'),
+        orderByChild('name'),
+        startAt(valueToSend),
+        endAt(valueToSend + '\uf8ff'),
+        limitToFirst(10),
+      ),
+    )
+    return responseToArray(response.val())
   }
 
   public async getCardById(id: string): Promise<MagicCard> {
-    const ref = await firebaseDatabase.ref(`cards/${id}`).once('value')
+    const response = await get(ref(firebaseDatabase, `cards/${id}`))
     // TODO: as
-    return ref.val() as MagicCard
+    return response.val() as MagicCard
   }
 
   public async getCardsBySet(set: string): Promise<MagicCard[]> {
-    const ref = await firebaseDatabase.ref('cards').orderByChild('set').equalTo(set).limitToFirst(500).once('value')
-    return responseToArray(ref.val() as MagicCardMap)
+    const response = await get(
+      query(ref(firebaseDatabase, 'cards'), orderByChild('set'), equalTo(set), limitToFirst(500)),
+    )
+    return responseToArray(response.val() as MagicCardMap)
   }
 
   public async getCardMoreInfo(id: string): Promise<MagicCardMoreInfo> {
-    const ref = await firebaseDatabase.ref(`cards-more-info/${id}`).once('value')
+    const response = await get(ref(firebaseDatabase, `cards-more-info/${id}`))
     // TODO: as
-    return ref.val() as MagicCardMoreInfo
+    return response.val() as MagicCardMoreInfo
   }
 
   public userCardsSubscriber(userId: string): Observable<UserMagicCard> {
@@ -70,7 +86,7 @@ export class CardDatabase {
     }
     const handleOncomming = async (
       observer: Subscriber<UserMagicCard>,
-      data: firebase.database.DataSnapshot,
+      data: DataSnapshot,
       remove?: boolean,
     ): Promise<void> => {
       if (data && data.key) {
@@ -81,48 +97,55 @@ export class CardDatabase {
       }
     }
     return new Observable((observer) => {
-      firebaseDatabase.ref(`user-cards/${userId}`).on('child_changed', async (data) => handleOncomming(observer, data))
-      firebaseDatabase.ref(`user-cards/${userId}`).on('child_added', async (data) => handleOncomming(observer, data))
-      firebaseDatabase
-        .ref(`user-cards/${userId}`)
-        .on('child_removed', async (data) => handleOncomming(observer, data, true))
+      onValue(ref(firebaseDatabase, `user-cards/${userId}`), async (snapshot) => {
+        const data = snapshot.val()
+
+        await handleOncomming(observer, data)
+      })
+
+      // TODO
+      // ref(firebaseDatabase, `user-cards/${userId}`).on('child_changed', async (data) => handleOncomming(observer, data))
+      // firebaseDatabase.ref(`user-cards/${userId}`).on('child_added', async (data) => handleOncomming(observer, data))
+      // firebaseDatabase
+      //   .ref(`user-cards/${userId}`)
+      //   .on('child_removed', async (data) => handleOncomming(observer, data, true))
     })
   }
 
   public async getCards(): Promise<MagicSet> {
-    const set = await firebaseDatabase.ref(`cards`).once('value')
+    const set = await get(ref(firebaseDatabase, 'cards'))
     console.log(set.val())
     // TODO: as
     return set.val() as MagicSet
   }
 
   public async getUserCards(userId: string): Promise<MagicSet> {
-    const set = await firebaseDatabase.ref(`user-cards/${userId}`).once('value')
+    const set = await get(ref(firebaseDatabase, `user-cards/${userId}`))
     console.log(set.val())
     // TODO: as
     return set.val() as MagicSet
   }
 
   public async getSet(setCode: string): Promise<MagicSet> {
-    const set = await firebaseDatabase.ref(`sets/${setCode}`).once('value')
+    const set = await get(ref(firebaseDatabase, `sets/${setCode}`))
     // TODO: as
     return set.val() as MagicSet
   }
 
   public async getSets(): Promise<MagicSet[]> {
-    const sets = await firebaseDatabase.ref('sets').once('value')
+    const sets = await get(ref(firebaseDatabase, 'sets'))
     return responseToArray(sets.val() as MagicSetMap)
   }
 
   public async getUserCardCount(cardId: string): Promise<number> {
-    const user = firebase.auth().currentUser
-    const ref = await firebaseDatabase.ref(`user-cards/${user ? user.uid : '0'}/${cardId}`).once('value')
+    const user = getAuth().currentUser
+    const response = await get(ref(firebaseDatabase, `user-cards/${user ? user.uid : '0'}/${cardId}`))
     // TODO: as
-    return (ref.val() as number) || 0
+    return (response.val() as number) || 0
   }
 
   private async setUserCardCount(userId: string, cardId: string, count: number | null): Promise<void> {
-    await firebaseDatabase.ref(`user-cards/${userId}/${cardId}`).set(count)
+    await set(ref(firebaseDatabase, `user-cards/${userId}/${cardId}`), count)
   }
 }
 

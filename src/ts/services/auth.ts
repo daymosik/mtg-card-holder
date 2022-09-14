@@ -1,5 +1,4 @@
-import firebase from 'firebase/app'
-import 'firebase/auth'
+import { createUserWithEmailAndPassword, getAuth, signInWithEmailAndPassword } from 'firebase/auth'
 
 export enum authType {
   Login = 'login',
@@ -8,10 +7,12 @@ export enum authType {
 
 export class Auth {
   public authenticate = async (email: string, password: string, type: authType): Promise<unknown> => {
+    const auth = getAuth()
+
     const data =
       type === authType.Login
-        ? await firebase.auth().signInWithEmailAndPassword(email, password)
-        : await firebase.auth().createUserWithEmailAndPassword(email, password)
+        ? await signInWithEmailAndPassword(auth, email, password)
+        : await createUserWithEmailAndPassword(auth, email, password)
     return data.user
   }
 }
