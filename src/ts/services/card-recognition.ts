@@ -150,9 +150,11 @@ const cardRecognition = {
     return canvas.toDataURL('image/jpeg')
   },
   recognizeText: async (image: ImageLike): Promise<string> => {
-    const worker = createWorker({
-      logger: (m) => console.log(m),
-    })
+    const [worker] = await Promise.all([
+      createWorker({
+        logger: (m) => console.log(m),
+      }),
+    ])
 
     await worker.load()
     await worker.loadLanguage('eng')

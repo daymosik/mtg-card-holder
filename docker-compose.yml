@@ -1,0 +1,11 @@
+version: '3'
+services:
+  mtg:
+    container_name: mtg
+    build:
+      context: .
+      dockerfile: Dockerfile
+    volumes:
+      - ./:/app
+    restart: 'no'
+    command: make build

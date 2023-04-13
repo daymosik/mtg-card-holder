@@ -9,13 +9,13 @@ import {
   equalTo,
   get,
   limitToFirst,
-  onValue,
   orderByChild,
   query,
   ref,
   set,
   startAt,
 } from 'firebase/database'
+import { onChildAdded, onChildChanged, onChildRemoved } from '@firebase/database'
 
 type MagicCardMap = { [key: string]: MagicCard }
 
@@ -97,18 +97,11 @@ export class CardDatabase {
       }
     }
     return new Observable((observer) => {
-      onValue(ref(firebaseDatabase, `user-cards/${userId}`), async (snapshot) => {
-        const data = snapshot.val()
-
-        await handleOncomming(observer, data)
-      })
-
-      // TODO
-      // ref(firebaseDatabase, `user-cards/${userId}`).on('child_changed', async (data) => handleOncomming(observer, data))
-      // firebaseDatabase.ref(`user-cards/${userId}`).on('child_added', async (data) => handleOncomming(observer, data))
-      // firebaseDatabase
-      //   .ref(`user-cards/${userId}`)
-      //   .on('child_removed', async (data) => handleOncomming(observer, data, true))
+      onChildChanged(ref(firebaseDatabase, `user-cards/${userId}`), async (data) => handleOncomming(observer, data))
+      onChildAdded(ref(firebaseDatabase, `user-cards/${userId}`), async (data) => handleOncomming(observer, data))
+      onChildRemoved(ref(firebaseDatabase, `user-cards/${userId}`), async (data) =>
+        handleOncomming(observer, data, true),
+      )
     })
   }
 

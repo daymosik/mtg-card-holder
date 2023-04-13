@@ -20,7 +20,8 @@ const StartupView: FunctionalComponent = ({ children }) => {
       LazyLoad.startLazyLoad()
     }
     try {
-      await Promise.all([dispatch(getCardDatabaseSets()), dispatch(getCardCollection())])
+      // TODO: never
+      await Promise.all([dispatch(getCardDatabaseSets() as never), dispatch(getCardCollection() as never)])
       setLoading(false)
     } catch (e) {
       setLoading(false)
