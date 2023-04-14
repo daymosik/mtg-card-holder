@@ -47,7 +47,7 @@ jobs:
           CI: true
 
       - name: Build
-        run: npm run build
+        run: ./build.sh
         env:
           CI: true
 
