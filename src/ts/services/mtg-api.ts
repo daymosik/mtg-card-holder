@@ -1,7 +1,5 @@
 import { firebaseDatabase } from 'firebase-config'
 import { MagicCard, MagicCardKeys, MagicCardMoreInfo, MagicCardMoreInfoKeys } from 'models/magic'
-import 'request'
-import 'request-promise'
 import * as Magic from 'mtgsdk-ts'
 import { get, ref, set } from 'firebase/database'
 
