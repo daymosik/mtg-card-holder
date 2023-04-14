@@ -20,3 +20,17 @@ FIREBASE_STORAGE_BUCKET=your-domain.appspot.com
 FIREBASE_MESSAGING_SENDER_ID=your-messaging-sender-id
 FIREBASE_APP_ID=your-app-id
 ```
+
+### Providers
+
+Based on this API, but its not maintained anymore
+```
+https://api.magicthegathering.io/v1 
+https://github.com/MagicTheGathering/mtg-sdk-typescript
+```
+
+Switching to this API
+```
+https://api.scryfall.com
+https://github.com/ChiriVulpes/scryfall-sdk
+```

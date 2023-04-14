@@ -1,19 +1,22 @@
 import { FormGroup } from 'components/form'
 import { useState } from 'preact/hooks'
 import { FunctionalComponent, h } from 'preact'
-import MtgApiService from 'services/mtg-api'
+import scryfallService from 'services/scryfall'
+// import MtgApiService from 'services/mtg-api'
 
 export const AdminView: FunctionalComponent = () => {
   const [errorMessage, changeErrorMessage] = useState('')
 
-  const importSets = () => {
+  const importSets = async () => {
+    await scryfallService.getCard()
     // TODO
-    MtgApiService.importSets()
+    // MtgApiService.importCards()
     handleErrorMessage('')
   }
-  const importCards = () => {
+  const importCards = async () => {
+    await scryfallService.getCard()
     // TODO
-    MtgApiService.importCards()
+    // MtgApiService.importCards()
     handleErrorMessage('')
   }
 

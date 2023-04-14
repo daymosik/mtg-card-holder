@@ -19,7 +19,7 @@ import StartupView from './startup'
 
 const Home: FunctionalComponent = () => <div class="container">Home</div>
 
-const App: FunctionalComponent = () => {
+const App: FunctionalComponent = (): JSX.Element => {
   // TODO
   let currentUrl: string
   const handleRoute = (e: RouterOnChangeArgs) => {

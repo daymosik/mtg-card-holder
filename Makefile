@@ -1,26 +1,29 @@
-SHELL=/bin/bash
 export PATH := node_modules/.bin:$(PATH)
+export NODE_OPTIONS=--openssl-legacy-provider
 
 include .env
 export $(shell sed 's/=.*//' .env)
 
-build: node_modules/INSTALLED $(shell find src -type f)
+sources := tsconfig.json vite.config.js .eslintrc.js $(shell find ./src -type f)
+npm_dep = package.json
+libs = node_modules/installed_ts
+
+build: VERSION
+VERSION: $(libs) $(sources)
+	rm -rf ./dist/*
 	yarn run lint
 	yarn run test
 	yarn run build
-	touch $@
-
-watch:
-	yarn run dev
+	echo $(GIT_VERSION) > VERSION
 
 clean:
-	rm -rf builds
+	rm -rf VERSION dist
+
+watch: $(libs)
+	yarn run watch
 
 deploy:
 	firebase deploy
-
-run:
-	firebase serve
 
 test:
 	yarn run test
@@ -28,8 +31,8 @@ test:
 lint:
 	tslint -p . -t codeFrame
 
-node_modules/INSTALLED: package.json
+$(libs): $(npm_dep)
 	yarn install
-	touch $@
+	touch node_modules/installed_ts
 
-.PHONY: run deploy build watch clean test
+.PHONY: deploy build watch clean test lint
