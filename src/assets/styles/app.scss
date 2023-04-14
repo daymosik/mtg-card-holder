@@ -7,7 +7,7 @@
 @import 'mana-color';
 @import 'tooltip';
 
-$nabar-height: 56px;
+$navbar-height: 56px;
 
 $card-width: 223px;
 $card-height: 311px;
@@ -21,7 +21,7 @@ body {
   font-family: 'Open Sans', sans-serif;
   background: url('../images/bg.jpg') repeat;
   color: #fff;
-  padding-top: $nabar-height;
+  padding-top: $navbar-height;
   padding-bottom: 60px;
   min-height: 100vh;
 }

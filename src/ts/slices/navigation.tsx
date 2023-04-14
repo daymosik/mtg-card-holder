@@ -62,7 +62,7 @@ const NavigationMenu: FunctionalComponent<NavigationMenuProps> = ({
     id="navbarSupportedContent"
     onClick={() => hideMobileMenu()}
   >
-    <ul class="navbar-nav mr-auto">
+    <ul class="navbar-nav me-auto">
       <NavigationListItem path={NavigationPath.CardDatabase} name={'Card Database'} />
       <NavigationListItem path={NavigationPath.CardCollection} name={'My Collection'} />
       <NavigationListItem path={NavigationPath.CardRecognition} name={'Card recognition'} />
@@ -86,7 +86,7 @@ export const NavigationView: FunctionalComponent = () => {
   const toggleMobileMenu = () => changeMobileMenuOpen(!mobileMenuOpen)
 
   return (
-    <nav class="navbar navbar-expand-lg navbar-dark">
+    <nav class="navbar navbar-expand-md navbar-dark">
       <div class="container">
         <NavigationButton onClick={toggleMobileMenu} />
 
