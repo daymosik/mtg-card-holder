@@ -16,6 +16,7 @@ import { Route, Router, RouterOnChangeArgs } from 'preact-router'
 import store from 'store/index'
 import 'auth'
 import StartupView from './startup'
+import { createHashHistory } from 'history'
 
 const Home: FunctionalComponent = () => <div class="container">Home</div>
 
@@ -33,7 +34,8 @@ const App: FunctionalComponent = (): JSX.Element => {
         <StartupView>
           <div class="wrapper">
             <NavigationView />
-            <Router onChange={handleRoute}>
+            {/*TODO*/}
+            <Router onChange={handleRoute} history={createHashHistory() as never}>
               <Route path={NavigationPath.Home} component={Home} />
               <Route path={NavigationPath.Login} component={LoginView} />
               <Route path={NavigationPath.Signup} component={SignupView} />
