@@ -7,11 +7,11 @@ export interface CardsListImagesProps {
 }
 
 const CardsListImages: FunctionalComponent<CardsListImagesProps> = ({ cards }) => (
-  <div class="row d-flex flex-row justify-content-center">
+  <div className="row d-flex flex-row justify-content-center">
     {cards.map((card) => (
-      <div class="cards-list-image rounded m-2" key={card.id}>
+      <div className="cards-list-image rounded m-2" key={card.id}>
         <Link href={`/card/${card.id}`}>
-          {card.imageUrl ? <img class="lazy" data-src={card.imageUrl} /> : <i class="fas fa-ban" />}
+          {card.imageUrl ? <img className="lazy" data-src={card.imageUrl} /> : <i className="fas fa-ban" />}
         </Link>
       </div>
     ))}

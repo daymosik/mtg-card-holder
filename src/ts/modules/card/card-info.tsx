@@ -4,7 +4,7 @@ import Tooltip from 'components/tooltip'
 import { MagicCard, MagicCardKeys, MagicCardValues } from 'models/magic'
 import { FunctionalComponent, h } from 'preact'
 
-const hiddenKeys: MagicCardKeys[] = ['imageUrl', 'id']
+const hiddenKeys: MagicCardKeys[] = ['imageUrl', 'id', 'name']
 
 const handleCardDetails = (key: MagicCardKeys, value: MagicCardValues) => {
   switch (key) {
@@ -20,9 +20,9 @@ const handleCardDetails = (key: MagicCardKeys, value: MagicCardValues) => {
       )
     case 'set':
       return (
-        <div class="h2">
+        <div className="h2">
           <Tooltip title={value as string}>
-            <i class={`m-2 ss ss-${(value as string).toLowerCase()}`} />
+            <i className={`m-2 ss ss-${(value as string).toLowerCase()}`} />
           </Tooltip>
         </div>
       )
@@ -46,8 +46,8 @@ const CardInfo: FunctionalComponent<CardInfoProps> = ({ card }): JSX.Element => 
 
           return (
             <div className="row form-group" key={JSON.stringify(key)}>
-              <div className="col-sm-3 col-lg-2">{key}:</div>
-              <div className="col-sm-9 col-lg-10">{handleCardDetails(keyo, info)}</div>
+              <div className="col-sm-3">{key}:</div>
+              <div className="col-sm-9">{handleCardDetails(keyo, info)}</div>
             </div>
           )
         })}

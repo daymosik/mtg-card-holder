@@ -19,15 +19,15 @@ const AddCardInput: FunctionalComponent<AddCardInputProps> = ({
   handleAutocompleteClick,
 }) => (
   <div>
-    <input type="text" class="form-control" value={value} onInput={handleInputChange} />
+    <input type="text" className="form-control" value={value} onInput={handleInputChange} />
     {autocompleteList.length > 0 && (
-      <div class="card-autocomplete-box position-absolute bg-white w-100 text-black-50 rounded">
+      <div className="card-autocomplete-box position-absolute bg-white w-100 text-black-50 rounded">
         {autocompleteList.map((card) => (
-          <div class="row" key={card.id} onClick={() => handleAutocompleteClick(card)}>
-            <div class="col">
-              <div class="p-1 border-bottom d-flex">
+          <div className="row" key={card.id} onClick={() => handleAutocompleteClick(card)}>
+            <div className="col">
+              <div className="p-1 border-bottom d-flex">
                 <div>{card.name}</div>
-                <div class="ml-auto">{ManaCostView(card.manaCost)}</div>
+                <div className="ml-auto">{ManaCostView(card.manaCost)}</div>
               </div>
             </div>
           </div>
@@ -43,11 +43,11 @@ interface AddCardInfoProps {
 }
 
 const AddCardInfo: FunctionalComponent<AddCardInfoProps> = ({ chosenCard, addCardToCollection }) => (
-  <div class="row">
-    <div class="col">
+  <div className="row">
+    <div className="col">
       <h3>{chosenCard.name}</h3>
       <img src={chosenCard.imageUrl} />
-      <button class="btn btn-primary" onClick={() => addCardToCollection(chosenCard)}>
+      <button className="btn btn-primary" onClick={() => addCardToCollection(chosenCard)}>
         Add Card
       </button>
     </div>
@@ -79,7 +79,7 @@ export const AddCardForm: FunctionalComponent = () => {
   }
 
   return (
-    <div class="position-relative">
+    <div className="position-relative">
       <AddCardInput
         value={input}
         handleInputChange={handleInputChange}

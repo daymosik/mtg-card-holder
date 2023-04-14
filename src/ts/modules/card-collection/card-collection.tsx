@@ -30,13 +30,13 @@ export const CardCollectionView: FunctionalComponent = () => {
     CardDatabaseService.removeCardFromCollection(card)
 
   return (
-    <div class="container">
+    <div className="container">
       <AddCardForm />
       <div>
         {!cardsToDisplay.length && <LoadingSpinner />}
         {cardsToDisplay.length > 0 && (
           <div>
-            <div class="row">
+            <div className="row">
               <CardsListSwitcher className="ml-auto" setDisplayType={setDisplayType} />
             </div>
             {displayType === CardsDisplayType.List && (

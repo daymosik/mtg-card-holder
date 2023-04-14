@@ -12,7 +12,7 @@ const CardRecognitionView: FunctionalComponent = () => {
   })
 
   return (
-    <div class="container">
+    <div className="container">
       <div id="card-recognition-view">
         <button className="btn btn-danger" onClick={takePhoto}>
           Take photo

@@ -5,18 +5,19 @@ import { FunctionalComponent, h } from 'preact'
 import { Link } from 'preact-router'
 import { setTypes } from 'store/reducers/card-database-reducers'
 import { RootState } from 'store/reducers/root-reducers'
+import { useState } from 'preact/hooks'
 
 interface SetListTableProps {
   sets: MagicSet[]
 }
 
 const SetListTable: FunctionalComponent<SetListTableProps> = ({ sets }) => (
-  <table class="table table-dark bg-transparent table-sm">
+  <table className="table table-dark bg-transparent table-sm">
     <thead>
       <tr>
         <th scope="col" />
         <th scope="col">Name</th>
-        <th scope="col" class="text-right">
+        <th scope="col" className="text-right">
           Release date
         </th>
       </tr>
@@ -31,13 +32,13 @@ interface SetListItemProps {
 
 const SetListItem: FunctionalComponent<SetListItemProps> = ({ set }) => (
   <tr>
-    <td class="h4 text-center">
-      <i class={`ss ss-${set.code.toLowerCase()}`} />
+    <td className="h4 text-center">
+      <i className={`ss ss-${set.code.toLowerCase()}`} />
     </td>
-    <td class="align-content-center">
+    <td className="align-content-center">
       <Link href={`/set/${set.code}`}>{set.name}</Link>
     </td>
-    <td class="text-nowrap text-right">{set.releaseDate}</td>
+    <td className="text-nowrap text-right">{set.releaseDate}</td>
   </tr>
 )
 
@@ -46,12 +47,37 @@ interface SetListProps {
   sets: MagicSet[]
 }
 
-const SetList = ({ type, sets }: SetListProps) => (
-  <div class="col-md-6 col-lg-4">
-    <h4>{type}</h4>
-    <SetListTable sets={sets} />
-  </div>
-)
+const SetList = ({ type, sets }: SetListProps) => {
+  const [isOpen, setIsOpen] = useState(type === 'core')
+  const toggleIsOpen = () => setIsOpen(!isOpen)
+  return (
+    <div className="accordion-item">
+      <h4 className="accordion-header" id="headingOne">
+        <button
+          className={`accordion-button ${isOpen ? 'collapsed' : ''}`}
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#collapseOne"
+          aria-expanded="true"
+          aria-controls="collapseOne"
+          onClick={toggleIsOpen}
+        >
+          {type}
+        </button>
+      </h4>
+      <div
+        id="collapseOne"
+        className={`accordion-collapse collapse ${isOpen ? 'show' : ''}`}
+        aria-labelledby="headingOne"
+        data-bs-parent="#accordionExample"
+      >
+        <div className="accordion-body">
+          <SetListTable sets={sets} />
+        </div>
+      </div>
+    </div>
+  )
+}
 
 interface SetListViewProps {
   sets: MagicSet[]
@@ -65,13 +91,17 @@ const SetListView: FunctionalComponent<SetListViewProps> = ({ sets }) => {
     sets.filter((set) => set.type === type).sort((a, b) => (a.releaseDate > b.releaseDate ? -1 : 1))
 
   return (
-    <div class="row d-flex flex-row">
-      {mainSetsList.map((type: MagicSetType) => (
-        <SetList key={type} type={type} sets={getSetsByType(type)} />
-      ))}
-      {restSetsList.map((type: MagicSetType) => (
-        <SetList key={type} type={type} sets={getSetsByType(type)} />
-      ))}
+    <div className="d-md-flex gap-3">
+      <div className="accordion flex-grow-1" id="accordionExample">
+        {mainSetsList.map((type: MagicSetType) => (
+          <SetList key={type} type={type} sets={getSetsByType(type)} />
+        ))}
+      </div>
+      <div className="accordion" id="accordionExample">
+        {restSetsList.map((type: MagicSetType) => (
+          <SetList key={type} type={type} sets={getSetsByType(type)} />
+        ))}
+      </div>
     </div>
   )
 }
@@ -81,12 +111,9 @@ export const CardDatabaseView: FunctionalComponent = () => {
     sets: state.cardDatabaseState.sets,
   }))
   return (
-    <div class="container">
+    <div className="container">
       <h3>Card Database</h3>
-      <div>
-        {!sets.length && <LoadingSpinner />}
-        {sets.length > 0 && <SetListView sets={sets} />}
-      </div>
+      {!sets.length ? <LoadingSpinner /> : <SetListView sets={sets} />}
     </div>
   )
 }

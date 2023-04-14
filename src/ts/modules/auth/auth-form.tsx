@@ -1,5 +1,5 @@
 import { FormGroup } from 'components/form'
-import { FormInputEmail, FormInputPassword } from 'components/form/input/index'
+import { FormInputEmail, FormInputPassword } from 'components/form/input'
 import { FunctionalComponent, h } from 'preact'
 import { JSXInternal } from 'preact/src/jsx'
 
@@ -26,15 +26,21 @@ export const AuthForm: FunctionalComponent<AuthFormProps> = ({
   return (
     <form action="/" onSubmit={submitForm}>
       {errorMessage && <p className="error-message">{errorMessage}</p>}
-      <FormGroup label={'Email address'}>
-        <FormInputEmail value={email} handleInputChange={handleEmail} />
-      </FormGroup>
-      <FormGroup label={'Password'}>
-        <FormInputPassword value={password} handleInputChange={handlePassword} />
-      </FormGroup>
-      <button class="btn btn-primary" type="submit">
-        {buttonText}
-      </button>
+      <div className="mb-3">
+        <FormGroup label={'Email address'}>
+          <FormInputEmail value={email} handleInputChange={handleEmail} />
+        </FormGroup>
+      </div>
+      <div className="mb-3">
+        <FormGroup label={'Password'}>
+          <FormInputPassword value={password} handleInputChange={handlePassword} />
+        </FormGroup>
+      </div>
+      <div className="d-grid gap-2 mb-3">
+        <button className="btn btn-primary btn-lg btn-block" type="submit">
+          {buttonText}
+        </button>
+      </div>
       {children}
     </form>
   )

@@ -11,7 +11,7 @@ export interface FormInputProps {
 
 const FormInput: FunctionalComponent<FormInputProps> = ({ name, type, value, handleInputChange }) => (
   <input
-    class="form-control"
+    className="form-control"
     type={type}
     name={name}
     value={value}

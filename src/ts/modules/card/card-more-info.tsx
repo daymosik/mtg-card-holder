@@ -15,10 +15,10 @@ const handleMoreInfoDetails = (key: MagicCardMoreInfoKeys, value: MagicCardMoreI
   switch (key) {
     case 'printings':
       return (
-        <div class="h2">
+        <div className="h2">
           {(value as string[]).map((set) => (
             <Tooltip title={set} key={set}>
-              <i class={`m-2 ss ss-${set.toLowerCase()}`} />
+              <i className={`m-2 ss ss-${set.toLowerCase()}`} />
             </Tooltip>
           ))}
         </div>
@@ -68,7 +68,7 @@ const CardMoreInfo: FunctionalComponent<CardMoreInfoProps> = ({ moreInfo }): JSX
     return <div />
   }
   return (
-    <div>
+    <div className="list-group list-group-flush">
       {Object.keys(moreInfo)
         .filter((k) => !hiddenKeys.includes(k as MagicCardMoreInfoKeys))
         .map((key) => {
@@ -76,9 +76,9 @@ const CardMoreInfo: FunctionalComponent<CardMoreInfoProps> = ({ moreInfo }): JSX
           const info: MagicCardMoreInfoValues = moreInfo[keyo]
 
           return info ? (
-            <div class="row form-group" key={JSON.stringify(key)}>
-              <div class="col-sm-3 col-lg-2">{key}:</div>
-              <div class="col-sm-9 col-lg-10">{handleMoreInfoDetails(keyo, info)}</div>
+            <div className="list-group-item bg-transparent text-light" key={JSON.stringify(key)}>
+              <small>{key}:</small>
+              <p className="fs-6">{handleMoreInfoDetails(keyo, info)}</p>
             </div>
           ) : (
             <div />

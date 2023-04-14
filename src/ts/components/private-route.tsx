@@ -11,8 +11,8 @@ interface ComponentProps {
 type Props = ComponentProps & RouterProps
 
 const Unauthorized: FunctionalComponent = () => (
-  <div class="container">
-    <h2 class="text-center">Unauthorized</h2>
+  <div className="container">
+    <h2 className="text-center">Unauthorized</h2>
   </div>
 )
 

@@ -25,19 +25,19 @@ export const AdminView: FunctionalComponent = () => {
   }
 
   return (
-    <div class="container">
+    <div className="container">
       <h2>Administration</h2>
 
       <form onSubmit={(e) => e.preventDefault()}>
         {errorMessage && <p className="error-message">{errorMessage}</p>}
         <FormGroup label={'Import sets'}>
-          <button class="btn btn-primary form-control" onClick={importSets}>
+          <button className="btn btn-primary form-control" onClick={importSets}>
             Import
           </button>
         </FormGroup>
 
         <FormGroup label={'Import cards'}>
-          <button class="btn btn-primary form-control" onClick={importCards}>
+          <button className="btn btn-primary form-control" onClick={importCards}>
             Import
           </button>
         </FormGroup>

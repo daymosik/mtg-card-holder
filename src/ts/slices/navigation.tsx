@@ -12,7 +12,7 @@ interface NavigationButtonProps {
 
 const NavigationButton: FunctionalComponent<NavigationButtonProps> = ({ onClick }) => (
   <button
-    class="navbar-toggler"
+    className="navbar-toggler"
     type="button"
     data-toggle="collapse"
     data-target="#navbarSupportedContent"
@@ -21,7 +21,7 @@ const NavigationButton: FunctionalComponent<NavigationButtonProps> = ({ onClick 
     aria-label="Toggle navigation"
     onClick={onClick}
   >
-    <span class="navbar-toggler-icon" />
+    <span className="navbar-toggler-icon" />
   </button>
 )
 
@@ -32,14 +32,14 @@ interface NavigationListItemProps {
 }
 
 const NavigationListItem: FunctionalComponent<NavigationListItemProps> = ({ path, name, onClick }) => (
-  <li class="nav-item">
+  <li className="nav-item">
     {path && (
-      <Link class="nav-link" href={path}>
+      <Link className="nav-link" href={path}>
         {name}
       </Link>
     )}
     {onClick && (
-      <a class="nav-link" onClick={() => onClick()}>
+      <a className="nav-link" onClick={() => onClick()}>
         {name}
       </a>
     )}
@@ -58,17 +58,17 @@ const NavigationMenu: FunctionalComponent<NavigationMenuProps> = ({
   isAuthenticated,
 }) => (
   <div
-    class={`collapse navbar-collapse pull-right ${mobileMenuOpen ? 'show' : ''}`}
+    className={`collapse navbar-collapse pull-right ${mobileMenuOpen ? 'show' : ''}`}
     id="navbarSupportedContent"
     onClick={() => hideMobileMenu()}
   >
-    <ul class="navbar-nav me-auto">
+    <ul className="navbar-nav me-auto">
       <NavigationListItem path={NavigationPath.CardDatabase} name={'Card Database'} />
       <NavigationListItem path={NavigationPath.CardCollection} name={'My Collection'} />
       <NavigationListItem path={NavigationPath.CardRecognition} name={'Card recognition'} />
       <NavigationListItem path={NavigationPath.Admin} name={'Admin'} />
     </ul>
-    <ul class="navbar-nav">
+    <ul className="navbar-nav">
       {!isAuthenticated && <NavigationListItem path={NavigationPath.Signup} name={'Signup'} />}
       {!isAuthenticated && <NavigationListItem path={NavigationPath.Login} name={'Login'} />}
       {isAuthenticated && <NavigationListItem onClick={() => LoginService.logout()} name={'Logout'} />}
@@ -86,11 +86,11 @@ export const NavigationView: FunctionalComponent = () => {
   const toggleMobileMenu = () => changeMobileMenuOpen(!mobileMenuOpen)
 
   return (
-    <nav class="navbar navbar-expand-md navbar-dark">
-      <div class="container">
+    <nav className="navbar navbar-expand-md navbar-dark">
+      <div className="container">
         <NavigationButton onClick={toggleMobileMenu} />
 
-        <Link class="navbar-brand" href="/" alt="MTG Card Holder" />
+        <Link className="navbar-brand" href="/" alt="MTG Card Holder" />
 
         <NavigationMenu
           mobileMenuOpen={mobileMenuOpen}

@@ -5,7 +5,7 @@ export interface FormGroupProps {
 }
 
 export const FormGroup: FunctionalComponent<FormGroupProps> = ({ label, children }) => (
-  <div class="form-group">
+  <div className="form-group">
     <label htmlFor="exampleInputEmail1">{label}</label>
     {children}
   </div>

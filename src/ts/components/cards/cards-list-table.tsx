@@ -15,7 +15,7 @@ const isUsercard = (card: MagicCard | UserMagicCard): card is UserMagicCard =>
 const CardsListTable: FunctionalComponent<CardsListTableProps> = ({ cards, decreaseCardCount }) => {
   const isUserCard = isUsercard(cards[0])
   return (
-    <table class="table table-dark bg-transparent">
+    <table className="table table-dark bg-transparent">
       <thead>
         <tr>
           <th scope="col">#</th>
@@ -23,7 +23,7 @@ const CardsListTable: FunctionalComponent<CardsListTableProps> = ({ cards, decre
           <th scope="col">Type</th>
           <th></th>
           {isUserCard && (
-            <th scope="col" class="text-center">
+            <th scope="col" className="text-center">
               Count
             </th>
           )}
@@ -55,12 +55,12 @@ const CardsListTableItem: FunctionalComponent<CardListItemProps> = ({ card, inde
         <Link href={`/card/${card.id}`}>{card.name}</Link>
       </td>
       <td>{card.type}</td>
-      <td class="text-right">{ManaCostView(card.manaCost)}</td>
-      {isUserCard && <td class="text-center">{card.count}</td>}
+      <td className="text-right">{ManaCostView(card.manaCost)}</td>
+      {isUserCard && <td className="text-center">{card.count}</td>}
 
       {isUserCard && decreaseCardCount && (
         <th>
-          <button class="btn btn-sm btn-danger" onClick={() => decreaseCardCount(card)}>
+          <button className="btn btn-sm btn-danger" onClick={() => decreaseCardCount(card)}>
             X
           </button>
         </th>

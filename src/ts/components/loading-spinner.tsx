@@ -1,9 +1,9 @@
 import { FunctionalComponent, h } from 'preact'
 
 export const LoadingSpinner: FunctionalComponent = () => (
-  <div class="spinner">
-    <div class="double-bounce1" />
-    <div class="double-bounce2" />
+  <div className="spinner">
+    <div className="double-bounce1" />
+    <div className="double-bounce2" />
   </div>
 )
 

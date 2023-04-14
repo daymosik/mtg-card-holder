@@ -18,7 +18,7 @@ import 'auth'
 import StartupView from './startup'
 import { createHashHistory } from 'history'
 
-const Home: FunctionalComponent = () => <div class="container">Home</div>
+const Home: FunctionalComponent = () => <div className="container">Home</div>
 
 const App: FunctionalComponent = (): JSX.Element => {
   // TODO
@@ -32,7 +32,7 @@ const App: FunctionalComponent = (): JSX.Element => {
     <div id="preact_root">
       <Provider store={store}>
         <StartupView>
-          <div class="wrapper">
+          <div className="wrapper">
             <NavigationView />
             {/*TODO*/}
             <Router onChange={handleRoute} history={createHashHistory() as never}>

@@ -36,13 +36,13 @@ export const SetView: FunctionalComponent<SetViewProps> = ({ matches }) => {
   }, [matches.code])
 
   return (
-    <div class="container">
+    <div className="container">
       {!set && <LoadingSpinner />}
       {set && (
         <div>
-          <div class="row">
+          <div className="row">
             <h1>
-              <i class={`m-3 ss ss-${set.code.toLowerCase()}`} /> {set.name}
+              <i className={`m-3 ss ss-${set.code.toLowerCase()}`} /> {set.name}
             </h1>
             <CardsListSwitcher className="ml-auto pt-sm-3" setDisplayType={setDisplayType} />
           </div>

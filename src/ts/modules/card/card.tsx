@@ -5,6 +5,7 @@ import CardMoreInfo from 'modules/card/card-more-info'
 import { useEffect, useState } from 'preact/hooks'
 import CardDatabaseService from 'services/card-database'
 import { FunctionalComponent, h } from 'preact'
+import Tooltip from 'components/tooltip'
 
 export interface CardItemProps {
   card: MagicCard
@@ -14,24 +15,34 @@ export interface CardItemProps {
 
 const CardItem: FunctionalComponent<CardItemProps> = ({ card, moreInfo, cardCount }) => (
   <div>
-    <h1>{card.name}</h1>
-    <div class="row">
-      <div class="col-md-4 col-lg-3">
-        <div class="cards-list-image rounded m-2">
-          {card.imageUrl ? <img src={card.imageUrl} /> : <i class="fas fa-ban" />}
+    <div className="card bg-dark mb-4" style={{ borderRadius: '1rem' }}>
+      <div className="card-header d-flex align-items-center">
+        <h4 className="m-0">{card.name}</h4>
+
+        <div className="ms-auto">
+          <Tooltip title={`Card count: ${cardCount}`}>
+            <div className="badge bg-info">{cardCount}</div>
+          </Tooltip>
         </div>
       </div>
-      <div class="col-md-8 col-lg-9">
-        <div class="row form-group">
-          <div class="col-sm-3 col-lg-2">Card count:</div>
-          <div class="col-sm-9 col-lg-10">{cardCount}</div>
+      <div className="card-body p-3">
+        <div className="d-sm-flex gap-md-5">
+          <div style={{ flexBasis: '265px' }}>
+            <div className="cards-list-image rounded m-2">
+              {card.imageUrl ? <img src={card.imageUrl} /> : <i className="fas fa-ban" />}
+            </div>
+          </div>
+
+          <div className="flex-grow-1">
+            <CardInfo card={card} />
+          </div>
         </div>
-        <hr />
-        <CardInfo card={card} />
       </div>
     </div>
-    <div className="row">
-      <CardMoreInfo moreInfo={moreInfo} />
+    <div className="card bg-dark mb-4" style={{ borderRadius: '1rem' }}>
+      <div className="card-body p-3">
+        <CardMoreInfo moreInfo={moreInfo} />
+      </div>
     </div>
   </div>
 )
@@ -64,7 +75,7 @@ export const CardView: FunctionalComponent<CardViewProps> = ({ matches }) => {
   }, [matches.id])
 
   return (
-    <div class="container">
+    <div className="container-md">
       {!card && <LoadingSpinner />}
       {card && (
         <div>
