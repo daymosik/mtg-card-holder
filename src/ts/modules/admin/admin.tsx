@@ -15,6 +15,11 @@ export const AdminView: FunctionalComponent = () => {
     handleErrorMessage('')
   }
 
+  const importCardsScryForce = async (): Promise<void> => {
+    await scryfallService.importCards(true)
+    handleErrorMessage('')
+  }
+
   const handleErrorMessage = (message: string) => {
     changeErrorMessage(message)
   }
@@ -38,7 +43,11 @@ export const AdminView: FunctionalComponent = () => {
               </button>
               Import cards
               <button className="btn btn-primary form-control" onClick={importCardsScry}>
-                Import
+                Import cards
+              </button>
+              <br />
+              <button className="btn btn-danger form-control" onClick={importCardsScryForce}>
+                Force import cards
               </button>
             </div>
           </div>

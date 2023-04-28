@@ -20,7 +20,7 @@ export const scryCardSimpleKeys: Array<keyof ScryCardSimple> = [
 
 // api documentation https://scryfall.com/docs/api
 export class ScryfallApi {
-  public async importSets(): Promise<void> {
+  public async importSets(force?: boolean): Promise<void> {
     console.log('⏳ Sets import started')
     const sets = await Scry.Sets.all()
 
@@ -28,7 +28,7 @@ export class ScryfallApi {
       const response = await get(ref(firebaseDatabase, `scry-sets/${magicSet.code}`))
       const foundSet: Scry.Set = response.val()
 
-      if (!foundSet) {
+      if (!foundSet || force) {
         console.log(`ℹ️ found new set ${magicSet.name}, saving...`)
         await set(ref(firebaseDatabase, `scry-sets/${magicSet.code}`), magicSet)
       } else {
@@ -38,7 +38,7 @@ export class ScryfallApi {
     console.log('🍾🎊 Sets import complete 🍾🎊 ')
   }
 
-  public async importCards(): Promise<void> {
+  public async importCards(force?: boolean): Promise<void> {
     console.log('⏳ Cards import started')
     const cardNames = await Scry.Catalog.cardNames()
 
@@ -57,8 +57,12 @@ export class ScryfallApi {
           const foundCard: ScryCardSimple = cardFromFirebase.val()
           const foundCardFull: ScryCard = cardFullFromFirebase.val()
 
-          if (!foundCard || !foundCardFull) {
-            console.log(`ℹ️ found new card ${card.name}, saving...`)
+          if (!foundCard || !foundCardFull || force) {
+            if (force && (foundCard || foundCardFull)) {
+              console.log(`👀 replacing card ${card.name}, saving...`)
+            } else {
+              console.log(`ℹ️ found new card ${card.name}, saving...`)
+            }
 
             const cardSimple = Object.keys(card).reduce(
               (prev, key) => ({
