@@ -36,7 +36,7 @@ const Tooltip: FunctionalComponent<TooltipProps> = ({ title, children }) => {
     // return () => {
     //   destroy(element.current)
     // }
-  }, [])
+  }, [title])
 
   return (
     <div className="d-inline-block" title={title} ref={element}>

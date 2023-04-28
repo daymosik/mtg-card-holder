@@ -1,22 +1,17 @@
-import { FormGroup } from 'components/form'
 import { useState } from 'preact/hooks'
 import { FunctionalComponent, h } from 'preact'
 import scryfallService from 'services/scryfall'
-// import MtgApiService from 'services/mtg-api'
 
 export const AdminView: FunctionalComponent = () => {
   const [errorMessage, changeErrorMessage] = useState('')
 
-  const importSets = async () => {
-    await scryfallService.getCard()
-    // TODO
-    // MtgApiService.importCards()
+  const importSetsScry = async (): Promise<void> => {
+    await scryfallService.importSets()
     handleErrorMessage('')
   }
-  const importCards = async () => {
-    await scryfallService.getCard()
-    // TODO
-    // MtgApiService.importCards()
+
+  const importCardsScry = async (): Promise<void> => {
+    await scryfallService.importCards()
     handleErrorMessage('')
   }
 
@@ -28,20 +23,27 @@ export const AdminView: FunctionalComponent = () => {
     <div className="container">
       <h2>Administration</h2>
 
-      <form onSubmit={(e) => e.preventDefault()}>
-        {errorMessage && <p className="error-message">{errorMessage}</p>}
-        <FormGroup label={'Import sets'}>
-          <button className="btn btn-primary form-control" onClick={importSets}>
-            Import
-          </button>
-        </FormGroup>
+      {errorMessage && <p className="error-message">{errorMessage}</p>}
 
-        <FormGroup label={'Import cards'}>
-          <button className="btn btn-primary form-control" onClick={importCards}>
-            Import
-          </button>
-        </FormGroup>
-      </form>
+      <div className="row">
+        <div className="col-md-6">
+          <div className="card mb-4 bg-dark border-0" style={{ borderRadius: '1rem' }}>
+            <div className="card-header bg-secondary text-light" style={{ borderRadius: '1rem 1rem 0 0' }}>
+              Scryfall
+            </div>
+            <div className="card-body p-3">
+              Import sets
+              <button className="btn btn-primary form-control" onClick={importSetsScry}>
+                Import
+              </button>
+              Import cards
+              <button className="btn btn-primary form-control" onClick={importCardsScry}>
+                Import
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   )
 }

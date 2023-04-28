@@ -1,15 +1,15 @@
 import ManaCostView from 'components/card/mana-cost'
-import { MagicCard } from 'models/magic'
 import { FunctionalComponent, h } from 'preact'
 import { Link } from 'preact-router'
 import { UserMagicCard } from 'store/reducers/card-collection-reducers'
+import { ScryCardSimple } from 'models/magic'
 
 interface CardsListTableProps {
-  cards: Array<MagicCard | UserMagicCard>
-  decreaseCardCount?: (card: MagicCard) => void
+  cards: Array<ScryCardSimple | UserMagicCard>
+  decreaseCardCount?: (card: ScryCardSimple) => void
 }
 
-const isUsercard = (card: MagicCard | UserMagicCard): card is UserMagicCard =>
+const isUsercard = (card: ScryCardSimple | UserMagicCard): card is UserMagicCard =>
   (card as UserMagicCard).count !== undefined
 
 const CardsListTable: FunctionalComponent<CardsListTableProps> = ({ cards, decreaseCardCount }) => {
@@ -41,9 +41,9 @@ const CardsListTable: FunctionalComponent<CardsListTableProps> = ({ cards, decre
 }
 
 export interface CardListItemProps {
-  card: UserMagicCard | MagicCard
+  card: UserMagicCard | ScryCardSimple
   index: number
-  decreaseCardCount?: (card: MagicCard) => void
+  decreaseCardCount?: (card: ScryCardSimple) => void
 }
 
 const CardsListTableItem: FunctionalComponent<CardListItemProps> = ({ card, index, decreaseCardCount }) => {
@@ -54,8 +54,9 @@ const CardsListTableItem: FunctionalComponent<CardListItemProps> = ({ card, inde
       <td>
         <Link href={`/card/${card.id}`}>{card.name}</Link>
       </td>
-      <td>{card.type}</td>
-      <td className="text-right">{ManaCostView(card.manaCost)}</td>
+      {/*TODO*/}
+      <td>{card.type_line}</td>
+      <td className="text-right">{ManaCostView(card.mana_cost)}</td>
       {isUserCard && <td className="text-center">{card.count}</td>}
 
       {isUserCard && decreaseCardCount && (

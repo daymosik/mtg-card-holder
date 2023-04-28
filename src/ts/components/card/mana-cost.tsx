@@ -7,7 +7,7 @@ const parseManaCost = (manaCost: string): string[] => {
   return colors.map((color) => color.replace('{', ''))
 }
 
-export const ManaCostView = (manaCost: string): JSX.Element[] => {
+export const ManaCostView = (manaCost: string | null | undefined): JSX.Element[] => {
   if (!manaCost) {
     return []
   }

@@ -1,29 +1,24 @@
 import ManaColorImage from 'components/card/mana-color-image'
-import Tooltip from 'components/tooltip'
-import {
-  MagicCardMoreInfo,
-  MagicCardMoreInfoKeys,
-  MagicCardMoreInfoLegalities,
-  MagicCardMoreInfoRulings,
-  MagicCardMoreInfoValues,
-} from 'models/magic'
+import { ScryCardKeys, ScryCardValues, ScryLegalities } from 'models/magic'
 import { FunctionalComponent, h } from 'preact'
+import { ScryCard } from 'models/magic'
 
-const hiddenKeys: MagicCardMoreInfoKeys[] = ['multiverseid', 'cmc']
+const hiddenKeys: ScryCardKeys[] = ['multiverse_ids', 'cmc']
 
-const handleMoreInfoDetails = (key: MagicCardMoreInfoKeys, value: MagicCardMoreInfoValues) => {
+const handleMoreInfoDetails = (key: ScryCardKeys, value: ScryCardValues) => {
   switch (key) {
-    case 'printings':
-      return (
-        <div className="h2">
-          {(value as string[]).map((set) => (
-            <Tooltip title={set} key={set}>
-              <i className={`m-2 ss ss-${set.toLowerCase()}`} />
-            </Tooltip>
-          ))}
-        </div>
-      )
-    case 'colorIdentity':
+    // TODO
+    // case 'printings':
+    //   return (
+    //     <div className="h2">
+    //       {(value as string[]).map((set) => (
+    //         <Tooltip title={set} key={set}>
+    //           <i className={`m-2 ss ss-${set.toLowerCase()}`} />
+    //         </Tooltip>
+    //       ))}
+    //     </div>
+    //   )
+    case 'color_identity':
       return (
         <div>
           {(value as string[]).map((color) => (
@@ -31,25 +26,25 @@ const handleMoreInfoDetails = (key: MagicCardMoreInfoKeys, value: MagicCardMoreI
           ))}
         </div>
       )
-    case 'originalText':
-    case 'text':
-      return <div dangerouslySetInnerHTML={{ __html: value as string }} style={{ whiteSpace: 'pre-line' }} />
-    case 'rulings':
-      return (
-        <div>
-          {(value as MagicCardMoreInfoRulings[]).map((ruling) => (
-            <div key={ruling.date}>
-              {ruling.date} - {ruling.text}
-            </div>
-          ))}
-        </div>
-      )
+    // case 'originalText':
+    // case 'text':
+    //   return <div dangerouslySetInnerHTML={{ __html: value as string }} style={{ whiteSpace: 'pre-line' }} />
+    // case 'rulings':
+    //   return (
+    //     <div>
+    //       {(value as MagicCardMoreInfoRulings[]).map((ruling) => (
+    //         <div key={ruling.date}>
+    //           {ruling.date} - {ruling.text}
+    //         </div>
+    //       ))}
+    //     </div>
+    //   )
     case 'legalities':
       return (
         <div>
-          {(value as MagicCardMoreInfoLegalities[]).map((legality) => (
-            <div key={legality.format}>
-              {legality.format} - {legality.legality}
+          {Object.entries(value as ScryLegalities).map(([key, value]) => (
+            <div key={key}>
+              {key} - {value}
             </div>
           ))}
         </div>
@@ -60,7 +55,7 @@ const handleMoreInfoDetails = (key: MagicCardMoreInfoKeys, value: MagicCardMoreI
 }
 
 export interface CardMoreInfoProps {
-  moreInfo: MagicCardMoreInfo | undefined
+  moreInfo: ScryCard | undefined
 }
 
 const CardMoreInfo: FunctionalComponent<CardMoreInfoProps> = ({ moreInfo }): JSX.Element => {
@@ -70,10 +65,10 @@ const CardMoreInfo: FunctionalComponent<CardMoreInfoProps> = ({ moreInfo }): JSX
   return (
     <div className="list-group list-group-flush">
       {Object.keys(moreInfo)
-        .filter((k) => !hiddenKeys.includes(k as MagicCardMoreInfoKeys))
+        .filter((k) => !hiddenKeys.includes(k as ScryCardKeys))
         .map((key) => {
-          const keyo = key as MagicCardMoreInfoKeys
-          const info: MagicCardMoreInfoValues = moreInfo[keyo]
+          const keyo = key as ScryCardKeys
+          const info: ScryCardValues = moreInfo[keyo]
 
           return info ? (
             <div className="list-group-item bg-transparent text-light" key={JSON.stringify(key)}>

@@ -1,11 +1,11 @@
 import { CardsDisplayType } from 'components/cards/cards-list-switcher'
-import { MagicCard } from 'models/magic'
 import {
   CardCollectionActionsTypes,
   CardCollectionActionTypesKeys,
 } from 'store/actions-types/card-collection-actions-types'
+import { ScryCardSimple } from 'models/magic'
 
-export interface UserMagicCard extends MagicCard {
+export interface UserMagicCard extends ScryCardSimple {
   count: number
 }
 

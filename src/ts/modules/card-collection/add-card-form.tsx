@@ -1,15 +1,15 @@
 import ManaCostView from 'components/card/mana-cost'
-import { MagicCard } from 'models/magic'
 import { useState } from 'preact/hooks'
 import { JSXInternal } from 'preact/src/jsx'
 import CardDatabaseService from 'services/card-database'
 import { FunctionalComponent, h } from 'preact'
+import { ScryCardSimple } from 'models/magic'
 
 interface AddCardInputProps {
   value: string
   handleInputChange: JSXInternal.GenericEventHandler<HTMLInputElement>
-  autocompleteList: MagicCard[]
-  handleAutocompleteClick: (card: MagicCard) => void
+  autocompleteList: ScryCardSimple[]
+  handleAutocompleteClick: (card: ScryCardSimple) => void
 }
 
 const AddCardInput: FunctionalComponent<AddCardInputProps> = ({
@@ -27,7 +27,7 @@ const AddCardInput: FunctionalComponent<AddCardInputProps> = ({
             <div className="col">
               <div className="p-1 border-bottom d-flex">
                 <div>{card.name}</div>
-                <div className="ml-auto">{ManaCostView(card.manaCost)}</div>
+                <div className="ml-auto">{ManaCostView(card.mana_cost)}</div>
               </div>
             </div>
           </div>
@@ -38,34 +38,38 @@ const AddCardInput: FunctionalComponent<AddCardInputProps> = ({
 )
 
 interface AddCardInfoProps {
-  chosenCard: MagicCard
-  addCardToCollection: (card: MagicCard) => void
+  chosenCard: ScryCardSimple
+  addCardToCollection: (card: ScryCardSimple) => void
 }
 
-const AddCardInfo: FunctionalComponent<AddCardInfoProps> = ({ chosenCard, addCardToCollection }) => (
-  <div className="row">
-    <div className="col">
-      <h3>{chosenCard.name}</h3>
-      <img src={chosenCard.imageUrl} />
-      <button className="btn btn-primary" onClick={() => addCardToCollection(chosenCard)}>
-        Add Card
-      </button>
+const AddCardInfo: FunctionalComponent<AddCardInfoProps> = ({ chosenCard, addCardToCollection }) => {
+  const imageUrl = chosenCard.image_uris?.small
+  return (
+    <div className="row">
+      <div className="col">
+        <h3>{chosenCard.name}</h3>
+        <img src={imageUrl} />
+        <button className="btn btn-primary" onClick={() => addCardToCollection(chosenCard)}>
+          Add Card
+        </button>
+      </div>
     </div>
-  </div>
-)
+  )
+}
 
 export const AddCardForm: FunctionalComponent = () => {
   const [input, changeInput] = useState('')
-  const [autocomplete, changeAutocomplete] = useState<MagicCard[]>([])
-  const [chosenCard, changeChosenCard] = useState<MagicCard | undefined>(undefined)
+  const [autocomplete, changeAutocomplete] = useState<ScryCardSimple[]>([])
+  const [chosenCard, changeChosenCard] = useState<ScryCardSimple | undefined>(undefined)
 
-  const handleAutocompleteClick = (chosenCard: MagicCard) => {
+  const handleAutocompleteClick = (chosenCard: ScryCardSimple) => {
     changeInput(chosenCard.name)
     changeChosenCard(chosenCard)
     changeAutocomplete([])
   }
 
-  const addCardToCollection = (card: MagicCard): Promise<MagicCard> => CardDatabaseService.addCardToCollection(card)
+  const addCardToCollection = (card: ScryCardSimple): Promise<ScryCardSimple> =>
+    CardDatabaseService.addCardToCollection(card)
 
   const handleInputChange = async (event: JSXInternal.TargetedEvent<HTMLInputElement>): Promise<void> => {
     const value = (event.target as HTMLInputElement).value

@@ -2,13 +2,13 @@ import CardsListImages from 'components/cards/cards-list-images'
 import { CardsDisplayType, default as CardsListSwitcher } from 'components/cards/cards-list-switcher'
 import CardsListTable from 'components/cards/cards-list-table'
 import LoadingSpinner from 'components/loading-spinner'
-import { MagicCard } from 'models/magic'
 import AddCardForm from 'modules/card-collection/add-card-form'
 import { FunctionalComponent, h } from 'preact'
 import { useDispatch, useSelector } from 'react-redux'
 import CardDatabaseService from 'services/card-database'
 import { setCardCollectionDisplayType } from 'store/actions/card-collection-actions'
 import { RootState } from 'store/reducers/root-reducers'
+import { ScryCardSimple } from 'models/magic'
 
 export const CardCollectionView: FunctionalComponent = () => {
   const dispatch = useDispatch()
@@ -26,7 +26,7 @@ export const CardCollectionView: FunctionalComponent = () => {
     dispatch(setCardCollectionDisplayType(displayType))
   }
 
-  const removeCardFromCollection = (card: MagicCard): Promise<MagicCard> =>
+  const removeCardFromCollection = (card: ScryCardSimple): Promise<ScryCardSimple> =>
     CardDatabaseService.removeCardFromCollection(card)
 
   return (

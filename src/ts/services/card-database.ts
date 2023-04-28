@@ -1,5 +1,5 @@
 import { firebaseDatabase } from 'firebase-config'
-import { MagicCard, MagicCardMoreInfo, MagicSet } from 'models/magic'
+import { ScrySet } from 'models/magic'
 import { Observable, Subscriber } from 'rxjs'
 import { UserMagicCard } from 'store/reducers/card-collection-reducers'
 import { getAuth } from 'firebase/auth'
@@ -16,17 +16,16 @@ import {
   startAt,
 } from 'firebase/database'
 import { onChildAdded, onChildChanged, onChildRemoved } from '@firebase/database'
+import { ScryCard, ScryCardSimple } from 'models/magic'
 
-type MagicCardMap = { [key: string]: MagicCard }
-
-type MagicSetMap = { [key: string]: MagicSet }
+type MagicCardMap = { [key: string]: ScryCardSimple }
 
 const capitalizeFirstLetter = (str: string): string => str.charAt(0).toUpperCase() + str.slice(1)
 const responseToArray = <T>(object: { [key: string]: T }): T[] =>
   object ? Object.keys(object).map((key) => object[key]) : []
 
 export class CardDatabase {
-  public async addCardToCollection(card: MagicCard): Promise<MagicCard> {
+  public async addCardToCollection(card: ScryCardSimple): Promise<ScryCardSimple> {
     const user = getAuth().currentUser
     if (!user) {
       return Promise.reject('not authorized')
@@ -36,7 +35,7 @@ export class CardDatabase {
     return card
   }
 
-  public async removeCardFromCollection(card: MagicCard): Promise<MagicCard> {
+  public async removeCardFromCollection(card: ScryCardSimple): Promise<ScryCardSimple> {
     const user = getAuth().currentUser
     if (!user) {
       return Promise.reject('not authorized')
@@ -46,11 +45,11 @@ export class CardDatabase {
     return card
   }
 
-  public async getCardsForAutocomplete(value: string): Promise<MagicCard[]> {
+  public async getCardsForAutocomplete(value: string): Promise<ScryCardSimple[]> {
     const valueToSend = capitalizeFirstLetter(value)
     const response = await get(
       query(
-        ref(firebaseDatabase, 'cards'),
+        ref(firebaseDatabase, 'scry-cards-simple'),
         orderByChild('name'),
         startAt(valueToSend),
         endAt(valueToSend + '\uf8ff'),
@@ -60,23 +59,23 @@ export class CardDatabase {
     return responseToArray(response.val())
   }
 
-  public async getCardById(id: string): Promise<MagicCard> {
-    const response = await get(ref(firebaseDatabase, `cards/${id}`))
+  public async getCardById(id: string): Promise<ScryCardSimple> {
+    const response = await get(ref(firebaseDatabase, `scry-cards-simple/${id}`))
     // TODO: as
-    return response.val() as MagicCard
+    return response.val() as ScryCardSimple
   }
 
-  public async getCardsBySet(set: string): Promise<MagicCard[]> {
+  public async getCardsBySet(set: string): Promise<ScryCardSimple[]> {
     const response = await get(
-      query(ref(firebaseDatabase, 'cards'), orderByChild('set'), equalTo(set), limitToFirst(500)),
+      query(ref(firebaseDatabase, 'scry-cards-simple'), orderByChild('set'), equalTo(set), limitToFirst(500)),
     )
     return responseToArray(response.val() as MagicCardMap)
   }
 
-  public async getCardMoreInfo(id: string): Promise<MagicCardMoreInfo> {
-    const response = await get(ref(firebaseDatabase, `cards-more-info/${id}`))
+  public async getCardMoreInfo(id: string): Promise<ScryCard> {
+    const response = await get(ref(firebaseDatabase, `scry-cards-full/${id}`))
     // TODO: as
-    return response.val() as MagicCardMoreInfo
+    return response.val() as ScryCard
   }
 
   public userCardsSubscriber(userId: string): Observable<UserMagicCard> {
@@ -97,48 +96,50 @@ export class CardDatabase {
       }
     }
     return new Observable((observer) => {
-      onChildChanged(ref(firebaseDatabase, `user-cards/${userId}`), async (data) => handleOncomming(observer, data))
-      onChildAdded(ref(firebaseDatabase, `user-cards/${userId}`), async (data) => handleOncomming(observer, data))
-      onChildRemoved(ref(firebaseDatabase, `user-cards/${userId}`), async (data) =>
+      onChildChanged(ref(firebaseDatabase, `scry-user-cards/${userId}`), async (data) =>
+        handleOncomming(observer, data),
+      )
+      onChildAdded(ref(firebaseDatabase, `scry-user-cards/${userId}`), async (data) => handleOncomming(observer, data))
+      onChildRemoved(ref(firebaseDatabase, `scry-user-cards/${userId}`), async (data) =>
         handleOncomming(observer, data, true),
       )
     })
   }
 
-  public async getCards(): Promise<MagicSet> {
-    const set = await get(ref(firebaseDatabase, 'cards'))
+  public async getCards(): Promise<ScryCardSimple[]> {
+    const set = await get(ref(firebaseDatabase, 'scry-cards'))
     console.log(set.val())
     // TODO: as
-    return set.val() as MagicSet
+    return set.val() as ScryCardSimple[]
   }
 
-  public async getUserCards(userId: string): Promise<MagicSet> {
-    const set = await get(ref(firebaseDatabase, `user-cards/${userId}`))
+  public async getUserCards(userId: string): Promise<UserMagicCard[]> {
+    const set = await get(ref(firebaseDatabase, `scry-user-cards/${userId}`))
     console.log(set.val())
     // TODO: as
-    return set.val() as MagicSet
+    return set.val() as UserMagicCard[]
   }
 
-  public async getSet(setCode: string): Promise<MagicSet> {
-    const set = await get(ref(firebaseDatabase, `sets/${setCode}`))
+  public async getSet(setCode: string): Promise<ScrySet> {
+    const set = await get(ref(firebaseDatabase, `scry-sets/${setCode}`))
     // TODO: as
-    return set.val() as MagicSet
+    return set.val() as ScrySet
   }
 
-  public async getSets(): Promise<MagicSet[]> {
-    const sets = await get(ref(firebaseDatabase, 'sets'))
-    return responseToArray(sets.val() as MagicSetMap)
+  public async getSets(): Promise<ScrySet[]> {
+    const sets = await get(ref(firebaseDatabase, 'scry-sets'))
+    return responseToArray(sets.val())
   }
 
   public async getUserCardCount(cardId: string): Promise<number> {
     const user = getAuth().currentUser
-    const response = await get(ref(firebaseDatabase, `user-cards/${user ? user.uid : '0'}/${cardId}`))
+    const response = await get(ref(firebaseDatabase, `scry-user-cards/${user ? user.uid : '0'}/${cardId}`))
     // TODO: as
     return (response.val() as number) || 0
   }
 
   private async setUserCardCount(userId: string, cardId: string, count: number | null): Promise<void> {
-    await set(ref(firebaseDatabase, `user-cards/${userId}/${cardId}`), count)
+    await set(ref(firebaseDatabase, `scry-user-cards/${userId}/${cardId}`), count)
   }
 }
 

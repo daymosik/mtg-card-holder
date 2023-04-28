@@ -21,7 +21,7 @@ export function getCardCollection(): ThunkAction<Promise<void>, RootState, null,
       return Promise.reject()
     }
 
-    // await CardDatabaseService.getUserCards(user.uid)
+    // const a = await CardDatabaseService.getUserCards(user.uid)
     // await CardDatabaseService.getCards()
 
     USER_CARD_SUBSCRIBER = CardDatabaseService.userCardsSubscriber(user.uid).subscribe((value) => {

@@ -1,30 +1,8 @@
-import { MagicSet, MagicSetType } from 'models/magic'
+import { ScrySet } from 'models/magic'
 import { CardDatabaseActionsTypes, CardDatabaseActionTypesKeys } from 'store/actions-types/card-database-actions-types'
 
-export const setTypes: MagicSetType[] = [
-  MagicSetType.Core,
-  MagicSetType.Un,
-  MagicSetType.Promo,
-  MagicSetType.Starter,
-  MagicSetType.Planechase,
-  MagicSetType.Masters,
-  MagicSetType.Reprint,
-  MagicSetType.BoardGameDeck,
-  MagicSetType.FromTheVault,
-  MagicSetType.DuelDeck,
-  MagicSetType.Commander,
-  MagicSetType.Expansion,
-  MagicSetType.Box,
-  MagicSetType.PremiumDeck,
-  MagicSetType.Masterpiece,
-  MagicSetType.Conspiracy,
-  MagicSetType.Vanguard,
-  MagicSetType.TwoHeadedGiant,
-  MagicSetType.Archenemy,
-]
-
 export interface CardDatabaseState {
-  sets: MagicSet[]
+  sets: ScrySet[]
 }
 
 const initialState: CardDatabaseState = {

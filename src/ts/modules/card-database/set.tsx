@@ -2,10 +2,11 @@ import CardsListImages from 'components/cards/cards-list-images'
 import CardsListSwitcher, { CardsDisplayType } from 'components/cards/cards-list-switcher'
 import CardsListTable from 'components/cards/cards-list-table'
 import LoadingSpinner from 'components/loading-spinner'
-import { MagicCard, MagicSet } from 'models/magic'
+import { ScrySet } from 'models/magic'
 import { useEffect, useState } from 'preact/hooks'
 import CardDatabaseService from 'services/card-database'
 import { FunctionalComponent, h } from 'preact'
+import { ScryCardSimple } from 'models/magic'
 
 export interface SetViewProps {
   matches: {
@@ -14,8 +15,8 @@ export interface SetViewProps {
 }
 
 export const SetView: FunctionalComponent<SetViewProps> = ({ matches }) => {
-  const [set, changeSet] = useState<MagicSet | undefined>(undefined)
-  const [cards, changeCards] = useState<MagicCard[]>([])
+  const [set, changeSet] = useState<ScrySet | undefined>(undefined)
+  const [cards, changeCards] = useState<ScryCardSimple[]>([])
   const [displayType, changeDisplayType] = useState<CardsDisplayType>(CardsDisplayType.List)
 
   const setDisplayType = (type: CardsDisplayType) => {
@@ -25,6 +26,7 @@ export const SetView: FunctionalComponent<SetViewProps> = ({ matches }) => {
   const initializeView = async (setId: string): Promise<void> => {
     await Promise.all([CardDatabaseService.getCardsBySet(setId), CardDatabaseService.getSet(setId)]).then(
       ([cards, set]) => {
+        console.log({ cards, set })
         changeCards(cards)
         changeSet(set)
       },

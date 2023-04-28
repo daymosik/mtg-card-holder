@@ -1,4 +1,4 @@
-import { MagicSet } from 'models/magic'
+import { ScrySet } from 'models/magic'
 
 export enum CardDatabaseActionTypesKeys {
   CARD_DATABASE_SET_SETS = 'CARD_DATABASE_SET_SETS',
@@ -6,7 +6,7 @@ export enum CardDatabaseActionTypesKeys {
 
 export interface CardDatabaseSetSetsAction {
   type: CardDatabaseActionTypesKeys.CARD_DATABASE_SET_SETS
-  payload: MagicSet[]
+  payload: ScrySet[]
 }
 
 export type CardDatabaseActionsTypes = CardDatabaseSetSetsAction

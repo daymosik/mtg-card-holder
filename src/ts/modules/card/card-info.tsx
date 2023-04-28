@@ -1,14 +1,15 @@
 import ManaColorImage from 'components/card/mana-color-image'
 import ManaCostView from 'components/card/mana-cost'
 import Tooltip from 'components/tooltip'
-import { MagicCard, MagicCardKeys, MagicCardValues } from 'models/magic'
+import { ScryCardSimpleKeys, ScryCardSimpleValues } from 'models/magic'
 import { FunctionalComponent, h } from 'preact'
+import { ScryCardSimple } from 'models/magic'
 
-const hiddenKeys: MagicCardKeys[] = ['imageUrl', 'id', 'name']
+const hiddenKeys: ScryCardSimpleKeys[] = ['id', 'name']
 
-const handleCardDetails = (key: MagicCardKeys, value: MagicCardValues) => {
+const handleCardDetails = (key: ScryCardSimpleKeys, value: ScryCardSimpleValues) => {
   switch (key) {
-    case 'manaCost':
+    case 'mana_cost':
       return <div>{ManaCostView(value as string)}</div>
     case 'colors':
       return (
@@ -32,17 +33,17 @@ const handleCardDetails = (key: MagicCardKeys, value: MagicCardValues) => {
 }
 
 export interface CardInfoProps {
-  card: MagicCard
+  card: ScryCardSimple
 }
 
 const CardInfo: FunctionalComponent<CardInfoProps> = ({ card }): JSX.Element => {
   return (
     <div>
       {Object.keys(card)
-        .filter((k) => !hiddenKeys.includes(k as MagicCardKeys))
+        .filter((k) => !hiddenKeys.includes(k as ScryCardSimpleKeys))
         .map((key) => {
-          const keyo = key as MagicCardKeys
-          const info: MagicCardValues = card[keyo]
+          const keyo = key as ScryCardSimpleKeys
+          const info: ScryCardSimpleValues = card[keyo]
 
           return (
             <div className="row form-group" key={JSON.stringify(key)}>

@@ -1,97 +1,32 @@
-export enum MagicCardColors {
-  White = 'White',
-  Red = 'Red',
-  Blue = 'Blue',
-  Green = 'Green',
-  Black = 'Black',
-}
+import * as Scry from 'scryfall-sdk'
 
-export enum MagicCardRarity {
-  Common = 'Common',
-  Uncommon = 'Uncommon',
-}
+export type ScryCard = Scry.Card
 
-export enum MagicSetType {
-  Core = 'core',
-  Un = 'un',
-  Promo = 'promo',
-  Starter = 'starter',
-  Planechase = 'planechase',
-  Masters = 'masters',
-  Reprint = 'reprint',
-  BoardGameDeck = 'board game deck',
-  FromTheVault = 'from the vault',
-  DuelDeck = 'duel deck',
-  Commander = 'commander',
-  Expansion = 'expansion',
-  Box = 'box',
-  PremiumDeck = 'premium deck',
-  Masterpiece = 'masterpiece',
-  Conspiracy = 'conspiracy',
-  Vanguard = 'vanguard',
-  TwoHeadedGiant = 'Two-Headed Giant',
-  Archenemy = 'archenemy',
-}
+export type ScryCardSimple = Pick<
+  Scry.Card,
+  | 'id'
+  | 'name'
+  | 'mana_cost'
+  | 'colors'
+  | 'image_uris'
+  | 'rarity'
+  | 'set'
+  | 'power'
+  | 'toughness'
+  | 'set_type'
+  | 'type_line'
+>
 
-export interface MagicSet {
-  _id: string
-  code: string
-  name: string
-  type: MagicSetType
-  border: string
-  releaseDate: string
-  magicCardsInfoCode: string
-}
+export type ScrySet = Scry.Set
 
-export interface MagicCard {
-  id: string
-  name: string
-  manaCost: string
-  colors: MagicCardColors[]
-  imageUrl: string
-  rarity: MagicCardRarity
-  set: string
-  number: string
-  power: string
-  toughness: string
-  type: string
-}
+export type ScrySetType = ScrySet['set_type']
 
-export interface MagicCardMoreInfo {
-  cmc: number
-  colorIdentity: string[]
-  supertypes?: string[]
-  types: string[]
-  subtypes: string[]
-  setName: string
-  text: string
-  flavor?: string
-  artist: string
-  loyalty?: string
-  layout: string
-  multiverseid: number
-  watermark?: string
-  rulings: MagicCardMoreInfoRulings[]
-  printings: string[]
-  originalText: string
-  originalType: string
-  legalities: MagicCardMoreInfoLegalities[]
-}
+export type ScryLegalities = Scry.Legalities
 
-export interface MagicCardMoreInfoRulings {
-  date: string
-  text: string
-}
+export type ScryCardSimpleKeys = keyof ScryCardSimple
 
-export interface MagicCardMoreInfoLegalities {
-  format: string
-  legality: string
-}
+export type ScryCardSimpleValues = ScryCardSimple[ScryCardSimpleKeys]
 
-export type MagicCardKeys = keyof MagicCard
+export type ScryCardKeys = keyof ScryCard
 
-export type MagicCardValues = MagicCard[MagicCardKeys]
-
-export type MagicCardMoreInfoKeys = keyof MagicCardMoreInfo
-
-export type MagicCardMoreInfoValues = MagicCardMoreInfo[MagicCardMoreInfoKeys]
+export type ScryCardValues = ScryCard[ScryCardKeys]
