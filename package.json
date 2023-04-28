@@ -31,7 +31,6 @@
     "image-capture": "^0.4.0",
     "keyrune": "^3.12.1",
     "mana-font": "^1.15.4",
-    "mtgsdk-ts": "^1.1.2",
     "preact": "^10.13.2",
     "preact-markup": "^2.1.1",
     "preact-router": "^4.1.0",
