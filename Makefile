@@ -4,7 +4,7 @@ export NODE_OPTIONS=--openssl-legacy-provider
 include .env
 export $(shell sed 's/=.*//' .env)
 
-sources := tsconfig.json vite.config.js .eslintrc.js $(shell find ./src -type f)
+sources := tsconfig.json vite.config.mjs .eslintrc.js $(shell find ./src -type f)
 npm_dep = package.json
 libs = node_modules/installed_ts
 

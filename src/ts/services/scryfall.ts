@@ -80,7 +80,7 @@ export class ScryfallApi {
             console.log(`✅ ${card.name} already saved`)
           }
         } catch (e) {
-          // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
+          // eslint-disable-next-line @typescript-eslint/restrict-template-expressions, @typescript-eslint/no-explicit-any
           console.log(`🛑 ${(e as any)?.details}` || e)
         }
       }

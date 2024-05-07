@@ -1,6 +1,7 @@
 const localStorageFallback = {}
 const sessionStorageFallback = {}
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 function storageServiceFor(storage: Storage, fallback: any) {
   let storageAvailable = false
   try {
@@ -20,6 +21,7 @@ function storageServiceFor(storage: Storage, fallback: any) {
         fallback[key] = value
       }
     },
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     getItem(key: string): any {
       return storageAvailable ? storage.getItem(key) : fallback[key]
     },
