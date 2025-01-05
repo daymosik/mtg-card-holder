@@ -11,7 +11,7 @@
     "test": "jest ./test",
     "lint": "eslint 'src/**/*.{js,jsx,ts,tsx}'",
     "fix": "yarn lint --fix",
-    "prepare": "husky install"
+    "prepare": "husky"
   },
   "lint-staged": {
     "*.{css,md,scss}": "prettier --write",
