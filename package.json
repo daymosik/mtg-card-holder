@@ -24,7 +24,7 @@
     "@teachablemachine/image": "^0.8.5",
     "@tensorflow/tfjs": "^4.19.0",
     "bootstrap": "^5.3.3",
-    "firebase": "^10.11.1",
+    "firebase": "^11.1.0",
     "history": "^5.3.0",
     "image-capture": "^0.4.0",
     "keyrune": "^3.14.0",
