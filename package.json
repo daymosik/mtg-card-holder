@@ -47,7 +47,7 @@
   },
   "devDependencies": {
     "@babel/core": "^7.24.5",
-    "@preact/preset-vite": "^2.8.2",
+    "@preact/preset-vite": "^2.9.4",
     "@types/jest": "^29.5.12",
     "@types/node": "^20.12.10",
     "@types/react-redux": "^7.1.33",
@@ -69,8 +69,8 @@
     "sass": "^1.77.0",
     "ts-jest": "^29.2.5",
     "typescript": "^5.7.2",
-    "vite": "^5.2.11",
-    "vite-tsconfig-paths": "^4.3.2"
+    "vite": "^6.0.7",
+    "vite-tsconfig-paths": "^5.1.4"
   },
   "jest": {
     "verbose": true,
