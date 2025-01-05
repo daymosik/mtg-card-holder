@@ -4,6 +4,8 @@ import { Link } from 'preact-router'
 import { UserMagicCard } from 'store/reducers/card-collection-reducers'
 import { ScryCardSimple } from 'models/magic'
 
+import { FixedSizeList as List } from 'react-window'
+
 interface CardsListTableProps {
   cards: Array<ScryCardSimple | UserMagicCard>
   decreaseCardCount?: (card: ScryCardSimple) => void
@@ -14,6 +16,34 @@ const isUsercard = (card: ScryCardSimple | UserMagicCard): card is UserMagicCard
 
 const CardsListTable: FunctionalComponent<CardsListTableProps> = ({ cards, decreaseCardCount }) => {
   const isUserCard = isUsercard(cards[0])
+
+  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+  // @ts-expect-error
+  const Row = ({ index }) => {
+    const card = cards[index]
+    const isUserCard = isUsercard(card)
+    return (
+      <tr>
+        <th scope="row">{index + 1}</th>
+        <td>
+          <Link href={`/card/${card.id}`}>{card.name}</Link>
+        </td>
+        {/*TODO*/}
+        <td>{card.type_line}</td>
+        <td className="text-right">{ManaCostView(card.mana_cost)}</td>
+        {isUserCard && <td className="text-center">{card.count}</td>}
+
+        {isUserCard && decreaseCardCount && (
+          <th>
+            <button className="btn btn-sm btn-danger" onClick={() => decreaseCardCount(card)}>
+              X
+            </button>
+          </th>
+        )}
+      </tr>
+    )
+  }
+
   return (
     <table className="table table-dark table-striped">
       <thead>
@@ -31,43 +61,47 @@ const CardsListTable: FunctionalComponent<CardsListTableProps> = ({ cards, decre
         </tr>
       </thead>
       <tbody>
-        {cards &&
-          cards.map((card, index) => (
-            <CardsListTableItem key={card.id} index={index} card={card} decreaseCardCount={decreaseCardCount} />
-          ))}
+        <List height={150} itemCount={1000} itemSize={35} width={300}>
+          {Row}
+        </List>
+
+        {/*{cards &&*/}
+        {/*  cards.map((card, index) => (*/}
+        {/*    <CardsListTableItem key={card.id} index={index} card={card} decreaseCardCount={decreaseCardCount} />*/}
+        {/*  ))}*/}
       </tbody>
     </table>
   )
 }
 
-export interface CardListItemProps {
-  card: UserMagicCard | ScryCardSimple
-  index: number
-  decreaseCardCount?: (card: ScryCardSimple) => void
-}
-
-const CardsListTableItem: FunctionalComponent<CardListItemProps> = ({ card, index, decreaseCardCount }) => {
-  const isUserCard = isUsercard(card)
-  return (
-    <tr>
-      <th scope="row">{index + 1}</th>
-      <td>
-        <Link href={`/card/${card.id}`}>{card.name}</Link>
-      </td>
-      {/*TODO*/}
-      <td>{card.type_line}</td>
-      <td className="text-right">{ManaCostView(card.mana_cost)}</td>
-      {isUserCard && <td className="text-center">{card.count}</td>}
-
-      {isUserCard && decreaseCardCount && (
-        <th>
-          <button className="btn btn-sm btn-danger" onClick={() => decreaseCardCount(card)}>
-            X
-          </button>
-        </th>
-      )}
-    </tr>
-  )
-}
+// export interface CardListItemProps extends FixedSizeListProps {
+//   card: UserMagicCard | ScryCardSimple
+//   index: number
+//   decreaseCardCount?: (card: ScryCardSimple) => void
+// }
+//
+// const CardsListTableItem = ({ card, index, decreaseCardCount }: CardListItemProps) => {
+//   const isUserCard = isUsercard(card)
+//   return (
+//     <tr>
+//       <th scope="row">{index + 1}</th>
+//       <td>
+//         <Link href={`/card/${card.id}`}>{card.name}</Link>
+//       </td>
+//       {/*TODO*/}
+//       <td>{card.type_line}</td>
+//       <td className="text-right">{ManaCostView(card.mana_cost)}</td>
+//       {isUserCard && <td className="text-center">{card.count}</td>}
+//
+//       {isUserCard && decreaseCardCount && (
+//         <th>
+//           <button className="btn btn-sm btn-danger" onClick={() => decreaseCardCount(card)}>
+//             X
+//           </button>
+//         </th>
+//       )}
+//     </tr>
+//   )
+// }
 
 export default CardsListTable
