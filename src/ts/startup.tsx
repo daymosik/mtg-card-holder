@@ -23,7 +23,8 @@ const StartupView: FunctionalComponent = ({ children }) => {
       // TODO: never
       await Promise.all([dispatch(getCardDatabaseSets() as never), dispatch(getCardCollection() as never)])
       setLoading(false)
-    } catch (e) {
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    } catch (_) {
       setLoading(false)
     }
   }

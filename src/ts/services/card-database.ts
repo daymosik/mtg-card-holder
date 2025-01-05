@@ -28,7 +28,7 @@ export class CardDatabase {
   public async addCardToCollection(card: ScryCardSimple): Promise<ScryCardSimple> {
     const user = getAuth().currentUser
     if (!user) {
-      return Promise.reject('not authorized')
+      return Promise.reject(new Error('not authorized'))
     }
     const cardCount = await this.getUserCardCount(card.id)
     await this.setUserCardCount(user.uid, card.id, cardCount + 1)
@@ -38,7 +38,7 @@ export class CardDatabase {
   public async removeCardFromCollection(card: ScryCardSimple): Promise<ScryCardSimple> {
     const user = getAuth().currentUser
     if (!user) {
-      return Promise.reject('not authorized')
+      return Promise.reject(new Error('not authorized'))
     }
     const cardCount = await this.getUserCardCount(card.id)
     await this.setUserCardCount(user.uid, card.id, cardCount === 1 ? null : cardCount - 1)

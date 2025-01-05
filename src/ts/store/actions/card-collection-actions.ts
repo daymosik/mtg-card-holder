@@ -18,7 +18,7 @@ export function getCardCollection(): ThunkAction<Promise<void>, RootState, null,
     const user = getAuth().currentUser
 
     if (!user || !!USER_CARD_SUBSCRIBER) {
-      return Promise.reject()
+      return Promise.reject(new Error(''))
     }
 
     // const a = await CardDatabaseService.getUserCards(user.uid)

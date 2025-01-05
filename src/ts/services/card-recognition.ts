@@ -171,7 +171,7 @@ const cardRecognition = {
   demoTextRecognition: (): Promise<string> => {
     // const image = 'https://tesseract.projectnaptha.com/img/eng_bw.png'
     // const image = require('../../assets/images/eng_bw.png').default
-    // eslint-disable-next-line @typescript-eslint/no-var-requires,@typescript-eslint/no-unsafe-assignment,@typescript-eslint/no-unsafe-member-access
+    // eslint-disable-next-line @typescript-eslint/no-var-requires,@typescript-eslint/no-unsafe-assignment,@typescript-eslint/no-unsafe-member-access,@typescript-eslint/no-require-imports
     const image: ImageLike = require('../../assets/images/magic-card-photo2.jpg').default
 
     return cardRecognition.recognizeText(image)

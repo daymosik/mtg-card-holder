@@ -9,7 +9,8 @@ function storageServiceFor(storage: Storage, fallback: any) {
     storage.setItem(x, x)
     storage.removeItem(x)
     storageAvailable = true
-  } catch (e) {
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  } catch (_) {
     storageAvailable = false
   }
 
