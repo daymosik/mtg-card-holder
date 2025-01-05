@@ -8,7 +8,7 @@ interface SetListTableProps {
 }
 
 const SetListTable: FunctionalComponent<SetListTableProps> = ({ sets }) => (
-  <table className="table table-dark bg-transparent table-sm">
+  <table className="table table-dark table-striped table-sm">
     <thead>
       <tr>
         <th scope="col" />
@@ -48,29 +48,22 @@ const SetList = ({ type, sets }: SetListProps) => {
   const toggleIsOpen = () => setIsOpen(!isOpen)
   return (
     <div className="accordion-item">
-      <h4 className="accordion-header" id="headingOne">
+      <h4 className="accordion-header">
         <button
-          className={`accordion-button ${isOpen ? 'collapsed' : ''}`}
+          className={`accordion-button ${isOpen ? 'collapsed' : ''} text-capitalize`}
           type="button"
-          data-bs-toggle="collapse"
-          data-bs-target="#collapseOne"
-          aria-expanded="true"
-          aria-controls="collapseOne"
           onClick={toggleIsOpen}
         >
-          {type}
+          {type.replace(/_/g, ' ')}
         </button>
       </h4>
-      <div
-        id="collapseOne"
-        className={`accordion-collapse collapse ${isOpen ? 'show' : ''}`}
-        aria-labelledby="headingOne"
-        data-bs-parent="#accordionExample"
-      >
-        <div className="accordion-body">
-          <SetListTable sets={sets} />
+      {isOpen && (
+        <div className={`accordion-collapse collapse ${isOpen ? 'show' : ''}`}>
+          <div className="accordion-body p-0">
+            <SetListTable sets={sets} />
+          </div>
         </div>
-      </div>
+      )}
     </div>
   )
 }
@@ -93,12 +86,12 @@ const SetListView: FunctionalComponent<SetListViewProps> = ({ sets }) => {
 
   return (
     <div className="d-md-flex gap-3">
-      <div className="accordion flex-grow-1" id="accordionExample">
+      <div className="accordion flex-grow-1">
         {mainSetsList.map((type) => (
           <SetList key={type} type={type} sets={getSetsByType(type)} />
         ))}
       </div>
-      <div className="accordion" id="accordionExample">
+      <div className="accordion flex-grow-1">
         {restSetsList.map((type) => (
           <SetList key={type} type={type} sets={getSetsByType(type)} />
         ))}

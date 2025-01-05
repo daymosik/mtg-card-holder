@@ -10,7 +10,15 @@ export const CardDatabaseView: FunctionalComponent = () => {
   }))
   return (
     <div className="container">
-      <h3>Card Database</h3>
+      <figure>
+        <blockquote className="blockquote">
+          <p>Card Database</p>
+        </blockquote>
+        <figcaption className="blockquote-footer">View all cards in the database</figcaption>
+      </figure>
+
+      <hr />
+
       {!sets.length ? <LoadingSpinner /> : <SetListView sets={sets} />}
     </div>
   )

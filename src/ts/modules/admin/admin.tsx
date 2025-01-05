@@ -26,7 +26,14 @@ export const AdminView: FunctionalComponent = () => {
 
   return (
     <div className="container">
-      <h2>Administration</h2>
+      <figure>
+        <blockquote className="blockquote">
+          <p>Administration</p>
+        </blockquote>
+        <figcaption className="blockquote-footer">Manage the database</figcaption>
+      </figure>
+
+      <hr />
 
       {errorMessage && <p className="error-message">{errorMessage}</p>}
 

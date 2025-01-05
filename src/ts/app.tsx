@@ -17,8 +17,7 @@ import store from 'store/index'
 import 'auth'
 import StartupView from './startup'
 import { createHashHistory } from 'history'
-
-const Home: FunctionalComponent = () => <div className="container">Home</div>
+import { HomeView } from 'modules/home/home'
 
 const App: FunctionalComponent = (): JSX.Element => {
   // TODO
@@ -36,7 +35,7 @@ const App: FunctionalComponent = (): JSX.Element => {
             <NavigationView />
             {/*TODO*/}
             <Router onChange={handleRoute} history={createHashHistory() as never}>
-              <Route path={NavigationPath.Home} component={Home} />
+              <Route path={NavigationPath.Home} component={HomeView} />
               <Route path={NavigationPath.Login} component={LoginView} />
               <Route path={NavigationPath.Signup} component={SignupView} />
               <PrivateRoute path={NavigationPath.CardDatabase} component={CardDatabaseView} />

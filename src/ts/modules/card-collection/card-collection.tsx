@@ -31,7 +31,35 @@ export const CardCollectionView: FunctionalComponent = () => {
 
   return (
     <div className="container">
+      <figure>
+        <blockquote className="blockquote">
+          <p>My Collection</p>
+        </blockquote>
+        <figcaption className="blockquote-footer">Manage cards in your collection</figcaption>
+      </figure>
+
+      <hr />
+
+      <figure>
+        <blockquote className="blockquote">
+          <p>
+            Search <span className="blockquote-footer">Search for cards to add to your collection</span>
+          </p>
+        </blockquote>
+      </figure>
+
       <AddCardForm />
+
+      <hr />
+
+      <figure>
+        <blockquote className="blockquote">
+          <p>
+            Collection <span className="blockquote-footer">View and manage cards in your collection</span>
+          </p>
+        </blockquote>
+      </figure>
+
       <div>
         {!cardsToDisplay.length && <LoadingSpinner />}
         {cardsToDisplay.length > 0 && (

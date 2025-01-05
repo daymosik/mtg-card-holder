@@ -7,3 +7,4 @@ firebase-debug.log
 coverage/
 size-plugin.json
 VERSION
+.DS_Store

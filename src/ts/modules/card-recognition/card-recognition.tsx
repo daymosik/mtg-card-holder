@@ -13,6 +13,15 @@ const CardRecognitionView: FunctionalComponent = () => {
 
   return (
     <div className="container">
+      <figure>
+        <blockquote className="blockquote">
+          <p>Card Recognition</p>
+        </blockquote>
+        <figcaption className="blockquote-footer">Recognize cards from a photo</figcaption>
+      </figure>
+
+      <hr />
+
       <div id="card-recognition-view">
         <button className="btn btn-danger" onClick={takePhoto}>
           Take photo

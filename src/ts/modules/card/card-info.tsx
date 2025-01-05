@@ -4,8 +4,9 @@ import Tooltip from 'components/tooltip'
 import { ScryCardSimpleKeys, ScryCardSimpleValues } from 'models/magic'
 import { FunctionalComponent, h } from 'preact'
 import { ScryCardSimple } from 'models/magic'
+import { cardUtils } from 'utils/utils'
 
-const hiddenKeys: ScryCardSimpleKeys[] = ['id', 'name']
+const hiddenKeys: ScryCardSimpleKeys[] = ['id', 'name', 'image_uris']
 
 const handleCardDetails = (key: ScryCardSimpleKeys, value: ScryCardSimpleValues) => {
   switch (key) {
@@ -38,7 +39,7 @@ export interface CardInfoProps {
 
 const CardInfo: FunctionalComponent<CardInfoProps> = ({ card }): JSX.Element => {
   return (
-    <div>
+    <div className="text-light">
       {Object.keys(card)
         .filter((k) => !hiddenKeys.includes(k as ScryCardSimpleKeys))
         .map((key) => {
@@ -47,7 +48,7 @@ const CardInfo: FunctionalComponent<CardInfoProps> = ({ card }): JSX.Element => 
 
           return (
             <div className="row form-group" key={JSON.stringify(key)}>
-              <div className="col-sm-3">{key}:</div>
+              <div className="col-sm-3">{cardUtils.displayKey(key)}:</div>
               <div className="col-sm-9">{handleCardDetails(keyo, info)}</div>
             </div>
           )

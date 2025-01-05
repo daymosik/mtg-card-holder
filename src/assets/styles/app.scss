@@ -14,6 +14,9 @@ $navbar-height: 56px;
 $card-width: 223px;
 $card-height: 311px;
 
+//488x680
+//223x311
+
 html {
   min-height: 100%;
   position: relative;
@@ -73,8 +76,10 @@ a {
 .cards-list-image {
   width: $card-width;
   height: $card-height;
-  background: url('../images/magic-the-gathering-logo.png') center center no-repeat #7f7f7f;
+  background: url('../images/magic-the-gathering-logo.png') center center no-repeat $gray-600;
   text-align: center;
+  border-radius: 0.7rem;
+  overflow: hidden;
 
   a {
     display: inline-block;
@@ -88,4 +93,14 @@ a {
     opacity: 0.6;
     line-height: $card-height;
   }
+}
+
+.accordion {
+  --bs-accordion-bg: transparent;
+  --bs-border-width: 0px;
+
+  --bs-accordion-btn-bg: #{$gray-600};
+  --bs-accordion-btn-color: #{$gray-900};
+  --bs-accordion-active-bg: #{$gray-700};
+  --bs-accordion-active-color: #{$gray-900};
 }

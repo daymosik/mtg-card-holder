@@ -15,7 +15,7 @@ const isUsercard = (card: ScryCardSimple | UserMagicCard): card is UserMagicCard
 const CardsListTable: FunctionalComponent<CardsListTableProps> = ({ cards, decreaseCardCount }) => {
   const isUserCard = isUsercard(cards[0])
   return (
-    <table className="table table-dark bg-transparent">
+    <table className="table table-dark table-striped">
       <thead>
         <tr>
           <th scope="col">#</th>

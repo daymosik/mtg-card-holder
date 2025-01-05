@@ -26,8 +26,7 @@ const AddCardInput: FunctionalComponent<AddCardInputProps> = ({
           <div className="row" key={card.id} onClick={() => handleAutocompleteClick(card)}>
             <div className="col">
               <div className="p-1 border-bottom d-flex">
-                <div>{card.name}</div>
-                <div className="ml-auto">{ManaCostView(card.mana_cost)}</div>
+                <div>{card.name}</div> <div className="ml-auto">{ManaCostView(card.mana_cost)}</div>
               </div>
             </div>
           </div>
@@ -48,7 +47,7 @@ const AddCardInfo: FunctionalComponent<AddCardInfoProps> = ({ chosenCard, addCar
     <div className="row">
       <div className="col">
         <h3>{chosenCard.name}</h3>
-        <img src={imageUrl} />
+        <img alt="cardImage" src={imageUrl} />
         <button className="btn btn-primary" onClick={() => addCardToCollection(chosenCard)}>
           Add Card
         </button>
@@ -68,8 +67,10 @@ export const AddCardForm: FunctionalComponent = () => {
     changeAutocomplete([])
   }
 
-  const addCardToCollection = (card: ScryCardSimple): Promise<ScryCardSimple> =>
-    CardDatabaseService.addCardToCollection(card)
+  const addCardToCollection = (card: ScryCardSimple): Promise<ScryCardSimple> => {
+    // TODO: add prompt
+    return CardDatabaseService.addCardToCollection(card)
+  }
 
   const handleInputChange = async (event: JSXInternal.TargetedEvent<HTMLInputElement>): Promise<void> => {
     const value = (event.target as HTMLInputElement).value

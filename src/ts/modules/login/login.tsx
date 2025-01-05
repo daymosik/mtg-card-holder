@@ -34,7 +34,7 @@ export const LoginView: FunctionalComponent = () => {
     <div className="container pt-5">
       <div className="row d-flex justify-content-center align-items-center h-100">
         <div className="col-12 col-md-8 col-lg-6 col-xl-5">
-          <div className="card bg-dark text-white" style={{ borderRadius: '1rem' }}>
+          <div className="card bg-dark bg-opacity-75 text-white rounded-3">
             <div className="card-body p-5">
               <h2 className="fw-bold mb-2 text-uppercase">Login</h2>
               <p className="text-white-50 mb-5">Please enter your login and password!</p>

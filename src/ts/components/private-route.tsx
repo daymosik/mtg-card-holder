@@ -12,7 +12,12 @@ type Props = ComponentProps & RouterProps
 
 const Unauthorized: FunctionalComponent = () => (
   <div className="container">
-    <h2 className="text-center">Unauthorized</h2>
+    <figure class="text-center">
+      <blockquote className="blockquote">
+        <p>Unauthorized</p>
+      </blockquote>
+      <figcaption className="blockquote-footer">You must be logged in to view this page</figcaption>
+    </figure>
   </div>
 )
 

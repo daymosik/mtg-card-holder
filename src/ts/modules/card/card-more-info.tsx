@@ -2,6 +2,7 @@ import ManaColorImage from 'components/card/mana-color-image'
 import { ScryCardKeys, ScryCardValues, ScryLegalities } from 'models/magic'
 import { FunctionalComponent, h } from 'preact'
 import { ScryCard } from 'models/magic'
+import { cardUtils } from 'utils/utils'
 
 const hiddenKeys: ScryCardKeys[] = ['multiverse_ids', 'cmc']
 
@@ -72,7 +73,7 @@ const CardMoreInfo: FunctionalComponent<CardMoreInfoProps> = ({ moreInfo }): JSX
 
           return info ? (
             <div className="list-group-item bg-transparent text-light" key={JSON.stringify(key)}>
-              <small>{key}:</small>
+              <small>{cardUtils.displayKey(key)}:</small>
               <p className="fs-6">{handleMoreInfoDetails(keyo, info)}</p>
             </div>
           ) : (
