@@ -1,5 +1,5 @@
 import ManaCostView from 'components/card/mana-cost'
-import { FunctionalComponent, h } from 'preact'
+import { Fragment, FunctionalComponent, h } from 'preact'
 import { Link } from 'preact-router'
 import { UserMagicCard } from 'store/reducers/card-collection-reducers'
 import { ScryCardSimple } from 'models/magic'
@@ -12,96 +12,72 @@ interface CardsListTableProps {
 }
 
 const isUsercard = (card: ScryCardSimple | UserMagicCard): card is UserMagicCard =>
-  (card as UserMagicCard).count !== undefined
+  !!card && 'count' in card ? card.count !== undefined : false
 
 const CardsListTable: FunctionalComponent<CardsListTableProps> = ({ cards, decreaseCardCount }) => {
   const isUserCard = isUsercard(cards[0])
 
   // eslint-disable-next-line @typescript-eslint/ban-ts-comment
   // @ts-expect-error
-  const Row = ({ index }) => {
+  const Row = ({ index, style }) => {
     const card = cards[index]
+    if (!card) {
+      return null
+    }
     const isUserCard = isUsercard(card)
     return (
-      <tr>
-        <th scope="row">{index + 1}</th>
-        <td>
+      <div style={style} className="card-list-row">
+        <div style={{ width: '5%' }} scope="row">
+          {index + 1}
+        </div>
+        <div style={{ width: '30%' }}>
           <Link href={`/card/${card.id}`}>{card.name}</Link>
-        </td>
-        {/*TODO*/}
-        <td>{card.type_line}</td>
-        <td className="text-right">{ManaCostView(card.mana_cost)}</td>
-        {isUserCard && <td className="text-center">{card.count}</td>}
-
-        {isUserCard && decreaseCardCount && (
-          <th>
-            <button className="btn btn-sm btn-danger" onClick={() => decreaseCardCount(card)}>
-              X
-            </button>
-          </th>
+        </div>
+        <div style={{ width: '30%' }}>{card.type_line}</div>
+        <div style={{ width: '20%' }}>{ManaCostView(card.mana_cost)}</div>
+        {isUserCard && (
+          <Fragment>
+            <div style={{ width: '5%' }}>{card.count}</div>
+            {decreaseCardCount && (
+              <div>
+                <button className="btn btn-sm btn-danger" onClick={() => decreaseCardCount(card)}>
+                  X
+                </button>
+              </div>
+            )}
+          </Fragment>
         )}
-      </tr>
+      </div>
     )
   }
 
   return (
-    <table className="table table-dark table-striped">
-      <thead>
-        <tr>
-          <th scope="col">#</th>
-          <th scope="col">Name</th>
-          <th scope="col">Type</th>
-          <th></th>
-          {isUserCard && (
-            <th scope="col" className="text-center">
-              Count
-            </th>
-          )}
-          {isUserCard && <th></th>}
-        </tr>
-      </thead>
-      <tbody>
-        <List height={150} itemCount={1000} itemSize={35} width={300}>
-          {Row}
-        </List>
+    <div className="bg-dark bg-opacity-75 p-3 rounded-3">
+      <div className="card-list-row pe-3">
+        <div style={{ width: '5%' }}>#</div>
+        <div style={{ width: '30%' }}>Name</div>
+        <div style={{ width: '30%' }}>Type</div>
+        <div style={{ width: '20%' }}></div>
+        {isUserCard && (
+          <Fragment>
+            <div style={{ width: '5%' }}>Count</div>
+            {decreaseCardCount && <div>&nbsp;</div>}
+          </Fragment>
+        )}
+      </div>
 
-        {/*{cards &&*/}
-        {/*  cards.map((card, index) => (*/}
-        {/*    <CardsListTableItem key={card.id} index={index} card={card} decreaseCardCount={decreaseCardCount} />*/}
-        {/*  ))}*/}
-      </tbody>
-    </table>
+      <List height={600} itemCount={cards.length} itemSize={40} width="100%">
+        {Row}
+      </List>
+    </div>
   )
 }
 
+// TODO
 // export interface CardListItemProps extends FixedSizeListProps {
 //   card: UserMagicCard | ScryCardSimple
 //   index: number
 //   decreaseCardCount?: (card: ScryCardSimple) => void
-// }
-//
-// const CardsListTableItem = ({ card, index, decreaseCardCount }: CardListItemProps) => {
-//   const isUserCard = isUsercard(card)
-//   return (
-//     <tr>
-//       <th scope="row">{index + 1}</th>
-//       <td>
-//         <Link href={`/card/${card.id}`}>{card.name}</Link>
-//       </td>
-//       {/*TODO*/}
-//       <td>{card.type_line}</td>
-//       <td className="text-right">{ManaCostView(card.mana_cost)}</td>
-//       {isUserCard && <td className="text-center">{card.count}</td>}
-//
-//       {isUserCard && decreaseCardCount && (
-//         <th>
-//           <button className="btn btn-sm btn-danger" onClick={() => decreaseCardCount(card)}>
-//             X
-//           </button>
-//         </th>
-//       )}
-//     </tr>
-//   )
 // }
 
 export default CardsListTable

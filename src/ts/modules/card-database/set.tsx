@@ -5,7 +5,7 @@ import LoadingSpinner from 'components/loading-spinner'
 import { ScrySet } from 'models/magic'
 import { useEffect, useState } from 'preact/hooks'
 import CardDatabaseService from 'services/card-database'
-import { FunctionalComponent, h } from 'preact'
+import { Fragment, FunctionalComponent, h } from 'preact'
 import { ScryCardSimple } from 'models/magic'
 
 export interface SetViewProps {
@@ -41,20 +41,24 @@ export const SetView: FunctionalComponent<SetViewProps> = ({ matches }) => {
     <div className="container">
       {!set && <LoadingSpinner />}
       {set && (
-        <div>
-          <div className="row">
-            <h1>
-              <i className={`m-3 ss ss-${set.code.toLowerCase()}`} /> {set.name}
-            </h1>
-            <CardsListSwitcher className="ml-auto pt-sm-3" setDisplayType={setDisplayType} />
-          </div>
+        <Fragment>
+          <figure>
+            <blockquote className="blockquote">
+              <p>
+                <i className={`me-2 ss ss-2x ss-${set.code.toLowerCase()}`} /> {set.name}
+              </p>
+            </blockquote>
+            <figcaption className="blockquote-footer">{set.block}</figcaption>
+          </figure>
+          <hr />
+          <CardsListSwitcher className="ml-auto" setDisplayType={setDisplayType} />
           {cards.length > 0 && (
             <div>
               {displayType === CardsDisplayType.List && <CardsListTable cards={cards} />}
               {displayType === CardsDisplayType.Images && <CardsListImages cards={cards} />}
             </div>
           )}
-        </div>
+        </Fragment>
       )}
     </div>
   )

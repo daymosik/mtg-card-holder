@@ -21,12 +21,12 @@ const AddCardInput: FunctionalComponent<AddCardInputProps> = ({
   <div>
     <input type="text" className="form-control" value={value} onInput={handleInputChange} />
     {autocompleteList.length > 0 && (
-      <div className="card-autocomplete-box position-absolute bg-white w-100 text-black-50 rounded">
+      <div className="card-autocomplete-box position-absolute bg-white w-100 text-black-50 rounded-3">
         {autocompleteList.map((card) => (
           <div className="row" key={card.id} onClick={() => handleAutocompleteClick(card)}>
             <div className="col">
               <div className="p-1 border-bottom d-flex">
-                <div>{card.name}</div> <div className="ml-auto">{ManaCostView(card.mana_cost)}</div>
+                <div>{card.name}</div> <div className="ms-auto">{ManaCostView(card.mana_cost)}</div>
               </div>
             </div>
           </div>
@@ -44,13 +44,24 @@ interface AddCardInfoProps {
 const AddCardInfo: FunctionalComponent<AddCardInfoProps> = ({ chosenCard, addCardToCollection }) => {
   const imageUrl = chosenCard.image_uris?.small
   return (
-    <div className="row">
-      <div className="col">
-        <h3>{chosenCard.name}</h3>
-        <img alt="cardImage" src={imageUrl} />
-        <button className="btn btn-primary" onClick={() => addCardToCollection(chosenCard)}>
-          Add Card
-        </button>
+    <div className="pt-3">
+      <figure>
+        <blockquote className="blockquote d-flex">
+          <div>
+            <div>{chosenCard.name}</div>
+            <div className="ms-auto">{ManaCostView(chosenCard.mana_cost)}</div>
+          </div>
+          <div className="ms-auto">
+            <button className="btn btn-primary" onClick={() => addCardToCollection(chosenCard)}>
+              Add to Collection
+            </button>
+          </div>
+        </blockquote>
+        <figcaption className="blockquote-footer">{chosenCard.type_line}</figcaption>
+      </figure>
+
+      <div className="cards-list-image m-2">
+        {imageUrl ? <img alt="Card" src={imageUrl} style={{ width: '100%' }} /> : <i className="fas fa-ban" />}
       </div>
     </div>
   )

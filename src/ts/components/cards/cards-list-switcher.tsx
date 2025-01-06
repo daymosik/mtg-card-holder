@@ -12,10 +12,10 @@ interface CardsListSwitcherProps {
 
 const CardsListSwitcher: FunctionalComponent<CardsListSwitcherProps> = ({ setDisplayType, className }) => (
   <div className={className}>
-    <a className="m-2 p-2 bg-dark h3 rounded d-inline-block" onClick={() => setDisplayType(CardsDisplayType.List)}>
+    <a className="m-2 p-2 bg-dark h3 rounded-3 d-inline-block" onClick={() => setDisplayType(CardsDisplayType.List)}>
       <i className="fas fa-bars" />
     </a>
-    <a className="m-2 p-2 bg-dark h3 rounded d-inline-block" onClick={() => setDisplayType(CardsDisplayType.Images)}>
+    <a className="m-2 p-2 bg-dark h3 rounded-3 d-inline-block" onClick={() => setDisplayType(CardsDisplayType.Images)}>
       <i className="fas fa-grip-horizontal" />
     </a>
   </div>

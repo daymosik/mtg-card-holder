@@ -1,17 +1,14 @@
 import ManaColorImage from 'components/card/mana-color-image'
-import ManaCostView from 'components/card/mana-cost'
 import Tooltip from 'components/tooltip'
 import { ScryCardSimpleKeys, ScryCardSimpleValues } from 'models/magic'
 import { FunctionalComponent, h } from 'preact'
 import { ScryCardSimple } from 'models/magic'
 import { cardUtils } from 'utils/utils'
 
-const hiddenKeys: ScryCardSimpleKeys[] = ['id', 'name', 'image_uris']
+const hiddenKeys: ScryCardSimpleKeys[] = ['id', 'name', 'image_uris', 'mana_cost', 'type_line', 'set', 'colors']
 
 const handleCardDetails = (key: ScryCardSimpleKeys, value: ScryCardSimpleValues) => {
   switch (key) {
-    case 'mana_cost':
-      return <div>{ManaCostView(value as string)}</div>
     case 'colors':
       return (
         <div>
@@ -22,14 +19,12 @@ const handleCardDetails = (key: ScryCardSimpleKeys, value: ScryCardSimpleValues)
       )
     case 'set':
       return (
-        <div className="h2">
-          <Tooltip title={value as string}>
-            <i className={`m-2 ss ss-${(value as string).toLowerCase()}`} />
-          </Tooltip>
-        </div>
+        <Tooltip title={value as string}>
+          <i className={`ss ss-3x ss-${(value as string).toLowerCase()}`} />
+        </Tooltip>
       )
     default:
-      return <span>{JSON.stringify(value)}</span>
+      return <span>{value}</span>
   }
 }
 
@@ -47,9 +42,9 @@ const CardInfo: FunctionalComponent<CardInfoProps> = ({ card }): JSX.Element => 
           const info: ScryCardSimpleValues = card[keyo]
 
           return (
-            <div className="row form-group" key={JSON.stringify(key)}>
-              <div className="col-sm-3">{cardUtils.displayKey(key)}:</div>
-              <div className="col-sm-9">{handleCardDetails(keyo, info)}</div>
+            <div className="row" key={JSON.stringify(key)}>
+              <div className="col-sm-4">{cardUtils.displayKey(key)}:</div>
+              <div className="col-sm-8">{handleCardDetails(keyo, info)}</div>
             </div>
           )
         })}

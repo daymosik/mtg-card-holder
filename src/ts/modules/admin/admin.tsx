@@ -39,20 +39,18 @@ export const AdminView: FunctionalComponent = () => {
 
       <div className="row">
         <div className="col-md-6">
-          <div className="card mb-4 bg-dark border-0" style={{ borderRadius: '1rem' }}>
-            <div className="card-header bg-secondary text-light" style={{ borderRadius: '1rem 1rem 0 0' }}>
-              Scryfall
-            </div>
+          <div className="card mb-4 bg-dark border-0 rounded-3 overflow-hidden">
+            <div className="card-header bg-secondary text-light">Scryfall</div>
             <div className="card-body p-3">
               Import sets
               <button className="btn btn-primary form-control" onClick={importSetsScry}>
-                Import
+                Import sets
               </button>
               Import cards
               <button className="btn btn-primary form-control" onClick={importCardsScry}>
                 Import cards
               </button>
-              <br />
+              Force import cards
               <button className="btn btn-danger form-control" onClick={importCardsScryForce}>
                 Force import cards
               </button>

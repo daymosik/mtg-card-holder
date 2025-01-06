@@ -37,11 +37,7 @@ export const CardView: FunctionalComponent<CardViewProps> = ({ matches }) => {
   return (
     <div className="container-md">
       {!card && <LoadingSpinner />}
-      {card && (
-        <div>
-          <CardItem card={card} moreInfo={moreInfo} cardCount={cardCount} />
-        </div>
-      )}
+      {card && <CardItem card={card} moreInfo={moreInfo} cardCount={cardCount} />}
     </div>
   )
 }
