@@ -29,7 +29,6 @@
   "include": [
     "src/**/*.tsx",
     "src/**/*.ts",
-    "node_modules/@types/w3c-image-capture/index.d.ts",
-    "node_modules/@types/jest/index.d.ts"
+    "node_modules/@types/w3c-image-capture/index.d.ts"
   ]
 }

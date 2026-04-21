@@ -32,7 +32,7 @@ jobs:
           echo VITE_FIREBASE_APP_ID=${{ secrets.VITE_FIREBASE_APP_ID }} >> .env
 
       - name: Install dependencies
-        run: yarn install
+        run: npm install
         env:
           CI: true
 

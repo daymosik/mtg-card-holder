@@ -3,7 +3,6 @@ import { createWorker, ImageLike } from 'tesseract.js'
 import 'image-capture'
 import 'utils/create-image-bitmap'
 
-// import * as tf from '@tensorflow/tfjs'
 import * as tmImage from '@teachablemachine/image'
 
 const TENSORFLOW_MODELS_URL = 'https://teachablemachine.withgoogle.com/models/YgHSN5ctZ/'
