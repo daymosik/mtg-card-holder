@@ -90,7 +90,7 @@ export class CardDatabase {
     ): Promise<void> => {
       if (data && data.key) {
         // TODO
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
+
         const card = await getCard(data.key, remove ? 0 : data.val())
         observer.next(card)
       }

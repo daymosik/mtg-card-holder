@@ -1,5 +1,5 @@
 export const cardUtils = {
-  displayKey: (key: string) => {
+  displayKey: (key: string): string => {
     return key.replace(/_/g, ' ')
   },
 }

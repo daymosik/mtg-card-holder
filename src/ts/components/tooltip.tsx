@@ -2,7 +2,6 @@ import { FunctionalComponent, h } from 'preact'
 import { MutableRef, useEffect, useRef } from 'preact/hooks'
 import tippy, { RenderProps, ReferenceElement } from 'tippy.js'
 
-// eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
 const tooltipDefaultOptions: RenderProps = {
   ...tippy.defaultProps,
   arrow: true,

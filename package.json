@@ -9,7 +9,7 @@
     "build": "tsc && vite build",
     "preview": "vite preview",
     "lint": "eslint 'src/**/*.{js,jsx,ts,tsx}'",
-    "fix": "npm run lint --fix",
+    "fix": "eslint 'src/**/*.{js,jsx,ts,tsx}' --fix",
     "prepare": "husky"
   },
   "lint-staged": {
@@ -34,7 +34,7 @@
     "react-window": "^1.8.11",
     "redux": "^4.2.1",
     "redux-thunk": "^2.4.2",
-    "rxjs": "^7.8.1",
+    "rxjs": "^7.8.2",
     "scryfall-sdk": "^4.2.2",
     "tesseract.js": "^4.0.3",
     "tippy.js": "^6.3.7"
@@ -45,27 +45,26 @@
     "request-promise": "^4.2.6"
   },
   "devDependencies": {
+    "@eslint/js": "^10.0.1",
     "@babel/core": "^7.26.0",
-    "@preact/preset-vite": "^2.9.4",
-    "@types/node": "^20.12.10",
+    "@preact/preset-vite": "^2.10.5",
+    "@types/node": "24.12.2",
     "@types/react-redux": "^7.1.34",
     "@types/react-window": "^1.8.8",
     "@types/w3c-image-capture": "^1.0.10",
-    "@typescript-eslint/eslint-plugin": "^8.19.0",
-    "@typescript-eslint/parser": "^8.19.0",
     "chokidar": "^3.6.0",
-    "eslint": "^8.57.0",
-    "eslint-config-prettier": "^9.1.0",
-    "eslint-plugin-prettier": "^5.2.1",
-    "eslint-plugin-react": "^7.37.3",
-    "eslint-plugin-react-hooks": "^5.1.0",
+    "eslint": "10.2.1",
+    "eslint-config-prettier": "^10.1.8",
+    "eslint-plugin-prettier": "^5.5.5",
+    "eslint-plugin-react-hooks": "^7.1.1",
     "firebase-tools": "^15.15.0",
+    "globals": "^17.5.0",
     "husky": "^9.1.7",
     "preact-jsx-chai": "^3.0.0",
-    "prettier": "^3.4.2",
-    "sass": "^1.77.0",
-    "typescript": "^5.7.2",
-    "vite": "^6.0.7",
-    "vite-tsconfig-paths": "^5.1.4"
+    "prettier": "^3.8.3",
+    "sass": "^1.99.0",
+    "typescript": "5.9.3",
+    "typescript-eslint": "^8.58.2",
+    "vite": "^8.0.9"
   }
 }

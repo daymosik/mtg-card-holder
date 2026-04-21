@@ -20,6 +20,7 @@ const LazyLoad = {
     }
 
     if (!active) {
+      // eslint-disable-next-line no-useless-assignment
       active = true
       setTimeout(() => {
         lazyImages.forEach(handleImage)
