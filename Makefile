@@ -4,7 +4,7 @@ include .env
 export $(shell sed 's/=.*//' .env)
 
 sources := tsconfig.json vite.config.mjs eslint.config.js $(shell find ./src -type f)
-npm_dep = package.json
+npm_dep = package.json package-lock.json
 libs = node_modules/installed_ts
 
 build: VERSION
