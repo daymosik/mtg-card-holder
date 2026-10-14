@@ -1,5 +1,4 @@
 export PATH := node_modules/.bin:$(PATH)
-export NODE_OPTIONS=--openssl-legacy-provider
 
 include .env
 export $(shell sed 's/=.*//' .env)

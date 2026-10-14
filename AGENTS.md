@@ -20,7 +20,7 @@ It is deployed in two places:
 - Bootstrap 5, Sass, `mana-font`, `keyrune`, `tippy.js`
 - Experimental card recognition: `@teachablemachine/image` (TensorFlow model hosted by Teachable Machine) + `tesseract.js` OCR
 - Vite 8 (`root: src`, output `../dist`), TypeScript 5.9, ESLint 10 flat config + Prettier, Husky pre-commit
-- Node 24 (see `Dockerfile`)
+- Node 24 (`engines` in `package.json`, `Dockerfile`, CI)
 
 ## Layout
 
@@ -118,13 +118,12 @@ Run `npm run build` only if `.env` exists; it overwrites `dist/`, which is what 
 
 - **Never commit secrets.** `.env` is ignored; do not add it or print its values. Firebase config is public at runtime, but keep it out of the repo anyway.
 - Don't edit `dist/`, `build/` or `VERSION` – they are generated.
-- Keep `package-lock.json` in sync when changing dependencies (use `npm install`, not manual edits).
+- Keep `package-lock.json` in sync when changing dependencies (use `npm install`, not manual edits) – CI uses `npm ci`, which fails on a stale lock file.
 - Don't call Scryfall in loops outside the admin import – it is rate-limited.
 
 ## Known quirks
 
-- CI (`.github/workflows/nodejs.yml`) uses Node 18 and runs `npm run test`, which does not exist in `package.json`; the Docker image uses Node 24.
 - `card-recognition.ts` is experimental: it manipulates the DOM directly and `demoTextRecognition` uses `require()`, which does not work under Vite.
-- The `Makefile` sets `NODE_OPTIONS=--openssl-legacy-provider` (webpack-era leftover) and references an undefined `GIT_VERSION`, so `VERSION` ends up empty.
+- The `Makefile` references an undefined `GIT_VERSION`, so `VERSION` ends up empty.
 - `firebase.ts` does not pass `VITE_FIREBASE_APP_ID` to `initializeApp`.
 - Several `// TODO` casts (`as never`, `as ScryCardSimple`) exist around Redux dispatch and Firebase responses.
